@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{siteseo name='title'} - {siteseo name='ftitle'}</title>
+<meta name="keywords" content="{siteseo name='keyword'}"/>
+<meta name="description" content="{siteseo name='descri'}"/>
+<link href="__HOMEST__static/css/dgy.base.css" rel="stylesheet" type="text/css"/>
+<link href="__HOMEST__static/css/dgy.grid.v.css" rel="stylesheet" type="text/css"/>
+<link href="__HOMEST__static/css/dgy.nav.t.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="__HOMEST__static/css/swiper.min.css"/>
+<link href="__HOMEST__static/css/font_1809908_xpn2c7cw8fi.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="/favicon.ico"/>
+</head>
+<body>
+
+<div class="baseLayout">
+        	<!--头部-->
+			{include file='home_temp/muyu_duoguyu/public/header'}
+			<!--头部end-->
+	<div class="productGrid">
+		<div class="topFocusWrapper">
+			<div class="planetGroup">
+				<i class="planet a1 animateBalloon2"></i><i class="planet a2 animateBalloon4"></i><i class="planet a3 animateBalloon"></i><i class="planet a4 animateBalloon3"></i>
+			</div>
+			<div class="content">
+				<div class="textWrapper">
+					<h2>紧跟行业趋势，精选优质好源码！</h2>
+                        <div class="searchWrap">
+                            <form action="{:url('index/search/index')}" target="_blank">
+                                <input name="sech" type="text" placeholder="搜索" id="searchInput" class="searchInput"/>
+                                <button class="searchBtn" type="submit"><i class="iconfont icondgy icon-sousuo"></i></button>
+                            </form>
+                        </div>
+                        <div class="tagBox">
+                        {typ mid="1" limit="6" order="rand()"}    
+					    <a href="/search/index.html?sech={$title}" class="tag" target="_blank">{$title}</a>
+					    {/typ}
+					</div>
+                    </div>
+                </div>
+            </div>
+             <!--精选 -->
+			<div class="fullTabsGroup index">
+			    <div class="bestflag linearOrange">精选</div>
+                <div class="softWrapper swiper-container" id="topBest">
+                    <div class="swiper-wrapper">
+        			{matter tab="1" operate="1"}
+        				<div class="item swiper-slide">
+        				    <a class="softBox" href="{maturl contid='$id'}" title="{$title}" target="_blank">
+        				        <img class="softIcon" src="{$titlepic}" alt="{$title}" title="{$title}" />
+        				        <p>{$title}</p>
+        				    </a>
+        				</div>
+        			{/matter}
+        			</div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+			</div>
+		{hnav hid="1"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-paihangbang"></i><b>{$title}</b></h3>
+			<div class="tagWrap">
+				{foreach $children as $v}
+				<a class="item" href="{maturl cateid='$v.id'}" target="_blank">{$v.title}</a>
+				{/foreach}
+				<a class="item" href="{maturl cateid='$id'}" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{matter tab="$id" operate="0" limit="10"}
+				<div class="item">
+					<div class="tophead">
+						<a href="{maturl contid='$id'}" title="{$title}" target="_blank"><img class="focus" src="{$titlepic}" alt="{$title}"></a>
+					</div>
+					<div class="article">
+					    <em><i>#{$catitle}</i><a href="/search/index.html?sech={$tytitle}">{$tytitle}</a></em>
+						<h2><a href="{maturl contid='$id'}" title="{$title}" target="_blank">{$title}</a></h2>
+						<div>
+						    <time><i class="iconfont  icon-shijian"></i>{$create_time|date='Y-m-d'}</time>
+						    <span><i class="iconfont  icon-yanjing1"></i>{$browse}</span>
+						</div>
+					</div>
+				</div>
+           {/matter}
+		</div>
+		{/hnav}
+		{hnav hid="2"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-remen"></i><b>{$title}</b></h3>
+			<div class="tagWrap">
+				{foreach $children as $v}
+				<a class="item" href="{maturl cateid='$v.id'}" target="_blank">{$v.title}</a>
+				{/foreach}
+				<a class="item" href="{maturl cateid='$id'}" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{matter tab="$id" operate="0" limit="10"}
+			<div class="item">
+				<div class="tophead">
+					<a href="{maturl contid='$id'}" title="{$title}" target="_blank"><img class="focus" src="{$titlepic}"
+						 alt="{$title}"></a>
+				</div>
+				<div class="article">
+					<em><i>#{$catitle}</i><a href="/search/index.html?sech={$tytitle}">{$tytitle}</a></em>
+					<h2><a href="{maturl contid='$id'}" title="{$title}" target="_blank">{$title}</a></h2>
+					<div>
+						<time><i class="iconfont  icon-shijian"></i>{$create_time|date='Y-m-d H:i:s'}</time>
+						<span><i class="iconfont  icon-yanjing1"></i>{$browse}</span>
+					</div>
+				</div>
+			</div>
+			{/matter}
+		</div>
+		{/hnav}
+		{hnav hid="3"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-remen"></i><b>{$title}</b></h3>
+			<div class="tagWrap">
+				{foreach $children as $v}
+				<a class="item" href="{maturl cateid='$v.id'}" target="_blank">{$v.title}</a>
+				{/foreach}
+				<a class="item" href="{maturl cateid='$id'}" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{matter tab="$id" operate="0" limit="10"}
+			<div class="item">
+				<div class="tophead">
+					<a href="{maturl contid='$id'}" title="{$title}" target="_blank"><img class="focus" src="{$titlepic}"
+						 alt="{$title}"></a>
+				</div>
+				<div class="article">
+					<em><i>#{$catitle}</i><a href="/search/index.html?sech={$tytitle}">{$tytitle}</a></em>
+					<h2><a href="{maturl contid='$id'}" title="{$title}" target="_blank">{$title}</a></h2>
+					<div>
+						<time><i class="iconfont  icon-shijian"></i>{$create_time|date='Y-m-d H:i:s'}</time>
+						<span><i class="iconfont  icon-yanjing1"></i>{$browse}</span>
+					</div>
+				</div>
+			</div>
+			{/matter}
+		</div>
+		{/hnav}
+		<!--推广-->
+		<div class="adWrapper w2 ">
+			<div class="item">
+				<div class="content"><a href="{myad id='1' name='url'}" target="_blank" title="{myad id='1' name='title'}"><img
+						 src="{myad id='1' name='adphoto'}"></a></div>
+			</div>
+			<div class="item">
+				<div class="content"><a href="{myad id='1' name='url'}" target="_blank" title="{myad id='1' name='title'}"><img
+						 src="{myad id='1' name='adphoto'}"></a></div>
+			</div>
+		</div>
+		<!--推广结束-->
+		{hnav hid="4"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-wenda"></i><b>{$title}</b></h3>
+			<div class="tagWrap">
+				{foreach $children as $v}
+				<a class="item" href="{maturl cateid='$v.id'}" target="_blank">{$v.title}</a>
+				{/foreach}
+				<a class="item" href="{maturl cateid='$id'}" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="articleListWrapper">
+			{matter tab="$id" operate="0" limit="10"}
+			<div class="richTextItem">
+				<a class="content" href="{maturl contid='$id'}" title="{$title}" target="_blank">
+					<div class="article">
+						<div class="focusBox">
+							<img class="focus" src="{$titlepic}" alt="{$title}">
+						</div>
+						<div class="textBox">
+							<h4 class="title">{$title}</h4>
+							<p class="mb15">
+								{$abstract}
+							</p>
+							<p>
+								{$tytitle} · {$create_time|date='Y-m-d'}
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			{/matter}
+		</div>
+		{/hnav}
+		{hnav hid="5"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-wenda"></i><b>{$title}</b></h3>
+			<div class="tagWrap">
+				{foreach $children as $v}
+				<a class="item" href="{maturl cateid='$v.id'}" target="_blank">{$v.title}</a>
+				{/foreach}
+				<a class="item" href="{maturl cateid='$id'}" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="articleListWrapper">
+			{matter tab="$id" operate="0" limit="10"}
+			<div class="richTextItem">
+				<a class="content" href="{maturl contid='$id'}" title="{$title}" target="_blank">
+					<div class="article">
+						<div class="focusBox">
+							<img class="focus" src="{$titlepic}" alt="{$title}">
+						</div>
+						<div class="textBox">
+							<h4 class="title">{$title}</h4>
+							<p class="mb15">
+								{$abstract}
+							</p>
+							<p>
+								{$tytitle} · {$create_time|date='Y-m-d'}
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			{/matter}
+		</div>
+		{/hnav}
+        </div>
+        	<!--低部-->
+			{include file='home_temp/muyu_duoguyu/public/footer'}
+			<!--低部end-->
+</div>    
+
+</body>
+</html>

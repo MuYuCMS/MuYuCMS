@@ -1,0 +1,259 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>会员中心 - 在线投稿 - {siteseo name='title'}</title>
+		<meta name="keywords" content="{siteseo name='keyword'}" />
+		<meta name="description" content="{siteseo name='descri'}" />
+		<link href="__USERST__static/css/member_index.css" rel="stylesheet" type="text/css">
+		<link href="__USERST__static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css" id="layuicss-layer">
+		<script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+	</head>
+	<body>
+		<!--头部-->
+		{include file='member_temp/user/header'}
+		<!--头部end-->
+		<div class="yzm_member_container main">
+			<!--侧边导航栏开始-->
+			{include file='member_temp/user/menu'}
+			<!--侧边导航栏结束-->
+			<div class="main_right">
+				<div class="tit">
+					<h3>在线投稿 - 发布{$tgname['aliase']}</h3>
+				</div>
+				<div class="main_cont">
+					<form id="usertg" onsubmit="return chcekall(this)">
+					    <input type="hidden" name="modid" value="{$tgname['id']}" />
+						<table>
+						<tbody>
+						{foreach $field as $f}
+						{if ( $f.forms == 'text') OR ( $f.forms == 'password') }
+						<tr>
+							<td class="text-right">{$f.title}:</td>
+							<td>
+								<input type="{$f.forms}" name="{$f.field}" value="{if ($f.field == 'author')}{if ($Think.session.Member.name)}{$Think.session.Member.name}{else/}游客{/if}{/if}" placeholder="" {eq name='$f.required' value='1'}required{/eq} class="input" style="width:100%;">
+							</td>
+						</tr>	
+						{elseif $f.forms == 'select' /}
+						<tr>
+							<td class="text-right">{$f.title}:</td>
+							<td>
+								<select name="{$f.field}" {eq name='$f.required' value='1'}required{/eq} style="width:100%;">
+									<option value="" selected>请选择</option>
+									{if (!empty($f.defaults))}
+									{foreach $f.defaults as $selt}
+									<option value="{$selt.0}">{$selt.1}</option>
+									{/foreach}
+									{/if}
+								</select>
+							</td>
+						</tr>
+						{elseif $f.forms == 'textarea' /}
+						<tr>
+							<td class="text-right">{$f.title}:</td>
+							<td calss="up">
+								<textarea name="{$f.field}" class="textareas"
+									type="{$f.forms}" {eq name='$f.required' value='1'}required{/eq} style="width:100%;"></textarea>
+							</td>
+						</tr>
+						{elseif $f.forms == 'radio' /}
+						<tr>
+							<td class="text-right">{$f.title}:</td>
+							<td id="radio">
+								{if (!empty($f.defaults))}
+								{foreach $f.defaults as $rad}
+								<input type="{$f.forms}" {eq name='$f.required' value='1'}required{/eq} id="radio-{$f.field}-ra" value="{$rad.0}" name="{$f.field}">
+								<label for="radio-{$f.field}-ra">{$rad.1}</label>
+								{/foreach}
+								{/if}
+							</td>
+						</tr>
+						{elseif $f.forms == 'checkbox' /}
+						<tr>
+							<td class="text-right">{$f.title}:</td>
+							<td id="checks">
+								{if (!empty($f.defaults))}
+								{foreach $f.defaults as $rad}
+								<input type="{$f.forms}" {eq name='$f.required' value='1'}required{/eq} id="checkbox-{$f.field}-ch" value="{$rad.0}" name="{$f.field}">
+								<label for="checkbox-{$f.field}-ch">{$rad.1}</label>
+								{/foreach}
+								{/if}
+							</td>
+						</tr>
+						{elseif $f.forms == 'down' /}
+						<tr id="down">
+						 <td class="text-right">{$f.title}:</td>
+						 <td>
+                            <input type="text" value="" {eq name='$f.required' value='1'}required{/eq} placeholder="地址名" autocomplete="off" data-fieid="{$f.field}" id="downame" class="input" style="width:15%;float:left;">
+                            <input type="text" value="" id="{$f.field}" {eq name='$f.required' value='1'}required{/eq} placeholder="地址URL" autocomplete="off" class="input pathurl" style="width:55%;float:left;">
+						 </td>    
+						</tr>
+						{elseif $f.forms == 'img' /}
+						<tr id="down">
+						 <td class="text-right">{$f.title}:</td>
+						 <td>
+                            <input type="text" name="{$f.field}" value="" {eq name='$f.required' value='1'}required{/eq} placeholder="" id="{$f.field}" autocomplete="off" class="input" style="width:50%;float:left;">
+						 </td>    
+						</tr>
+						{/if}
+						{/foreach}
+						<tr>
+						<td class="text-right">选择栏目:</td>
+						<td>
+							<select name="mid" required="required" style="width:50%;" >
+								<option value="" selected>请选择栏目</option>
+								{foreach $menu as $val}
+								{if condition="!empty($val.secontit)"}
+								<option value="{$val.id}">{$val.title}</option>
+								{foreach $val.secontit as $va}
+								<option value="{$va.id}">ㅏ{$va.title}</option>
+								{/foreach}
+								{else /}
+								<option value="{$val.id}">{$val.title}</option>
+								{/if}
+								{/foreach}
+							</select>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="text-right">文章分类：</td>
+							<td id="checks">
+								{foreach $type as $val}
+								<input type="radio" id="radio-{$val.id}-ty" value="{$val.id}" name="type">
+								<label for="radio-{$val.id}-ty">{$val.title}</label>
+								{/foreach}
+							</td>
+						</tr>
+								<tr>
+									<td class="text-right">文章内容：</td>
+									<td calss="up" style="width: 700px;">
+										<textarea id="articleEditor" name="editor" class="textareas"
+											type="text/plain" required="" style="width:100%;height:400px;"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right"><span class="red">*</span>验证码:</td>
+									<td>
+										<input type="text" placeholder="请输入验证码" class="input" required="" name="verif"
+											id="captcha" style="width:150px;">
+										<img id="verif_img" src="{:captcha_src()}"
+											onclick="this.src=this.src+'?'+Math.random()" class="yzm-code-img"
+											title="看不清，换一张">
+									</td>
+								</tr>
+								<tr>
+								    <td></td>
+								    <td>
+								<input type="submit" value="投递内容" name="dosubmit" class="button" id="dosubmit">
+								    </td>
+								</tr>
+							</tbody>
+						</table> 
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--底部开始-->
+		{include file='member_temp/user/footer'}
+		<!--底部结束-->
+		<!--百度编辑器开始-->
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/ueditor.config.js"></script>
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+		<!--百度编辑器结束-->
+		<style>
+			/*.up{padding-left: 18px;width:100%;
+    }*/
+			.input,
+			.yzm-input-text {
+				width: 100%;
+			}
+
+			.text-right {
+				text-align: right;
+				width: 100px;
+
+			}
+			.button {
+	        width: 90px;
+            height: 30px;
+            border-width: 0px;
+            border-radius: 3px;
+            background: #1E90FF;
+            cursor: pointer;
+            outline: none;
+            font-family: Microsoft YaHei;
+            color: white;
+            font-size: 20px;
+            }
+            .button:hover {
+	        background: #5599FF;
+            }
+		</style>
+		<script type="text/javascript">
+			// 文章内容 实例化百度富文本编辑器
+			var ue = UE.getEditor('articleEditor');
+            
+            function chcekall(obj) {
+				var Data={};
+				var form_arr=$('#usertg').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+				var captcha = $("#captcha").val();
+				if (captcha == '') {
+					layer.msg('验证码不能为空！', {
+						icon: 2,
+						time: 1000
+					});
+					$("#captcha").focus();
+					return false;
+				}
+				var downa = $("#downame").val();
+				var fieldd = $("#downame").data('fieid');
+				var downp = $(".pathurl").val();
+			    var pat="";
+			    if(downa){
+			        if(downp){
+			            pat = downa+','+downp;
+			        }
+			    }
+				Data[fieldd] = pat;
+				var dosubmit = false;
+				$.ajax({
+					type: "post",
+					url: "{:url('User/tg_new')}",
+					dataType: "json",
+					async: false,
+					data: Data,
+					
+					success: function(msg) {
+						if (msg.code == 1) {
+							//dosubmit = true;
+							layer.msg(msg.msg, {
+								icon: 1,
+								time: 3000
+							}, function() {
+								if (msg.url) location.href = msg.url;
+							});
+						} else {
+							if (msg.code == 0) {
+								$('#captcha+img').attr('src', $('#captcha+img').attr('src') + '?' + Math.random());
+								$("#captcha").focus();
+							}
+							layer.msg(msg.msg, {
+								icon: 2,
+								time: 2000
+							});
+						}
+					}
+				});
+				return dosubmit ? true : false;
+            }
+		</script>
+
+
+	</body>
+</html>

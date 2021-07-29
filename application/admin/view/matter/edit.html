@@ -1,0 +1,497 @@
+<?php
+ $num = '1';
+ $nu = '1';
+?>
+{include file='public/meta'}
+
+<title>内容编辑 - 内容管理 - 木鱼内容管理系统</title>
+{load href="__ADMINST__jquery-tagEditor-master/jquery.tag-editor.css"}
+</head>
+<body>
+	<style>
+		.input-width {
+			width: 70%;
+			float: left;
+			margin-right: 10px;
+		}
+
+		.tag-editor {
+			background: #fafafa;
+			font-size: 12px;
+			width: 60%;
+		}
+
+		.tag-editor .tag-editor-tag {
+			color: #fff;
+			background: #555;
+			border-radius: 2px;
+		}
+
+		.tag-editor .tag-editor-spacer {
+			width: 7px;
+		}
+
+		.tag-editor .tag-editor-delete {
+			display: none;
+		}
+
+		#editcont {
+			float: left;
+		}
+
+		.layui-form-select {
+			width: 70%
+		}
+	</style>
+
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-body pad15">
+						<form class="form form-horizontal" id="model-form">
+							<div class="layui-form" lay-filter="layuiadmin-form-matter" id="matter-add-form">
+								<div class="layui-tab layui-tab-brief">
+									<ul class="layui-tab-title">
+										<li class="layui-this">基本内容</li>
+										<li>其他选项</li>
+									</ul>
+									<div class="layui-tab-content">
+										<div class="layui-tab-item layui-show">
+											<input type="hidden" name="mid" value="{$category.lmid}">
+											<input type="hidden" name="modid" value="{$category.modid}">
+											<input type="hidden" name="id" value="{$list.id}">
+											{foreach $field as $f}
+											{if ( $f.forms == 'text') OR ( $f.forms == 'password') }
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block">
+													<input type="{$f.forms}" name="{$f.field}" value="{$f.value}"
+														lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+														placeholder="{$f.title}" autocomplete="off"
+														class="input-width layui-input">
+												</div>
+											</div>
+											{elseif $f.forms == 'select' /}
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block" style="width:55%;">
+													<select name="{$f.field}"
+														lay-verify="{eq name='$f.required' value='1'}required{/eq}">
+														<option value=""></option>
+														{if (!empty($f.defaults))}
+														{foreach $f.defaults as $selt}
+														<option value="{$selt.0}" {eq name="$selt.0" value="$f.value"
+															}selected{/eq}>{$selt.1}</option>
+														{/foreach}
+														{/if}
+													</select>
+												</div>
+											</div>
+											{elseif $f.forms == 'textarea' /}
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block">
+													<textarea name="{$f.field}" placeholder="{$f.title}"
+														lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+														class="input-width layui-textarea">{$f.value}</textarea>
+												</div>
+											</div>
+											{elseif $f.forms == 'radio' /}
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block">
+													{if (!empty($f.defaults))}
+													{foreach $f.defaults as $rad}
+													<input type="{$f.forms}" name="{$f.field}" value="{$rad.0}"
+														lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+														title="{$rad.1}" {eq name="$rad.0" value="$f.value"
+														}checked{/eq}>
+													{/foreach}
+													{/if}
+												</div>
+											</div>
+											{elseif $f.forms == 'checkbox' /}
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block">
+													{if (!empty($f.defaults))}
+													{foreach $f.defaults as $chec}
+													<input type="{$f.forms}" name="{$f.field}" id="status"
+														value="{$chec.0}" lay-filter="{$f.field}" lay-skin="switch"
+														lay-text="{$chec.1}" {eq name="$chec.0" value="$f.value"
+														}checked{/eq}>
+													{/foreach}
+													{/if}
+												</div>
+											</div>
+											{elseif $f.forms == 'down' /}
+											<div class="layui-form-item" id="down">
+												<div class="layui-inline">
+													<label class="layui-form-label">{$f.title}:</label>
+													<div class="layui-input-inline">
+														<input type="text" value="1" placeholder="数量" autocomplete="off"
+															id="newputhurl" class="layui-input"
+															style="width:20%;float:left;">
+														<button type="button" style="margin-left: 5px;"
+															class="layui-btn"
+															data-reque="{eq name='$f.required' value='1'}required{/eq}"
+															data-value="{$f.field}" id="addpath">增加地址</button>
+													</div>
+												</div>
+												{if (!empty($f.value))}
+												{foreach $f.value as $dwn}
+												<div class="layui-inline">
+													<div class="layui-input-block">
+														<input type="text" value="{$dwn.0}"
+															lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+															placeholder="地址名" autocomplete="off"
+															class="layui-input pathname{$num++}"
+															style="width:15%;float:left;">
+														<input type="text" value="{$dwn.1}" id="{$f.field}"
+															lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+															placeholder="地址URL" autocomplete="off"
+															class="layui-input muyu-path pathurl{$nu++}"
+															style="width:55%;float:left;">
+														<button type="button" style="margin-left: 5px;float: left;"
+															class="layui-btn fields"
+															data-fieid="{$f.field}">附件上传</button>
+													</div>
+												</div>
+												{/foreach}
+												{/if}
+												<div id="muyunb">
+
+												</div>
+											</div>
+											{elseif $f.forms == 'img' /}
+											<div class="layui-form-item">
+												<label class="layui-form-label">{$f.title}:</label>
+												<div class="layui-input-block">
+													<input type="{$f.forms}" name="{$f.field}" id="{$f.field}"
+														value="{$f.value}"
+														lay-verify="{eq name='$f.required' value='1'}required{/eq}"
+														placeholder="{$f.title}" autocomplete="off"
+														class="input-width layui-input">
+													<button type="button" class="layui-btn upimg"
+														lay-data="{id:'{$f.field}'}">图片上传</button>
+												</div>
+											</div>
+											{/if}
+											{/foreach}
+											<div class="layui-form-item">
+												<label class="layui-form-label">撰写内容:</label>
+													<div class="layui-input-block">
+												<textarea id="editorcont" name="editor">{$list.editor|raw}</textarea>
+													</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">文章分类:</label>
+												<div class="layui-input-block">
+													<select name="type">
+														<option value="NULL"></option>
+														{foreach $type as $tt}
+														<option value="{$tt.id}" {eq name="$tt.id" value="$list.type"}checked{/eq}>{$tt.title}</option>
+														{/foreach}
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="layui-tab-item">
+											<div class="layui-form-item">
+												<label class="layui-form-label">内容置顶:</label>
+												<div class="layui-input-block">
+													<input type="checkbox" name="top" id="top" value="{$list.top}"
+														lay-filter="topof" {eq name="$list.top" value="1" }checked{/eq}
+														lay-skin="switch" lay-text="置顶|不置顶">
+												</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">标题图幻灯:</label>
+												<div class="layui-input-block">
+													<input type="checkbox" name="ppts" id="ppts" value="{$list.ppts}"
+														lay-filter="pptsof" {eq name="$list.ppts" value="1"
+														}checked{/eq} lay-skin="switch" lay-text="幻灯|不幻灯">
+												</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">阅读权限:</label>
+												<div class="layui-input-block">
+													<input type="radio" name="price" value="1" title="免费" {eq
+														name="$list.price" value="1" }checked{/eq}>
+													<input type="radio" name="price" value="2" title="付费" {eq
+														name="$list.price" value="2" }checked{/eq}>
+												</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">金额:</label>
+												<div class="layui-input-inline">
+													<input type="number" name="moneys" value="{$list.moneys}"
+														lay-verify="moneys" placeholder="设置付费金额"
+														class="input-width layui-input">
+												</div>
+											</div>
+											<div class="layui-form-item">
+												<label class="layui-form-label">TAGS:</label>
+												<div class="layui-input-block" style="margin:0 0 1.2em;">
+													<textarea type="text" name="tag" id="tags"
+														class="tag-editor-hidden-src" placeholder="空格生成标签"
+														autocomplete="off">{$list.tag}</textarea>
+												</div>
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<div class="layui-input-block">
+												<button class="layui-btn" lay-submit lay-filter="matter-subt"
+													type="button">发布内容</button>
+												<button class="layui-btn layui-bg-orange" lay-submit
+													lay-filter="matter-subts" type="button">存为草稿</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	{include file='public/footer'}
+	{load href="__ADMINST__ueditor/ueditor.config.js"}
+	{load href="__ADMINST__ueditor/ueditor.all.js"}
+	{load href="__ADMINST__jquery-tagEditor-master/jquery.tag-editor.js"}
+	{load href="__ADMINST__jquery-tagEditor-master/jquery.caret.min.js"}
+	{load href="__ADMINST__jquery-tagEditor-master/jquery-ui.min.js"}
+	<script type="text/javascript" charset="utf-8">
+		var ue = UE.getEditor('editorcont');
+		ue.ready(function() {
+           ue.setHeight(400);
+        });
+	</script>
+	<script>
+		layui.config({
+			base: '__ADMINST__layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['form', 'element', 'upload'], function() {
+			var $ = layui.$,
+				element = layui.element,
+				form = layui.form,
+				upload = layui.upload;
+
+			form.verify({
+				moneys: function(value) {
+					if (!checkNumRule(value)) {
+						return "只能为整数且小数点为2位";
+					}
+				}
+			});
+
+			var uploadInst = upload.render({
+				elem: '.upimg',
+				url: "{:url('admin/Matter/imgupload')}",
+				accept: 'images',
+				exts: 'jpeg|png|jpg',
+				data: {
+					upurl: '/public/upload/images'
+				},
+				done: function(res) {
+
+					if (res.code == 1) {
+						$("#" + res.id).val(res.photo);
+						layer.msg(res.msg, {
+							time: 2000
+						});
+					} else {
+						layer.msg(res.msg, {
+							time: 2000
+						});
+					}
+				},
+				error: function(res) {
+					layer.msg(res.msg, {
+						time: 2000
+					});
+				},
+				before: function(muyu) {
+					var id = this.id;
+					this.data.id = id;
+				}
+			});
+			upload.render({
+				elem: '.fields',
+				url: "{:url('admin/Matter/fileuplod')}",
+				accept: 'file',
+				exts: 'rar|zip|7z',
+				data: {
+					upurl: '/public/upload/files'
+				},
+				done: function(res) {
+
+					if (res.code == 1) {
+						$("#" + res.id).val(res.photo);
+						layer.msg(res.msg, {
+							time: 2000
+						});
+					} else {
+						layer.msg(res.msg, {
+							time: 2000
+						});
+					}
+				},
+				error: function(res) {
+					layer.msg(res.msg, {
+						time: 2000
+					});
+				},
+				before: function(muyu) {
+					var id = $('#down .fields').data('fieid');
+					this.data.id = id;
+				}
+			});
+			layui.$('#addpath').on('click', function() {
+				var requ = $('#addpath').data('reque');
+				var dowid = $('#addpath').data('value');
+				var yiyou = $("#down .muyu-path");
+				var ljsl = $("#newputhurl").val();
+				var zjs = Number(yiyou.length) + Number(ljsl);
+				var str = "";
+				for (n = 2; n <= zjs; n++) {
+					str +=
+						"<div class='layui-inline'><div class='layui-input-block'><input type='text' value='' lay-verify='" +
+						requ + "' placeholder='地址名' autocomplete='off' class='layui-input pathname" + n +
+						"' style='width:15%;float:left;'><input type='text' value='' id='" + dowid + n +
+						"' lay-verify='" + requ +
+						"' placeholder='地址URL' autocomplete='off' class='layui-input muyu-path pathurl" + n +
+						"' style='width:55%;float:left;'><button type='button' style='margin-left: 5px;float: left;' class='layui-btn fields' data-fieid='" +
+						dowid + n + "' >附件上传</button></div></div>"
+
+				}
+				$("#muyunb").empty();
+				$("#muyunb").append(str);
+				layui.use(['upload'], function() {
+					var upload = layui.upload;
+					upload.render({
+						elem: '#muyunb .fields',
+						url: "{:url('admin/Matter/fileuplod')}",
+						accept: 'file',
+						exts: 'rar|zip|7z',
+						data: {
+							upurl: '/public/upload/files'
+						},
+						done: function(res) {
+
+							if (res.code == 1) {
+								$("#" + res.id).val(res.photo);
+								layer.msg(res.msg, {
+									time: 2000
+								});
+							} else {
+								layer.msg(res.msg, {
+									time: 2000
+								});
+							}
+						},
+						error: function(res) {
+							layer.msg(res.msg, {
+								time: 2000
+							});
+						},
+						before: function(muyu) {
+							var id = $('#muyunb .fields').data('fieid');
+							this.data.id = id;
+						}
+					});
+				})
+			});
+			form.on('switch(topof)', function(data) {
+				var value = this.checked ? '1' : '0';
+				$("#top").val(value);
+			});
+			form.on('switch(pptsof)', function(data) {
+				var value = this.checked ? '1' : '0';
+				$("#ppts").val(value);
+			});
+			//直接发布
+			form.render();
+			form.on('submit(matter-subt)', function(data) {
+				var Data = data.field;
+				var Data = addmatter(Data);
+				Data['status'] = '0';
+				ajaxmatter(Data);
+			});
+			//存草稿
+			form.on('submit(matter-subts)', function(data) {
+				var Data = data.field;
+				var Data = addmatter(Data);
+				Data['status'] = '1';
+				ajaxmatter(Data);
+			});
+		})
+		$('#tags').tagEditor({
+			autocomplete: {
+				delay: 0, // 立即显示建议 
+				position: {
+					collision: 'flip'
+				}, // 自动菜单位置上/下 
+				source: ['木鱼CMS', 'muyucms', 'MuYuCMS']
+			},
+			clickDelete: true,
+			forceLowercase: false,
+			placeholder: '输入后按回车或者失去焦点完成 鼠标右键或Ctrl+左键删除标签'
+		});
+		
+		function addmatter(Data) {
+			//下载地址的组合
+			if ($(".muyu-path").length != 0) {
+				var patsu = $(".muyu-path");
+				var pat = "";
+				for (n = 1; n <= patsu.length; n++) {
+					if ($(".pathname" + n).val()) {
+						if ($(".pathurl" + n).val()) {
+							pat += $(".pathname" + n).val() + ',' + $(".pathurl" + n).val() + ',';
+						}
+					}
+				}
+				Data['downpath'] = pat.substring(0, pat.length - 1);
+			}
+			Data['top'] = $("#top").val();
+			Data['ppts'] = $("#ppts").val();
+			return Data;
+		}
+
+		function ajaxmatter(Data) {
+			$.ajax({
+				type: 'POST',
+				data: Data,
+				url: "{:url('admin/Matter/edit')}",
+				dataType: "json",
+				beforeSend: function() {
+					index = layer.load();
+				},
+				success: function(data) {
+					if (data.code == 1) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(index);
+							parent.location.reload();
+						});
+					} else {
+						layer.msg(data.msg, {
+							time: 2000
+						});
+					}
+				},
+				complete: function() {
+					layer.close(index);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

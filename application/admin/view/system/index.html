@@ -1,0 +1,355 @@
+{include file='public/meta' }
+  <title>网站设置 - 木鱼内容管理系统</title>
+
+</head>
+<body>    
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body pad15">
+            <form class="form form-horizontal" id="form-system-base">    
+            <div class="layui-form wid100" lay-filter="">    
+            <!--tab切换标题-->
+              <div class="layui-fluid" id="LAY-app-message">
+                <div class="">
+                  <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                      <li class="layui-this">基本设置</li>
+                      <li>安全配置</li>
+                      <li>功能配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+            <!--tab切换标题/-->        
+        
+            <!--基本设置-->
+        <div class="layui-tab-item layui-show"> 
+              <div class="layui-form-item">
+                <label class="layui-form-label">网站名称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="title" value="{$system.title}" class="layui-input">
+                </div>
+              </div>
+
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">网站简介</label>
+                <div class="layui-input-block">
+                  <textarea name="ftitle" class="layui-textarea">{$system.ftitle}</textarea>
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">META关键词</label>
+                <div class="layui-input-block">
+                  <textarea name="keyword" class="layui-textarea" placeholder="多个关键词用英文状态 , 号分割">{$system.keyword}</textarea>
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">META描述</label>
+                <div class="layui-input-block">
+                  <textarea name="descri" class="layui-textarea">{$system.descri}</textarea>
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">网站LOGO</label>
+                <div class="layui-input-block">
+                      <input class="layui-upload-file" type="file" accept="images" name="file">
+                      <div class="layui-input-inline" style="float:left;width:45%;">
+                      <input class="layui-input" type="text" accept="images" id="photo"  name="logo" value="{$system.logo}">
+                      </div>
+                      <button type="button"  class="layui-btn" id="test1">上传图片</button>
+                      <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo1" src="{$system.logo}">
+                      </div>
+                </div>
+              </div>
+			  <div class="layui-form-item">
+                <label class="layui-form-label">网站ICO</label>
+                <div class="layui-input-block">
+                      <input class="layui-upload-file" type="file" accept="images" name="file">
+                      <div class="layui-input-inline" style="float:left;width:45%;">
+                      <input class="layui-input" type="text" accept="images" id="photo2"  name="ico" value="{$system.ico}">
+                      </div>
+                      <button type="button"  class="layui-btn" id="test2">上传图片</button>
+                      <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo2" src="{$system.ico}">
+                      </div>
+                </div>
+              </div>
+             
+              <div class="layui-form-item">
+                <label class="layui-form-label">网站开关</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="is_close" id="is_close" value="{$system.is_close}" lay-filter="wzcolseof" lay-skin="switch" lay-text="开启|关闭" {if $system.is_close == "0"}checked{/if}>
+                </div>
+              </div>
+			  <div class="layui-form-item">
+                <label class="layui-form-label">站长QQ</label>
+                <div class="layui-input-block">
+                  <input type="text" name="adminqq" lay-verify="" value="{$system.adminqq}" class="layui-input">
+                </div>
+              </div>
+			  <div class="layui-form-item">
+                <label class="layui-form-label">站长邮箱</label>
+                <div class="layui-input-block">
+                  <input type="text" name="adminemail" lay-verify="email" value="{$system.adminemail}" class="layui-input">
+                </div>
+              </div>
+			  <div class="layui-form-item">
+                <label class="layui-form-label">版权信息</label>
+                <div class="layui-input-block">
+                  <input type="text" name="copyright" lay-verify="" value="{$system.copyright}" class="layui-input">
+                </div>
+              </div>
+			  <div class="layui-form-item">
+                <label class="layui-form-label">备案号</label>
+                <div class="layui-input-block">
+                  <input type="text" name="record" lay-verify="" value="{$system.record}" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">统计代码</label>
+                <div class="layui-input-block">
+                  <textarea name="statistics" class="layui-textarea">{$system.statistics}</textarea>
+                </div>
+              </div>
+            </div>  
+          <!--基本设置/-->
+          
+          <!--安全设置-->
+          <div class="layui-tab-item">
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">允许访问后台的IP列表</label>
+                <div class="layui-input-block">
+                  <textarea name="dlip" class="layui-textarea" placeholder="填写此IP后，后台只能通过这里的IP访问，多个IP用','分隔。">{$system.dlip}</textarea>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">后台登录失败最大次数</label>
+                <div class="layui-input-block">
+                  <input type="text" name="degree" value="{$system.degree}" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">会员登录失败最大次数</label>
+                <div class="layui-input-block">
+                  <input type="text" name="user_error" value="{$system.user_error}" class="layui-input">
+                </div>
+              </div>
+          </div>
+          <!--安全设置/-->
+          
+          <!--功能配置-->
+          <div class="layui-tab-item">
+              <div class="layui-card-header">会员注册配置</div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">注册开关</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="userreg_close" id="userreg_close" value="{$system.userreg_close}" lay-filter="userreg_close" lay-skin="switch" lay-text="开启|关闭" {if $system.userreg_close == "0"}checked{/if}>
+                </div>
+            </div>
+            <div class="layui-card-header">投稿配置</div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">投稿开关</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="tg_close" id="tg_close" value="{$system.tg_close}" lay-filter="tg_close" lay-skin="switch" lay-text="开启|关闭" {if $system.tg_close == "0"}checked{/if}>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">游客投稿</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="us_tg" id="us_tg" value="{$system.us_tg}" lay-filter="us_tg" lay-skin="switch" lay-text="开启|关闭" {if $system.us_tg == "0"}checked{/if}>
+                </div>
+              </div>
+              <div class="layui-card-header">全局评论配置</div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">评论开关</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="comment_close" id="comment_close" value="{$system.comment_close}" lay-filter="comment_close" lay-skin="switch" lay-text="开启|关闭" {if $system.comment_close == "0"}checked{/if}>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">评论审核</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="commentaudit_close" id="commentaudit_close" value="{$system.commentaudit_close}" lay-filter="commentaudit_close" lay-skin="switch" lay-text="自动|手动" {if $system.commentaudit_close == "0"}checked{/if}>
+                </div>
+              </div>
+              <div class="layui-card-header">留言配置</div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">留言开关</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="feedback_close" id="feedback_close" value="{$system.feedback_close}" lay-filter="feedback_close" lay-skin="switch" lay-text="开启|关闭" {if $system.feedback_close == "0"}checked{/if}>
+                </div>
+              </div>
+          </div>
+          <!--功能配置/-->                  
+              
+        </div>
+      </div>
+    </div>
+  </div>
+        <!--tab切换尾部/-->
+  
+        <!--页面共用尾部/-->
+            <input type="hidden" name="id" value="{$system.id}">
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn layui-btn-disabled" type="button" id="btn">确认保存</button>
+                </div>
+              </div>
+            </div>
+       </form>     
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+ {include file='public/footer' }
+<style type="text/css" media="all">
+/*上传头像样式开始*/
+.layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
+/*上传头像样式结束*/
+</style>
+  <script>
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //checkbox开关状态监听
+    form.on('switch(wzcolseof)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#is_close").val(value);
+    });
+    form.on('switch(userreg_close)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#userreg_close").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+    form.on('switch(tg_close)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#tg_close").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+    form.on('switch(us_tg)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#us_tg").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+    form.on('switch(comment_close)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#comment_close").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+    form.on('switch(commentaudit_close)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#commentaudit_close").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+    form.on('switch(feedback_close)', function(data){
+        var value = this.checked ? '0' : '1';
+        $("#feedback_close").val(value);
+		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
+    });
+  
+    
+  });
+
+
+ //图片上传1
+  layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传1
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+    ,data:{upurl:'/public/upload/menubg'}
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+     
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code == 1){
+        $('#demo1').attr('src', res.photo); //图片链接（base64）
+		$("#photo").val(res.photo);
+        return layer.msg('上传成功');
+      }else{
+		return layer.msg('上传失败');
+	  }
+      
+    }
+    ,error: function(){
+        
+    }
+    });
+
+
+ //图片上传2
+  var uploadInst = upload.render({
+    elem: '#test2'
+    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+    ,data:{upurl:'/public/upload/menubg'}
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code == 1){
+        $('#demo2').attr('src', res.photo); //图片链接（base64）
+		$("#photo2").val(res.photo);
+        return layer.msg('上传成功');
+      }else{
+		return layer.msg('上传失败');
+	  }
+      
+    }
+    ,error: function(){
+        
+    }
+    });
+  });
+
+//表单提交
+    $('#btn').addClass("layui-btn-disabled").attr("disabled",true);//内容改变时才能提交按钮
+    $("form").children().change(function(){
+	    $("#btn").removeClass('layui-btn-disabled').attr("disabled",false);	
+    });
+    $("#btn").on("click",function(){
+     var Data = {};
+     var form_arr=$('#form-system-base').serializeArray();//序列化表单
+     //console.log(JSON.stringify(form_arr));
+     $.each(form_arr,function(){
+         Data[this.name] = this.value;
+     });
+     //获取网站开关
+     Data['is_close'] = $("#is_close").val();
+     Data['userreg_close'] = $("#userreg_close").val();
+     Data['tg_close'] = $("#tg_close").val();
+     Data['comment_close'] = $("#comment_close").val();
+     Data['commentaudit_close'] = $("#commentaudit_close").val();
+     Data['feedback_close'] = $("#feedback_close").val();
+     Data['us_tg'] = $("#us_tg").val();
+     //console.log(JSON.stringify(Data));
+     //post提交
+     $.post("{:url('System/wzedit')}",Data,function(data){
+         if(data.code==1){
+             layer.msg(data.msg,{time:2000},function(){
+              location.reload();  
+             });
+         }else{
+             layer.msg(data.msg,{time:2000});
+         }
+     });
+ });
+  </script>
+</body>
+</html>

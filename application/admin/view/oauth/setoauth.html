@@ -1,0 +1,127 @@
+{include file='public/meta' }
+	<title>第三方登录设置 - 木鱼内容管理系统</title>
+</head>
+<body>
+    
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">第三方登录设置</div>
+          <div class="layui-card-body">
+            
+            <div class="layui-form" id="checkDiv">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">QQ登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="qq_close" value="1" title="开" {if $oauth.qq_close eq 1} checked {/if}>
+                      <input type="radio" name="qq_close" value="0" title="关" {if $oauth.qq_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">微信登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="weixin_close" value="1" title="开" {if $oauth.weixin_close eq 1} checked {/if}>
+                      <input type="radio" name="weixin_close" value="0" title="关" {if $oauth.weixin_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+              <div class="layui-form-item">
+                    <label class="layui-form-label">微博登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="sina_close" value="1" title="开" {if $oauth.sina_close eq 1} checked {/if}>
+                      <input type="radio" name="sina_close" value="0" title="关" {if $oauth.sina_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+              <div class="layui-form-item">
+                    <label class="layui-form-label">百度登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="baidu_close" value="1" title="开" {if $oauth.baidu_close eq 1} checked {/if}>
+                      <input type="radio" name="baidu_close" value="0" title="关" {if $oauth.baidu_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">Gitee登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="gitee_close" value="1" title="开" {if $oauth.gitee_close eq 1} checked {/if}>
+                      <input type="radio" name="gitee_close" value="0" title="关" {if $oauth.gitee_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">Github登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="github_close" value="1" title="开" {if $oauth.github_close eq 1} checked {/if}>
+                      <input type="radio" name="github_close" value="0" title="关" {if $oauth.github_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">抖音登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="douyin_close" value="1" title="开" {if $oauth.douyin_close eq 1} checked {/if}>
+                      <input type="radio" name="douyin_close" value="0" title="关" {if $oauth.douyin_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">钉钉登录</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="dingtalk_close" value="1" title="开" {if $oauth.dingtalk_close eq 1} checked {/if}>
+                      <input type="radio" name="dingtalk_close" value="0" title="关" {if $oauth.dingtalk_close eq 0} checked {/if}>
+                    </div>
+                  </div>                  
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" id="btn">确认保存</button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+
+  });
+  
+	/* 表单验证，提交 */
+	$("#btn").on("click",function(){
+	    var Data = [];
+	    var len = $(this).is(":checked").length;
+		 $("#checkDiv :radio").each(function () {
+            if($(this).is(":checked")){
+                Data[this.name] = $(this).val();
+            }
+        });
+        $.ajax({
+            type:"post",
+            dataType:"json",
+            url:"{:url('Oauth/setOauthEdit')}",
+            data:{qq_close:Data['qq_close'],weixin_close:Data['weixin_close'],sina_close:Data['sina_close'],baidu_close: Data['baidu_close'],gitee_close:Data['gitee_close'],github_close:Data['github_close'],douyin_close:Data['douyin_close'],dingtalk_close:Data['dingtalk_close']
+            },
+            success:function(data){
+                layer.msg(data.msg,{time:2000},function(){
+        			if(data.url) location.href = data.url;
+        		});
+            }
+        });
+        
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Language" content="zh-cn">
+		<meta name="renderer" content="webkit">
+		<title>微信安全支付</title>
+		<link href="__HOMEST__static/css/wechat_pay.css" rel="stylesheet" media="screen">
+		<link href="__HOMEST__static/layui/css/layui.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="body">
+			<h1 class="mod-title">
+				<span class="ico-wechat"></span><span class="text">微信支付</span>
+			</h1>
+			<div class="mod-ct">
+				<div class="order">
+				</div>
+				<div class="amount">￥{$wxpay.moneys}</div>
+				<div class="qr-image" id="qrcode" title="打开微信扫一扫">
+					<canvas width="230" height="230" style="display: none;"></canvas>
+				</div>
+
+				<div class="detail" id="orderDetail">
+					<dl class="detail-ct" style="display: none;">
+						<dt>购买产品</dt>
+						<dd id="storeName">{$wxpay.title}</dd>
+						<dt>支付金额</dt>
+						<dd id="productName">{$wxpay.moneys}元</dd>
+						<dt>创建时间</dt>
+						<dd id="createTime">{:date('Y-m-d H:i:s',$wxpay.time)}</dd>
+						<dt>交易订单号</dt>
+						<dd id="trade_no">{$wxpay.out_trade_no}</dd>
+					</dl>
+					<a href="javascript:void(0)" class="arrow"><i class="ico-arrow"></i></a>
+				</div>
+				<div class="tip">
+					<span class="dec dec-left"></span>
+					<span class="dec dec-right"></span>
+					<div class="ico-scan"></div>
+					<div class="tip-text">
+						<p>请使用微信扫一扫</p>
+						<p>扫描二维码完成支付</p>
+					</div>
+				</div>
+				<div class="tip-text">
+				</div>
+			</div>
+			<div class="foot">
+				<div class="inner">
+					<p>手机用户可保存上方二维码到手机中</p>
+					<p>在微信扫一扫中选择“相册”即可</p>
+				</div>
+			</div>
+		</div>
+		<script src="__HOMEST__static/js/qrcode.js"></script>
+		<script src="__HOMEST__static/js/qcloud_util.js"></script>
+		<script type="text/javascript" src="__HOMEST__static/layer/layer.js"></script>
+		<script type="text/javascript" src="__HOMEST__static/layui/layui.js"></script>
+		<script>
+			var qrcode = new QRCode("qrcode", {
+				text: "{$wxpay.code_url}",
+				width: 230,
+				height: 230,
+				colorDark: "#000000",
+				colorLight: "#ffffff",
+				correctLevel: QRCode.CorrectLevel.H
+			});
+			// 订单详情
+			$('#orderDetail .arrow').click(function(event) {
+				if ($('#orderDetail').hasClass('detail-open')) {
+					$('#orderDetail .detail-ct').slideUp(500, function() {
+						$('#orderDetail').removeClass('detail-open');
+					});
+				} else {
+					$('#orderDetail .detail-ct').slideDown(500, function() {
+						$('#orderDetail').addClass('detail-open');
+					});
+				}
+			});
+			// 检查是否支付完成
+			function loadmsg() {
+			    if("{$wxpay.class}" == "Wallet"){
+			        var url = "{:url('Wallet/wxpay')}";
+			    }else if("{$wxpay.class}" == "Palymat"){
+                    var url = "{:url('Palymat/wxpay')}";
+			    }
+				$.ajax({
+					type: "post",
+					dataType: "json",
+					url: url,
+					timeout: 10000, //ajax请求超时时间10s
+					success: function(data) {
+					    if (data.code == 2) {
+							layer.msg(data.msg,{icon: 2,time:3000},function(){
+							if(data.url) location.href = data.url;
+						});
+						}
+						//从服务器得到数据，显示数据并继续查询
+						if (data.code == 1) {
+							layer.msg(data.msg,{icon: 1,time:2000},function(){
+							if(data.url) location.href = data.url;
+						});
+						}else{
+							setTimeout("loadmsg()", 3000);
+						}
+					},
+					//Ajax请求超时，继续查询
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						if (textStatus == "timeout") {
+							setTimeout("loadmsg()", 1000);
+						} else { //异常
+							setTimeout("loadmsg()", 3000);
+						}
+					}
+				});
+			}
+			window.onload = loadmsg();
+		</script>
+
+	</body>
+</html>

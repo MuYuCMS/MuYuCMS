@@ -1,0 +1,109 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>会员中心-充值记录-{siteseo name='title'}</title>
+	  <meta name="keywords" content="{siteseo name='keyword'}" />
+      <meta name="description" content="{siteseo name='descri'}" />
+	  <link href="__USERST__static/css/member_index.css" rel="stylesheet" type="text/css">
+	  <script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+	  <link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+	  <link href="__USERST__static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+  </head>
+<!--头部-->
+{include file='member_temp/user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+   <!--侧边导航栏开始-->
+      {include file='member_temp/user/menu'}
+      <!--侧边导航栏结束-->
+      <div class="main_right">
+        <div class="tit">
+            <h3>充值记录</h3>
+        </div>
+        <div class="main_cont">
+            <div class="explain">
+                <p>说明：已通过的充值记录不支持修改.</p>
+            </div>
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th width="10%">订单号</th>
+                        <th width="15%">充值类型</th>
+                        <th width="15%">充值金额</th>
+                        <th width="15%">充值状态</th>
+                        <th width="15%">充值时间</th>
+                        <th width="15%">记录IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $paylog as $val}
+                    <tr>
+                        <td>{$val.order_id}</td>
+                        <td>{$val.pay_type}</td>
+                        <td>{$val.money}</td>
+                        <td class="td-status">
+                            {if condition="$val.status eq '已付款'"}
+							<span class="label-success radius">已付款</span>
+							{else /}
+							<span class="label radius">未付款</span>
+							{/if}
+                            </td>
+                            <td>{:date("Y-m-d H:i:s",$val.create_time)}</td>
+                        <td class="td-manage">
+                            {$val.pay_ip}
+                        </td>
+                        </tr>
+                        {/foreach}
+                </tbody>
+            </table>
+            <div id="page"><span class="pageinfo">共{$paylog->count('id')}条记录</span></div>
+        </div>
+    </div>
+</div>
+<!--底部开始-->
+{include file='member_temp/user/footer'}
+<!--底部结束-->
+  <!--列表状态样式开始-->
+<style>
+.label-success,.badge-success {display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #5eb95e;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.label-danger,.badge-success {display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #dd514c;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.label.radius {border-radius: 3px;}
+.label,.badge {
+	display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #999;
+	overflow: hidden
+}
+</style>
+<!--列表状态样式结束-->
+<script>
+</script>
+</body></html>

@@ -1,0 +1,145 @@
+{include file='public/meta' }
+	<title>编辑广告 - 木鱼内容管理系统</title>
+</head>
+<body>
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 30px 0 0;">
+	<div class="layui-form-item">
+      <label class="layui-form-label">广告名称：</label>
+      <div class="layui-input-block">
+        <input type="text" id="title" name="title" value="{$add.title}" lay-verify="required|nlength" placeholder="请输入名称"  class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">链接URL：</label>
+      <div class="layui-input-block">
+        <input type="text" id="url" name="url" value="{$add.url}" lay-verify="url" value="http://" placeholder="请输入链接"  class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">图片：</label>
+       <div class="layui-input-block">
+          <input class="layui-upload-file" type="file" accept="images" name="file">
+          <div class="layui-input-inline" style="float:left;width:45%;">
+          <input class="layui-input" type="text" id="upico" name="adphoto" value="{$add.adphoto}">
+          </div>
+          <button type="button"  class="layui-btn" id="icoup" style="float:left;">本地上传</button>
+          <div style="float:left;margin-left: 5px;">
+            <img height="46px" width="46px" style="border-radius: 50%;" id="ico1" {gt name="$add['adphoto']" value="0"} src="{$add.adphoto}" {/gt}>
+          </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">代码广告：</label>
+      <div class="layui-input-block">
+        
+        <textarea name="adtext" class="layui-textarea" placeholder="填写代码后前台调用也可以调用图片形式">{$add.adtext}</textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">到期时间：</label>
+      <div class="layui-input-block">
+        <input type="text" name="outtime" id="outtime" value="{$add.outtime|date='Y-m-d'}" lay-verify="" class="layui-input" placeholder="不填写则不过期">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">到期显示内容：</label>
+      <div class="layui-input-block">
+        
+        <textarea name="outext" class="layui-textarea">{$add.outext}</textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">是否显示：</label>
+        <div class="layui-input-block">
+        <input type="checkbox" id="status" {eq name="$add.status" value="显示"}checked=""{/eq} value="{eq name='$add.status' value='显示'}1{else/}0{/eq}" name="status" lay-filter="statusof" lay-skin="switch" lay-text="显示|隐藏" title="是否显示">
+        </div>
+    </div>
+    
+    <div class="layui-form-item layui-hide">
+      <button type="button" lay-submit lay-filter="muyu-ajax-submit" id="muyu-ajax-submit">提交</button>
+    </div>
+</div>	
+	<!-- 展示所有图片end -->
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+	<!--请在下方写此页面业务相关的脚本-->
+<style type="text/css" media="all">
+/*上传头像样式开始*/
+.layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
+/*上传头像样式结束*/
+</style>
+	<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form'], function(){
+    var $ = layui.$
+    ,form = layui.form ;
+    
+    form.verify({
+		    nlength: function (value) {
+		    	var i,sum; 
+		    	sum=0; 
+		    	for(i=0;i<value.length;i++){ 
+			    	if ((value.charCodeAt(i)>=0) && (value.charCodeAt(i)<=255)) 
+			    		sum=sum+1; 
+			    	else 
+			    		sum=sum+2; 
+		    	} 
+		        if (sum > 20) {
+		            return '网站标题最多10个文字或20个字符';
+		        }
+		    }
+		});
+    form.on('switch(statusof)', function(data){
+    var value = this.checked ? '1' : '0';
+    $("#status").val(value);
+  });
+    
+  })	
+	
+		
+   /*
+   *本地图片上传的操作
+   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#icoup' //绑定元素
+	    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+        ,data:{upurl:'/public/upload/ggpic'}
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#upico").val(res.photo);
+			  $("#ico1").attr("src",res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	
+	
+	//日期时间选择器
+	layui.use('laydate', function(){
+      var laydate = layui.laydate;
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#outtime' //指定元素
+      });
+    });
+	</script>
+	
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

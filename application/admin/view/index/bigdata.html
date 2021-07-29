@@ -1,0 +1,544 @@
+{include file='public/meta'}
+    <title>数据中心 - 木鱼内容管理系统</title>
+    {load href="__ADMINST__layuiadmin/layui/css/layui.css"}
+    {load href="__ADMINST__layuiadmin/style/admin.css"}
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            今日发文
+            <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+            <p class="layuiadmin-big-font">{$bigdata.article_add}</p>
+            <p>
+              文章总数 
+              <span class="layuiadmin-span-color">{$articlesum} 篇<i class="layui-inline layui-icon layui-icon-flag"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            今日点赞
+            <span class="layui-badge layui-bg-orange layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+
+            <p class="layuiadmin-big-font">{$bigdata.article_likes}</p>
+            <p>
+              总点赞量 
+              <span class="layuiadmin-span-color">{$articlelike} 次<i class="layui-inline layui-icon layui-icon-heart"></i></span>
+            </p>
+          </div>
+        </div>
+      </div> 
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            新增会员
+            <span class="layui-badge layui-bg-cyan layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+            <p class="layuiadmin-big-font">{$bigdata.member_add}</p>
+            <p>
+              会员总数 
+              <span class="layuiadmin-span-color">{$membersum} 个<i class="layui-inline layui-icon layui-icon-user"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>  
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            月净收入
+            <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+
+            <p class="layuiadmin-big-font">{$moneymonthsum}</p>
+            <p>
+              总收入 
+              <span class="layuiadmin-span-color">{$moneysum} 元<i class="layui-inline layui-icon layui-icon-rmb"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            今日留言
+            <span class="layui-badge layui-bg-cyan layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+            <p class="layuiadmin-big-font">{$bigdata.feedback_add}</p>
+            <p>
+              留言总数 
+              <span class="layuiadmin-span-color">{$feedbacksum} 条<i class="layui-inline layui-icon layui-icon-notice"></i></span>
+            </p>
+          </div>
+        </div>
+      </div> 
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            今日评论
+            <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+            <p class="layuiadmin-big-font">{$bigdata.article_comment}</p>
+            <p>
+              评论总数 
+              <span class="layuiadmin-span-color">{$commentsum} 条<i class="layui-inline layui-icon layui-icon-survey"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            今日消费
+            <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+
+            <p class="layuiadmin-big-font">{$bigdata.buy_money}</p>
+            <p>
+              总消费 
+              <span class="layuiadmin-span-color">{$buymoney} 元<i class="layui-inline layui-icon layui-icon layui-icon-rmb"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm6 layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            下载量
+            <span class="layui-badge layui-bg-orange layuiadmin-badge">日</span>
+          </div>
+          <div class="layui-card-body layuiadmin-card-list">
+
+            <p class="layuiadmin-big-font">{$bigdata.downloads}</p>
+            <p>
+              下载总量 
+              <span class="layuiadmin-span-color">{$downloads} 次<i class="layui-inline layui-icon layui-icon-download-circle"></i></span>
+            </p>
+          </div>
+        </div>
+      </div>  
+      
+      <div class="layui-col-sm8">
+        <div class="layui-card">
+          <div class="layui-card-header">流量概览</div>
+          <div class="layui-card-body">
+            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+              <div carousel-item id="LAY-index-dataview">
+                <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm4">
+            <div class="layui-card">
+              <div class="layui-card-header">浏览量排行榜</div>
+              <div class="layui-card-body">
+                <table class="layui-table layuiadmin-page-table" lay-skin="line">
+                  <thead>
+                    <tr>
+                      <th>文章标题</th>
+                      <th>浏览量</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    {if (!empty($maxarticle))}
+                    {foreach $maxarticle as $v}
+                    <tr>
+                        <td><a target="_blank" href="/matcont_{$v['id']}"><span class="{$v['class']}">{$v['title']}</span></a> </td>
+                        <td><span class="{$v['class']}">{$v['browse']}<i class="layui-icon layui-icon-fire"></i></span> </td>
+                    </tr>
+                    {/foreach}
+                    {/if}
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[1])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[1]['id']}"><span class="second">{$maxarticle[1]['title']}</span></a></td>-->
+                    <!--    <td><span class="second">{$maxarticle[1]['browse']}<i class="layui-icon layui-icon-fire"></i></span> </td>-->
+                    <!--    {else/}-->
+                    <!--    <td><span class="second">无</span></td>-->
+                    <!--    <td><span class="second">0<i class="layui-icon layui-icon-fire"></i></span></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[2])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[2]['id']}"><span class="third">{$maxarticle[2]['title']}</span></a></td>-->
+                    <!--    <td><span class="third">{$maxarticle[2]['browse']}<i class="layui-icon layui-icon-fire"></i></span> </td>-->
+                    <!--    {else/}-->
+                    <!--    <td><span class="third">无</span></td>-->
+                    <!--    <td><span class="third">0<i class="layui-icon layui-icon-fire"></i></span></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[3])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[3]['id']}">{$maxarticle[3]['title']}</a></td>-->
+                    <!--    <td>{$maxarticle[3]['browse']} <i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {else/}-->
+                    <!--    <td>无</td>-->
+                    <!--    <td>0<i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[4])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[4]['id']}">{$maxarticle[4]['title']}</a></td>-->
+                    <!--    <td>{$maxarticle[4]['browse']} <i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {else/}-->
+                    <!--    <td>无</td>-->
+                    <!--    <td>0<i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[5])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[5]['id']}">{$maxarticle[5]['title']}</a></td>-->
+                    <!--    <td>{$maxarticle[5]['browse']} <i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {else/}-->
+                    <!--    <td>无</td>-->
+                    <!--    <td>0<i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--    {if !empty($maxarticle[6])}-->
+                    <!--    <td><a target="_blank" href="/matcont_{$maxarticle[6]['id']}">{$maxarticle[6]['title']}</a></td>-->
+                    <!--    <td>{$maxarticle[6]['browse']} <i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {else/}-->
+                    <!--    <td>无</td>-->
+                    <!--    <td>0<i class="layui-icon layui-icon-fire"></i></td>-->
+                    <!--    {/if}-->
+                    <!--</tr>-->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+      <div class="layui-col-sm12">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            数据概况
+          </div>
+          <div class="layui-card-body">
+            <div class="layui-row">
+              <div class="layui-col-sm8">
+                  <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-pagetwo">
+                    <div carousel-item id="LAY-index-pagetwo">
+                      <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                    </div>
+                  </div>
+              </div>
+              <div class="layui-col-sm4">
+                <div class="layuiadmin-card-list">
+                  <p class="layuiadmin-normal-font">月发文量</p>
+                  <span>同上期增长</span>
+                  <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                    <div class="layui-progress-bar" lay-percent="{$growtharticleadd}%"></div>
+                  </div>
+                </div>
+                <div class="layuiadmin-card-list">
+                  <p class="layuiadmin-normal-font">月浏览量</p>
+                  <span>同上期增长</span>
+                  <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                    <div class="layui-progress-bar" lay-percent="{$growtharticlebrowse}%"></div>
+                  </div>
+                </div>
+                <div class="layuiadmin-card-list">
+                  <p class="layuiadmin-normal-font">月收入</p>
+                  <span>同上期增长</span>
+                  <div class="layui-progress layui-progress-big" lay-showPercent="yes">
+                    <div class="layui-progress-bar" lay-percent="{$growthpaymoney}%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-sm12">
+      <div class="layui-row layui-col-space15">
+          <div class="layui-col-sm4">
+            <div class="layui-card">
+              <div class="layui-card-header">充值排行榜</div>
+              <div class="layui-card-body">
+                <table class="layui-table layuiadmin-page-table" lay-skin="line">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>会员名称</th>
+                      <th>累计充值</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    <tr>
+                        {if !empty($maxpaymoney[0])}
+                        <td><span class="first">{$maxpaymoney[0]['id']}</span></td>
+                        <td><span class="first">{$maxpaymoney[0]['name']}</span></td>
+                        <td><span class="first"><i class="layui-icon layui-icon-dollar">{$maxpaymoney[0]['consumption']}</i></span></td>
+                        {else/}
+                        <td><span class="first">无</span></td>
+                        <td><span class="first">无</span></td>
+                        <td><span class="first"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[1])}
+                        <td><span class="second">{$maxpaymoney[1]['id']}</span></td>
+                        <td><span class="second">{$maxpaymoney[1]['name']}</span></td>
+                        <td><span class="second"><i class="layui-icon layui-icon-dollar">{$maxpaymoney[1]['consumption']}</i></span></td>
+                        {else /}
+                        <td><span class="second">无</span></td>
+                        <td><span class="second">无</span></td>
+                        <td><span class="second"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[2])}
+                        <td><span class="third">{$maxpaymoney[2]['id']}</span></td>
+                        <td><span class="third">{$maxpaymoney[2]['name']}</span></td>
+                        <td><span class="third"><i class="layui-icon layui-icon-dollar">{$maxpaymoney[2]['consumption']}</i></span></td>
+                        {else /}
+                        <td><span class="third">无</span></td>
+                        <td><span class="third">无</span></td>
+                        <td><span class="third"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[3])}
+                        <td>{$maxpaymoney[3]['id']}</td>
+                        <td>{$maxpaymoney[3]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxpaymoney[3]['consumption']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[4])}
+                        <td>{$maxpaymoney[4]['id']}</td>
+                        <td>{$maxpaymoney[4]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxpaymoney[4]['consumption']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[5])}
+                        <td>{$maxpaymoney[5]['id']}</td>
+                        <td>{$maxpaymoney[5]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxpaymoney[5]['consumption']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxpaymoney[6])}
+                        <td>{$maxpaymoney[6]['id']}</td>
+                        <td>{$maxpaymoney[6]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxpaymoney[6]['consumption']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-sm4">
+            <div class="layui-card">
+              <div class="layui-card-header">消费排行榜</div>
+              <div class="layui-card-body">
+                <table class="layui-table layuiadmin-page-table" lay-skin="line">
+                  <thead>
+                    <tr>
+                        <th>ID</th>
+                      <th>会员名称</th>
+                      <th>累计消费</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    <tr>
+                        {if !empty($maxbuymoney[0])}
+                        <td><span class="first">{$maxbuymoney[0]['id']}</span></td>
+                        <td><span class="first">{$maxbuymoney[0]['name']}</span></td>
+                        <td><span class="first"><i class="layui-icon layui-icon-dollar">{$maxbuymoney[0]['total']}</i></span></td>
+                        {else/}
+                        <td><span class="first">无</span></td>
+                        <td><span class="first">无</span></td>
+                        <td><span class="first"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[1])}
+                        <td><span class="second">{$maxbuymoney[1]['id']}</span></td>
+                        <td><span class="second">{$maxbuymoney[1]['name']}</span></td>
+                        <td><span class="second"><i class="layui-icon layui-icon-dollar">{$maxbuymoney[1]['total']}</i></span></td>
+                        {else /}
+                        <td><span class="second">无</span></td>
+                        <td><span class="second">无</span></td>
+                        <td><span class="second"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[2])}
+                        <td><span class="third">{$maxbuymoney[2]['id']}</span></td>
+                        <td><span class="third">{$maxbuymoney[2]['name']}</span></td>
+                        <td><span class="third"><i class="layui-icon layui-icon-dollar">{$maxbuymoney[2]['total']}</i></span></td>
+                        {else /}
+                        <td><span class="third">无</span></td>
+                        <td><span class="third">无</span></td>
+                        <td><span class="third"><i class="layui-icon layui-icon-dollar">0.00</i></span></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[3])}
+                        <td>{$maxbuymoney[3]['id']}</td>
+                        <td>{$maxbuymoney[3]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxbuymoney[3]['total']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[4])}
+                        <td>{$maxbuymoney[4]['id']}</td>
+                        <td>{$maxbuymoney[4]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxbuymoney[4]['total']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[5])}
+                        <td>{$maxbuymoney[5]['id']}</td>
+                        <td>{$maxbuymoney[5]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxbuymoney[5]['total']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        {if !empty($maxbuymoney[6])}
+                        <td>{$maxbuymoney[6]['id']}</td>
+                        <td>{$maxbuymoney[6]['name']}</td>
+                        <td><i class="layui-icon layui-icon-dollar">{$maxbuymoney[6]['total']}</i></td>
+                        {else/}
+                        <td>无</td>
+                        <td>无</td>
+                        <td><i class="layui-icon layui-icon-dollar">0.00</i></td>
+                        {/if}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-sm4">
+            <div class="layui-card">
+              <div class="layui-card-header">访问数据分析</div>
+              <div class="layui-card-body">
+                <table class="layui-table layuiadmin-page-table" lay-skin="line">
+                  <thead>
+                    <tr>
+                      <th>日期</th>
+                      <th>IP</th>
+                      <th>独立访客</th>
+                      <th>访问量</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    <tr>
+                    {foreach $access as $val}
+                    <tr>
+                        <td>{:date('Y-m-d',$val.create_time)}</td>
+                        <td>{$val.ip}</td>
+                        <td><i class="layui-icon layui-icon-username">{$val.uv}</i></td>
+                        <td>{$val.pv}</td>
+                    </tr>
+                    {/foreach}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      </div>
+        
+      </div>
+    </div>
+
+{load href="__ADMINST__layuiadmin/layui/layui.js"}
+  <script>
+   var pv = [{$pv}];
+   var uv = [{$uv}];
+   var ip = [{$ip}];
+   var mobile = {$mobile};
+   var pc = {$pc};
+   var weekData = [{$week}];
+   var weekTime = [
+       '{:date('m-d',strtotime("-6 day"))}',
+       '{:date('m-d',strtotime("-5 day"))}',
+       '{:date('m-d',strtotime("-4 day"))}',
+       '{:date('m-d',strtotime("-3 day"))}',
+       '{:date('m-d',strtotime("-2 day"))}',
+       '{:date('m-d',strtotime("-1 day"))}',
+       '{:date('m-d')}'
+       ];
+    var halfMonth = [
+        '{:date('m-d',strtotime("-14 day"))}',
+        '{:date('m-d',strtotime("-13 day"))}',
+        '{:date('m-d',strtotime("-12 day"))}',
+        '{:date('m-d',strtotime("-11 day"))}',
+        '{:date('m-d',strtotime("-10 day"))}',
+        '{:date('m-d',strtotime("-9 day"))}',
+        '{:date('m-d',strtotime("-8 day"))}',
+        '{:date('m-d',strtotime("-7 day"))}',
+        '{:date('m-d',strtotime("-6 day"))}',
+        '{:date('m-d',strtotime("-5 day"))}',
+        '{:date('m-d',strtotime("-4 day"))}',
+        '{:date('m-d',strtotime("-3 day"))}',
+        '{:date('m-d',strtotime("-2 day"))}',
+        '{:date('m-d',strtotime("-1 day"))}',
+        '{:date('m-d')}'
+        ];
+    var articleadd = [{$articleadd}];
+    var articlebrowse = [{$articlebrowse}];
+    var buymoneydata = [{$buymoneydata}];
+    var paymoneydata = [{$paymoneydata}];
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+     ,version: new Date().getTime()
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'sample','bigdata']);
+  </script>
+</body>
+</html>

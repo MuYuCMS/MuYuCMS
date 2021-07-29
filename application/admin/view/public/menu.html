@@ -1,0 +1,47 @@
+      
+      <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+          <div class="layui-logo">
+            <span><a href="{:url('admin/index/index')}"><strong>MuYuCMS</strong></a></span>
+          </div>
+          
+          <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+            <li data-name="home" class="layui-nav-item layui-nav-itemed">
+              <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                <i class="layui-icon layui-icon-home"></i>
+                <cite>主页</cite>
+              </a>
+              <dl class="layui-nav-child">
+                <dd data-name="console" class="layui-this">
+                  <a lay-href="{:url('admin/Index/welcome')}">控制台</a>
+                </dd>
+                <dd data-name="console">
+                    <a lay-href="{:url('admin/Index/bigdata')}">数据中心</a>
+                </dd>
+              </dl>
+            </li>
+            {foreach $menu as $val}
+            {if condition="!empty($val.secontit)"}
+            <li data-name="{$val.comment}" class="layui-nav-item">
+              <a href="javascript:;" lay-tips="{$val.title}" lay-direction="2">
+                <i class="layui-icon {$val.titlepic}"></i>
+                <cite>{$val.title}</cite>
+              </a>
+              <dl class="layui-nav-child">
+              {foreach $val.secontit as $va}
+              <dd data-name="{$va.title}"><a lay-href="{:url($va.href)}">{$va.title}</a> </dd>
+              {/foreach}
+              </dl>
+            </li>
+            {else /}
+            <li data-name="{$val.comment}" class="layui-nav-item">
+              <a href="javascript:;" lay-href="{:url($va.href)}" lay-tips="{$val.title}" lay-direction="2">
+                <i class="layui-icon layui-icon-auz"></i>
+                <cite>{$val.title}</cite>
+              </a>
+            </li>
+            {/if}
+            {/foreach}
+          </ul>
+        </div>
+      </div>

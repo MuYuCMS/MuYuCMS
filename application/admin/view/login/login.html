@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>后台登录 - 木鱼内容管理系统</title>
+  <meta name="author" content="MuYuCMS leK" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  {load href="__ADMINST__muyuadmin/css/style.css"}
+  {load href="__ADMINST__layuiadmin/layui/css/layui.css"}
+</head>
+<body>
+    <style type="text/css">
+      .layui-input{
+          background-color:#ffffffb3;
+      }
+  </style>
+	<div class="loging">
+		<div class="loging-fom">
+			<form class="layui-form" action lay-filter id="admin-login-form">
+				<div class="layui-form-item" style="color: #4E5465;">
+				<h2>MuYuCMS-后台管理系统<span class="rigspan">V2.0</span></h2>	
+				</div>
+				<hr style="background: #06a3e2a1;">
+				<div class="layui-form-item">
+				  <label class="layui-form-label">用户名:</label>
+				  <div class="layui-inline">
+				    <input type="text"  name="adminName" value="{$Think.session.adname}" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+				  </div>
+				</div>
+				<div class="layui-form-item">
+				  <label class="layui-form-label">密码:</label>
+				  <div class="layui-inline">
+				    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				  </div>
+				</div>
+				{if !empty($Think.session.pwderror)}
+				<div class="layui-form-item">
+				  <label class="layui-form-label">验证码:</label>
+				  <div class="layui-inline" style="width: 17%;">
+				    <input type="text" name="captcha" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
+				  </div>
+				  <img class="" id="verif_img" src="{:captcha_src()}" onClick="this.src=this.src+'?'+Math.random()" height="35px" width="100px">
+				</div>
+				{/if}
+				<!-- <div class="layui-form-item">
+				  <label class="layui-form-label">安全码:</label>
+				  <div class="layui-inline">
+				    <input type="text" placeholder="请输入安全码" autocomplete="off" class="layui-input">
+				  </div>
+				</div> -->
+				<div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="login-subt" type="button">登录后台</button>
+				    </div>
+				  </div>
+			</form>
+		</div>
+	</div>
+	
+<div style="height: 46px;line-height: 46px;bottom: 0;text-align: center;color: #fff;font-size: 12px;position: absolute;left: 0;right: 0;z-index: 0;">Copyright &copy;2020-<?php echo date('Y');?> MuYuCMS内容管理系统 All Rights Reserved.</p></div>
+
+{load href="__ADMINST__layuiadmin/layui/layui.js"}
+{load href="__ADMINLIB__jquery/jquery-3.3.1.min.js"}
+
+<script type="text/javascript" charset="utf-8">
+layui.use('form', function(){
+  var $ = layui.$
+  ,form = layui.form
+  ,layer = layui.layer;
+  
+  //监听提交
+  form.on('submit(login-subt)', function(data){
+        submit();
+  });
+});
+
+    //回车登录
+  $(document).keyup(function(e) {
+        if (e.keyCode === 13) {
+            submit();
+        }
+    });
+
+    function submit(){
+            $.ajax({
+    		type: 'POST',
+    		data: $("#admin-login-form").serialize(),
+    		url: "{:url('admin/Login/login')}",
+    		dataType: "json",
+    		beforeSend: function() {
+    			index = layer.load();
+    		},
+    		success: function(data) {
+    			layer.msg(data.msg,{time:2000},function(){
+    			    if(data.code == 1){
+    				   location.href = data.url;
+    			    }else{
+    			    location.reload();
+    			    }
+    			});
+    		},
+    	complete: function() {
+    	layer.close(index);
+    	}
+    });
+    }
+
+
+  </script>
+</body>
+</html>

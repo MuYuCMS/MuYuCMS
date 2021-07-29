@@ -1,0 +1,169 @@
+<html><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员注册 - {siteseo name='title'}</title>
+    <link href="__USERST__static/css/dgy.base.css" rel="stylesheet" type="text/css">
+    <link href="__USERST__static/css/dgy.login.css?v=2020042906" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__USERST__static/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+    <link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+  </head>
+  <body>
+    <div class="dogo_loginwp">
+        <a class="dogo_logo" href="/" target="_blank"><img src="{siteseo name='logo'}" class="logo"></a>
+	      <div class="midgroup">
+	           <div class="loginwrap loginwarrp">
+                    <div class="logingroup login_form" style="padding-top:60px;">
+			            <form id="form">
+                            <section>
+                            	<input type="text" placeholder="请输入用户名" class="input_block login_account" name="account" id="account" value="">
+                            </section>
+                            <section>
+                            	<input type="password" placeholder="请输入新密码" class="input_block login_account" name="password" id="password" value="">
+                            </section>
+                            <section>
+                            	<input type="password" placeholder="请输入确认密码" class="input_block login_account" name="passwords"  id="passwords" required="">
+                            </section>
+                            <section>
+                            	<input type="text" placeholder="请输入电子邮箱" class="input_block login_account" name="email" id="email" value="">
+                            </section>
+            				   <section class="qrcode">
+            				     <input type="text" class="input_block login_code" name="email_code" id="email_code" placeholder="邮箱验证码">
+            					 <a class="sendMail" onclick="send_code()"><span id="send_code">发送验证码</span><span id="send_show" style="display:none;">重新发送(60s)</span></a>
+            				 </section>	
+            				    <input type="button" class="loginbtn" onclick="checkall()" value="立即注册">
+                            <section style="border:0; background:none; margin-top:10px; text-align:center">
+                                已有会员，<a href="login" style="color:#2254f4;">立即登录</a>
+                            </section>
+                        </form>
+                        <footer style="text-align:center;">
+						    <p>一个简洁、轻量、实用的内容管理系统！</p>
+                        </footer>
+                    </div>
+	           </div>
+	      </div>
+	</div>
+	
+    <div class="footerInfo">
+        <p>Copyright ©2020 <a href="/" target="_blank">{siteseo name='title'}</a> All Rights Reserved.</p>
+    </div>
+    <!--验证码发送触发样式开始-->
+<style>
+.dogo_loginwp .sendMail{ display:block; position: absolute; width: 100px; height: 40px; top: 0; right: 0; line-height: 40px; text-align: center; cursor: pointer; }
+.dogo_loginwp .sendMail>span{ cursor: pointer; }
+</style>
+ <!--验证码发送触发样式结束-->
+	<script type="text/javascript">
+		var time = 0;
+		var res = null;
+
+		function setmytime(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $('#send_show').text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $('#send_show').text("重新发送(" + time + "s)");
+	        res = setTimeout("setmytime()", 1000);
+		}
+
+
+		function check_input() {
+		    var username=$("#account").val();
+			if( username== ''){
+				layer.msg('用户名不能为空！', {icon:2,time: 1000});
+				$("#account").focus();
+				return false;
+			}
+			if(username.length < 6){
+				    layer.msg('用户名低于6位！', {icon:2,time: 1000});
+				    $("#account").focus();
+				return false;
+				}
+				
+			var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+			if(!reg.test($("#email").val())){
+				layer.msg('电子邮箱格式不正确！', {icon:2,time: 1000});
+				$("#email").focus();
+				return false;
+			}
+
+			var password = $("#password").val();
+			if(password.length < 6 ){
+				layer.msg('密码不能低于6位！', {icon:2,time: 1000});
+				$("#password").focus();
+				return false;
+			}
+            
+            
+			if($("#passwords").val() !== $("#password").val()){
+				layer.msg('两次密码不一致！', {icon:2,time: 1000});
+				$("#passwords").focus();
+				return false;
+			}
+
+			return true;
+		}
+		
+		function send_code() {
+		    if(!check_input()) return false;
+			if(time==0){
+				layer.msg('邮件发送中……', { icon: 16, shade: 0.21,shadeClose:true,time:2000 });
+				$.ajax({   
+					type: "post",   
+					url: "{:url('Index/sendEmails')}",
+					data: {email:$("#email").val()},
+					dataType: "json",
+					async: false,
+					success: function(msg){  
+						if(msg.code == 1){
+							$("#send_code").css('display','none'); 
+							$("#send_show").css('display','block'); 
+							time = 60;
+							res = setTimeout("setmytime()", 1000);	
+							layer.msg(msg.msg, {icon:1,time: 2000});		  
+						}else{
+							layer.msg(msg.msg, {icon:2,time: 2000});
+							$('#captcha+img').attr('src',$('#captcha+img').attr('src') + '?' + Math.random());
+							$("#captcha").focus();
+						}				 
+					} 
+				});
+			}else{
+				layer.msg('请 ' + time + ' 秒后再发送！', {icon:2,time: 2000});
+			}
+		}
+
+
+		function checkall() {
+			if(!check_input()) return false;
+			if($("#email_code").val() == ''){
+				layer.msg('邮箱验证码不能为空！', {icon:2,time: 1000});
+				$("#email_code").focus();
+				return false;
+			}
+			$.ajax({   
+				type: "post",   
+				dataType: "json",
+				url: "{:url('Index/reg')}",   
+				data:  $("#form").serialize(),
+				success: function(msg){  
+				    //判断是否登录成功
+					if(msg.code == 1){
+						layer.msg(msg.msg, {icon:1,time: 3000}, function() {
+							if(msg.url) location.href = msg.url;
+							});
+					}else{
+							$('#captcha+img').attr('src',$('#captcha+img').attr('src') + '?' + Math.random());
+							$("#email_code").focus();
+						    layer.msg(msg.msg, {icon:2,time: 2000});
+					}				 
+				} 
+			});
+		}
+	</script>
+  
+</body></html>

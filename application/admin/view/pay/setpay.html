@@ -1,0 +1,113 @@
+{include file='public/meta' }
+	<title>支付设置 - 木鱼内容管理系统</title>
+</head>
+<body>
+    
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">支付设置</div>
+          <div class="layui-card-body">
+            
+            <div class="layui-form" id="checkDiv">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="alipay" value="1" title="支付宝官方" {if $pay.alipay eq 1} checked {/if}>
+                      <input type="radio" name="alipay" value="0" title="支付宝当面付" {if $pay.alipay eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝支付</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="alipay_close" value="1" title="开" {if $pay.alipay_close eq 1} checked {/if}>
+                      <input type="radio" name="alipay_close" value="0" title="关" {if $pay.alipay_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+              <div class="layui-form-item">
+                    <label class="layui-form-label">微信支付</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="wxpay_close" value="1" title="开" {if $pay.wxpay_close eq 1} checked {/if}>
+                      <input type="radio" name="wxpay_close" value="0" title="关" {if $pay.wxpay_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+              <div class="layui-form-item">
+                    <label class="layui-form-label">QQ支付</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="qqpay_close" value="1" title="开" {if $pay.qqpay_close eq 1} checked {/if}>
+                      <input type="radio" name="qqpay_close" value="0" title="关" {if $pay.qqpay_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">余额支付</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="moneypay_close" value="1" title="开" {if $pay.moneypay_close eq 1} checked {/if}>
+                      <input type="radio" name="moneypay_close" value="0" title="关" {if $pay.moneypay_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">易支付</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="epay_close" value="1" title="开" {if $pay.epay_close eq 1} checked {/if}>
+                      <input type="radio" name="epay_close" id="epay_close" value="0" title="关" {if $pay.epay_close eq 0} checked {/if}>
+                    </div>
+                  </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" id="btn">确认保存</button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+
+  });
+  
+	/* 表单验证，提交 */
+	$("#btn").on("click",function(){
+	    var obj ={};
+	    var Data = [];
+	    var len = $(this).is(":checked").length;
+		 $("#checkDiv :radio").each(function () {
+            if($(this).is(":checked")){
+                Data[this.name] = $(this).val();
+            }
+        });
+        $.ajax({
+            type:"post",
+            dataType:"json",
+            url:"{:url('Pay/setPayEdit')}",
+            data:{alipay:Data['alipay'],alipay_close:Data['alipay_close'],wxpay_close:Data['wxpay_close'],qqpay_close: Data['qqpay_close'],moneypay_close:Data['moneypay_close'],epay_close:Data['epay_close']},
+            success:function(data){
+                layer.msg(data.msg,{time:2000},function(){
+        			if(data.url) location.href = data.url;
+        		});
+            }
+        });
+        
+	});
+</script>
+</body>
+</html>

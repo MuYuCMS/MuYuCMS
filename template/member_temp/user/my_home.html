@@ -1,0 +1,82 @@
+
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	  <title>会员中心 - 个人主页 - {siteseo name='title'}</title>
+	  <link href="__USERST__static/css/member_myhome.css" rel="stylesheet" type="text/css">
+	  <meta name="keywords" content="{siteseo name='keyword'}" />
+      <meta name="description" content="{siteseo name='descri'}" />
+	  <script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="__USERST__static/js/layer.js"></script>
+	  <link rel="stylesheet" href="__USERST__static/css/layer.css" id="layuicss-layer">
+  </head>
+  <body>
+    <div id="container">	
+		<div id="toppic">{$member.account} - 个人主页</div>
+		<div id="top">
+			<div class="feeb">
+				<img src="{$member.photo}" alt="{$member.account}" title="{$member.account}">
+			</div>
+			<div class="userinfo">
+				<div class="username">{$member.account}<span class="dengji">[初来乍到] <img src="__USERST__static/images/icon1.png" height="18"> </span></div>
+				<div class="userinfo_userdata">
+					<span class="fangkeshu"><b>粉丝总数:</b> {$fans_sum}</span>　　
+					<span class="fangkeshu"><b>空间访问数:</b> {$member.home_count}</span>
+				</div>
+			</div>
+			<div class="userinfo_shortcut">
+				<a href="/">返回首页</a> |
+				<a href="{:url('User/index')}">会员中心</a>
+			</div>		
+		</div>
+		<div class="clearfix"></div>
+		<div id="main">
+		  <div id="main_left">
+		     <h1>内容列表</h1>
+			 <ul class="list">
+			     {foreach $article['mat'] as $val}
+                        <li title="{$val.title}" style="overflow: hidden; max-width:705px; white-space:nowrap; text-overflow:ellipsis;"><a href="{muy:urls arid='$val.id'}" style="cursor:pointer;text-decoration:none;">{$val.title}</a></li>
+                  {/foreach}
+			 </ul>
+			 <div id="page"><span class="pageinfo">共{$article['cont']}条记录</span></div>			 
+		  </div>
+		  <div id="main_right">
+		    <div class="jianjie">
+		      <h2 class="right_title">联系邮箱：</h2>
+		      <p><span style="color:#aaa">{$member.email}  </span></p>
+			 <h2 class="right_title">个人简介</h2>
+			 <p><span style="color:#aaa">{$member.intro} </span></p>
+			</div>			
+		    <div class="jianjie">
+			 <h2 class="right_title">其他操作</h2>
+			 <p><a class="str" data-id="{$member.id}"  style="cursor:pointer;">点击关注</a></p>
+			</div>	
+		  </div>		  
+		</div>
+    </div>	
+  <div class="layui-layer-move"></div>
+	<script type="text/javascript">
+	//关注操作
+		$(".str").click(function() {
+			//获取删除信息和对应id
+			var id = $(this).attr('data-id');
+			layer.msg('是否关注?', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['是', '否'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('User/like_fans')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+							location.reload();
+						});
+					})
+				}
+			});
+		});
+	</script>
+</body></html>

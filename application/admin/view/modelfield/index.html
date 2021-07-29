@@ -1,0 +1,125 @@
+{include file='public/meta'}
+<title>字段管理 - 模型管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-card">
+		    <div style="padding: 10px 15px 20px 15px;">
+            <span style="float:left;">共有字段：<span style="color:red;">{$list|count}</span> 个</span>
+			</div>
+			<div class="layui-card-body">
+            <div class="layui-table-body layui-table-main">
+                <table class="layui-table" id="LAY-user-front-submit">
+					<thead>
+						<tr>
+							<th>
+								<div class="layui-table-cell" align="center"><span>id</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>所属表</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>字段名</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>字段标识</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>字段类型</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>排序</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>操作</span></div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					    {foreach $list as $val}
+						<tr align="center">
+							<td>{$val.id}</td>
+							<td><span style="{eq name='$val.chart' value='1'}color:blue;{/eq}">{php}echo $val['chart'] == '1' ? '主表' : '副表'{/php}</span></td>
+							<td>{$val.title}</td>
+							<td>{$val.field}</td>
+							<td><span style="{eq name='$val.ismuyu' value='1'}color:red;{/eq}">{eq name='$val.ismuyu' value='1'}系统字段{else/}{$val.type}{/eq}</span></td>
+							<td>{$val.orders}</td>
+							<td align="center"  class="layui-table-col-special">
+								<div class="layui-table-cell">
+								    {if condition="$val.ismuyu == '1'"}
+								    <a class="layui-btn layui-btn-xs" onclick="openmodel('字段编辑','{:url('admin/Modelfield/edit',['fieid'=>$val.id])}')" href="javascript:;">编辑字段</a>
+								    {else/}
+								    <a class="layui-btn layui-btn-xs" onclick="openmodel('字段编辑','{:url('admin/Modelfield/edit',['fieid'=>$val.id])}')" href="javascript:;">编辑字段</a>
+								    <a class="layui-btn layui-btn-xs layui-btn-warm" onclick="fiedel('{$val.id}','{$modid}')" href="javascript:;">删除</a>
+								    {/if}
+								</div>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+            </div>
+            <div class="layui-box layui-laypage layui-laypage-molv">{$list|raw}</div>
+		</div>
+		<div style="padding: 10px; background-color: #FAFAFA;">
+              <div class="layui-row layui-col-space15">
+                <div class="layui-col-md13">
+                <div class="layui-card">
+                    <div class="layui-card-header muyu-text">操作台:</div>
+                    <div class="layui-card-body" style="display:inline-block;">
+                    <span style="display:inline-block;">新增操作：</span>
+                    <div class="layui-btn-container" style="display:inline-block;">
+					  <a class="layui-btn layui-btn-xs" onclick="openmodel('添加字段','{:url('admin/Modelfield/add',['modid'=>$modid])}')" href="javascript:;">添加字段</a>
+					</div>
+                    </div>
+                    </div>
+                </div>
+                </div>  
+            </div>
+	</div>
+
+
+	<!-- 低部区域 -->
+	{include file='public/footer'}
+	<script>
+        function openmodel(title,url){
+        layer.open({
+          type: 2
+          ,title: title
+          ,content: url
+          ,area: ['85%', '80%']
+        }); 
+    }
+    function fiedel(id,modid){
+        layer.msg('删除字段后请清除前台所有此字段使用处，以免出现未知错误!', {
+		time: 5000, //5s后自动关闭
+		shade: 0.3,
+		btn: ['确认', '取消'],
+		yes: function() {
+        var aid=$("tbody input:checkbox");
+		var ids=[];
+		if(id == null){
+		id = allcheck(ids,aid);
+		if(id !=""){
+		  id = id.substring(0, id.length - 1);
+		}
+		}
+		if(id !="" && id !=null){
+		$.post("{:url('admin/Modelfield/fiedel')}",{delid:id,modid:modid},function(data){
+		        if(data.code === 1){
+				layer.msg(data.msg, {time: 2000}, function() {
+				location.reload();
+					});
+				}else{
+				layer.msg(data.msg, {time: 2000});
+				}
+		    });
+		}else{
+		  layer.msg('当前未选择任何信息!',{icon:2,time:2000});  
+		}
+		}
+    	});
+    }
+	</script>
+</body>
+</html>

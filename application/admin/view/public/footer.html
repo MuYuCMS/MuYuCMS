@@ -1,0 +1,62 @@
+
+{load href="__ADMINLIB__jquery.contextmenu/jquery.contextmenu.r2.js"}
+{load href="__ADMINST__layuiadmin/layui/lay/modules/layer.js"}
+{load href="__ADMINST__layuiadmin/layui/layui.js"}
+{load href="__ADMINST__muyuadmin/muyu.js"}
+
+<script>
+    /*窗口定义*/
+    //通用弹出层
+        function openwind(title,url,ajaxurl){
+        if(ajaxurl == null){
+            ajaxurl = url;
+        }
+        layer.open({
+          type: 2
+          ,title: title
+          ,content: url
+          ,area: ['70%', '80%']
+          ,btn: ['确定', '取消']
+          ,yes: function(index, layero){
+            var iframeWindow = window['layui-layer-iframe'+ index]
+            ,submitID = 'muyu-ajax-submit'
+            ,submit = layero.find('iframe').contents().find('#'+ submitID);
+
+            //监听提交
+            iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+              var field = data.field; //获取提交的字段
+              //提交 Ajax 成功后，静态更新表格中的数据
+            $.ajax({
+                type:"POST",
+				data:field,
+				url:ajaxurl,
+				dataType :"json",
+				error : function(data) {
+                layer.msg(data.msg,{icon:2,time:2000},function(){
+					        //location.reload(); 
+					    });
+                },
+				success:function(data){
+				    if(data.code == 1){
+				        layer.msg(data.msg,{icon:6,time:2000},function(){
+					        //location.reload();
+					        layer.close(index);//关闭弹层 
+                            location.reload(); //数据刷新
+					    });
+				    }else{
+				        layer.msg(data.msg,{icon:2,time:2000},function(){
+					        //location.reload(); 
+					    });
+				    }
+				    
+				}
+				
+            });
+            
+            });  
+            
+            submit.trigger('click');
+          }
+        }); 
+    }
+</script>

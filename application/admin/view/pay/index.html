@@ -1,0 +1,188 @@
+{include file='public/meta' }
+	<title>支付配置 - 木鱼内容管理系统</title>
+</head>
+<body>
+    
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">支付宝支付配置</div>
+                  <div class="layui-card-body">
+                    <form class="form form-horizontal" id="alipay">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">支付宝PID:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="alipay_pid" value="{$pay.alipay_pid}" class="layui-input" placeholder="请输入支付宝合作者ID">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">支付宝KEY:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="alipay_key" value="{$pay.alipay_key}" class="layui-input" placeholder="请输入安全效验码">
+                        </div>
+                    </div>
+                    </form> 
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">支付宝当面付配置</div>
+                  <div class="layui-card-body">
+                    <form class="form form-horizontal" id="alipayf2f">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">APP ID:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="alipayf2f_private_id" value="{$pay.alipayf2f_private_id}" class="layui-input" placeholder="请输入支付宝当面付APP ID">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">支付宝公钥:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="alipayf2f_public_key" value="{$pay.alipayf2f_public_key}" class="layui-input" placeholder="请输入支付宝公钥">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">应用私钥:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="alipayf2f_private_key" value="{$pay.alipayf2f_private_key}" class="layui-input" placeholder="请输入应用私钥">
+                        </div>
+                    </div>
+                    </form> 
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">微信支付配置</div>
+                  <div class="layui-card-body">
+                    <form class="form form-horizontal" id="wxpay">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">应用APPID:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="wxpay_appid" value="{$pay.wxpay_appid}" class="layui-input" placeholder="请输入应用APPID">
+                        </div>
+                    </div>    
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">微信商户号:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="wxpay_mchid" value="{$pay.wxpay_mchid}" class="layui-input" placeholder="请输入微信商户号">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">微信商户KEY:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="wxpay_kye" value="{$pay.wxpay_kye}" class="layui-input" placeholder="微信支付商户API KEY">
+                        </div>
+                    </div>
+                    </form> 
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">QQ支付配置</div>
+                  <div class="layui-card-body">
+                    <form class="form form-horizontal" id="qqpay">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">QQ商户号:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="qqpay_mchid" value="{$pay.qqpay_mchid}" class="layui-input" placeholder="请输入QQ商户号">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">QQ商户KEY:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="qqpay_key" value="{$pay.qqpay_key}" class="layui-input" placeholder="请输入QQ商户KEY">
+                        </div>
+                    </div>
+                    </form> 
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">易支付配置</div>
+                  <div class="layui-card-body">
+                    <form class="form form-horizontal" id="epay">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">易支付地址:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="epay_url" value="{$pay.epay_url}" class="layui-input" placeholder="请输入易支付地址">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">易支付商户号:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="epay_appid" value="{$pay.epay_appid}" class="layui-input" placeholder="请输入易支付商户号">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">易支付KEY:</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="epay_key" value="{$pay.epay_key}" class="layui-input" placeholder="请输入易支付KEY">
+                        </div>
+                    </div>
+                    </form> 
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+                      <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <button class="layui-btn" type="button" id="btn">确认保存</button>
+                        </div>
+                      </div>
+    </div>
+
+	
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+
+  });
+  
+	/* 表单验证，提交 */
+	$("#btn").on("click",function(){
+		var alipay = $("#alipay").serializeArray();
+        var wxpay = $("#wxpay").serializeArray();
+        var alipayf2f = $("#alipayf2f").serializeArray();
+        var qqpay = $("#qqpay").serializeArray();
+        var epay = $("#epay").serializeArray();
+        //表单合并
+        Data = alipay.concat(wxpay).concat(alipayf2f).concat(qqpay).concat(epay);
+		$.post("{:url('Pay/indexEdit')}",Data,function(data){
+		layer.msg(data.msg,{time:2000},function(){
+			if(data.url) location.href = data.url;
+		});
+		});
+	});
+</script>
+</body>
+</html>

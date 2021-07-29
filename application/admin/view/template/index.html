@@ -1,0 +1,272 @@
+{include file='public/meta' }
+	<title>模板管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+    <style>
+        .cmdlist-container {
+            border-color: #c0baba;
+        }
+    </style>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">前台模板</li>
+                        <li>会员中心模板</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-fluid layadmin-cmdlist-fluid">
+                                <div class="layui-row layui-col-space30">
+                                <div style="padding: 10px; background-color: #FAFAFA;">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md13">
+    <div class="layui-card">
+        <div class="layui-card-header muyu-text">操作台&nbsp; &nbsp; &nbsp;<span class="muyu-tips-right">Tips:删除正在使用的模板文件网站前台将无法展现，请谨慎考虑!</span></div>
+        <div class="layui-card-body" style="display:inline-block;">
+        <span style="display:inline-block;">上传操作：</span>
+        <div class="layui-btn-container" style="display:inline-block;">
+		  <a class="layui-btn layui-btn-xs uphtemp tempurl" onclick="" data-temp="/home_temp" href="javascript:;">上传模板</a>
+		</div>
+        </div>
+        <div class="layui-card-body" style="display:inline-block;">
+        <span style="display:inline-block;">模板编辑：</span>
+        <div class="layui-btn-container" style="display:inline-block;">
+		  <a class="layui-btn layui-btn-xs layui-btn-normal" target="_blank"  href="{:url('Template/tempEdit')}">在线编辑</a>
+		</div>
+        </div>
+        </div>
+    </div>
+    </div>  
+</div>
+
+<div class="layui-fluid layadmin-cmdlist-fluid">
+  <div class="layui-row layui-col-space30">
+    {foreach $path as $v}
+    <div class="layui-col-md2 layui-col-sm4">
+        <div class="cmdlist-container">
+            {eq name="$system.home_temp" value="$v.tempname"}<i class="tpqy"></i>{/eq}
+            <a href="javascript:;"><img src="{$v.sltpic}" height="150px"></a>
+              <div class="cmdlist-text">
+                <p class="info">{$v.aliana}</p>
+                <div class="price">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-friends"></i>{$v.tempauthor}</a>
+                    {neq name="$system.home_temp" value="$v.tempname"}
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" style="float:right;margin-left: 10px;" onclick="tempdel('home_temp','{$v.tempname}')" href="javascript:;">
+                      删除
+                    </a>
+                    <a class="layui-btn layui-btn-xs" style="float:right;margin-left: 10px;" onclick="setStatus('home_temp','{$v.tempname}')" href="javascript:;">启用</a>
+                    {/neq}
+                </div>
+              </div>
+            
+        </div>
+    </div>
+    {/foreach}
+  </div>
+</div>    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="layui-fluid layadmin-cmdlist-fluid">
+                                <div class="layui-row layui-col-space30">
+                                <div style="padding: 10px; background-color: #FAFAFA;">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md13">
+    <div class="layui-card">
+        <div class="layui-card-header muyu-text">操作台&nbsp; &nbsp; &nbsp;<span class="muyu-tips-right">Tips:删除正在使用的模板文件网站前台将无法展现，请谨慎考虑!</span></div>
+        <div class="layui-card-body" style="display:inline-block;">
+        <span style="display:inline-block;">上传操作：</span>
+        <div class="layui-btn-container" style="display:inline-block;">
+		  <a class="layui-btn layui-btn-xs upmtemp" onclick="" data-temp="/member_temp" href="javascript:;">上传模板</a>
+		</div>
+        </div>
+        <div class="layui-card-body" style="display:inline-block;">
+        <span style="display:inline-block;">模板编辑：</span>
+        <div class="layui-btn-container" style="display:inline-block;">
+		  <a class="layui-btn layui-btn-xs layui-btn-normal" target="_blank"  href="{:url('Template/tempEdit')}">在线编辑</a>
+		</div>
+        </div>
+        </div>
+    </div>
+    </div>  
+</div>
+
+<div class="layui-fluid layadmin-cmdlist-fluid">
+  <div class="layui-row layui-col-space30">
+    {foreach $uesrpath as $vs}
+    <div class="layui-col-md2 layui-col-sm4">
+        <div class="cmdlist-container">
+            {eq name="$system.member_temp" value="$vs.tempname"}<i class="tpqy"></i>{/eq}
+            <a href="javascript:;"><img src="{$vs.sltpic}" height="150px"></a>
+              <div class="cmdlist-text">
+                <p class="info">{$vs.aliana}</p>
+                <div class="price">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-friends"></i>{$vs.tempauthor}</a>
+                    
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" style="float:right;margin-left: 10px;" onclick="tempdel('member_temp','{$vs.tempname}')" href="javascript:;">
+                      删除
+                    </a>
+                    {neq name="$system.member_temp" value="$vs.tempname"}
+                    <a class="layui-btn layui-btn-xs" style="float:right;margin-left: 10px;" onclick="setStatus('member_temp','{$vs.tempname}')" href="javascript:;">启用</a>
+                    {/neq}
+                </div>
+              </div>
+            
+        </div>
+    </div>
+    {/foreach}
+  </div>
+</div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<style>
+    .cmdlist-container{position: relative;}
+    .cmdlist-container .tpqy{
+		        background: url(/public/static/admin/temp/ph.png) no-repeat center center;
+                background-size: 100% 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 2;
+                display: block;
+                width: 70px;
+                height: 70px;
+		}
+	
+</style>
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+  });
+	//模板启用
+	function setStatus(sts,tp){
+	    layer.msg("确认要启用吗？",{
+	        time:5000,
+	        shade:0.3,
+	        btn:['确认','取消'],
+	        yes:function(){
+	            $.post("{:url('admin/Template/tempstart')}",{tp:tp,sts:sts},function(data){
+	                if(data.code == 1){
+	                    layer.msg(data.msg,{time:2000},function(){
+	                        if(data.url) location.href = data.url;
+	                    });
+	                }else{
+	                    layer.msg(data.msg,{time:2000});
+	                }
+	            });
+	        }
+	    });
+	}  
+
+	//模板删除
+	function tempdel(temn,tp){
+	    layer.msg("确认要删除吗？",{
+	        time:5000,
+	        shade:0.3,
+	        btn:['删除','取消'],
+	        yes:function(){
+	            $.post("{:url('admin/Template/tempdel')}",{tp:tp,temn:temn},function(data){
+	                if(data.code == 1){
+	                    layer.msg(data.msg,{time:2000},function(){
+	                        if(data.url) location.href = data.url;
+	                    });
+	                }else{
+	                    layer.msg(data.msg,{time:2000});
+	                }
+	            });
+	        }
+	    });
+	}  
+
+
+//模板上传功能
+layui.use('upload', function(){
+  var upload = layui.upload;
+  //执行上传
+  var index;
+  var uploadInst = upload.render({
+    elem: '.uphtemp' //绑定元素
+    ,url: "{:url('admin/Template/tempup')}" //上传接口
+    ,field:'template'
+    ,accept:'file'
+    ,exts:'zip'
+    ,data:{
+        temp:"/home_temp"
+    }
+    ,before:function(){
+        index = layer.load();
+    }
+    ,done: function(res){
+      //上传完毕回调
+      layer.close(index);
+	  // console.log(res);
+		  layer.msg(res.msg,{time:2000},function(){
+		      if(res.code == 1){
+		      location.reload();
+		      }
+		  });
+    }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+});
+//模板上传功能
+layui.use('upload', function(){
+  var upload = layui.upload;
+  //执行上传
+  var index;
+  var uploadInst = upload.render({
+    elem: '.upmtemp' //绑定元素
+    ,url: "{:url('admin/Template/tempup')}" //上传接口
+    ,field:'template'
+    ,accept:'file'
+    ,exts:'zip'
+    ,data:{
+        temp:"/member_temp"
+    }
+    ,before:function(){
+        index = layer.load();
+    }
+    ,done: function(res){
+      //上传完毕回调
+      layer.close(index);
+	  // console.log(res);
+		  layer.msg(res.msg,{time:2000},function(){
+		      if(res.code == 1){
+		      location.reload();
+		      }
+		  });
+    }
+    ,error: function(){
+      //请求异常回调
+    }
+  });
+});
+
+</script>
+</body>
+</html>

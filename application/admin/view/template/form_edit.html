@@ -1,0 +1,166 @@
+{include file='public/meta'}
+  <title>自定义页面 - 编辑页面 - 木鱼内容管理系统</title>
+  {load href="__ADMINST__editor.md/css/editormd.css"}
+</head>
+<body>
+<style type="text/css" media="all">
+    #editcont {
+			float: left;
+		}
+</style>
+<div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+			<div class="layui-col-md12">
+                <div class="layui-card">    
+                    <div class="layui-card-body">
+<div class="layui-form">
+    <div class="layui-form-item">
+    <label class="layui-form-label">页面说明</label>
+    <div class="layui-input-inline">
+      <input type="text" name="finame" value="{$forminfo.finame}" lay-verify="finame" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">例如:关于我们</div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">页面文件名</label>
+    <div class="layui-input-inline">
+      <input type="text" name="fielname" value="{$forminfo.fielname}" lay-verify="fielname" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">例如:gywm.html</div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">存储位置</label>
+    <div class="layui-input-inline">
+      <input type="text" name="path" id="path" lay-verify="required" value="{$forminfo.path}" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux" style="padding: 4px 0!important;"><button type="button" class="layui-btn layui-btn-sm layui-btn-normal" onClick="selectdir()">选择路径</button></div>
+    <div class="layui-form-mid layui-word-aux">例如:./(将存放于根目录)</div>
+    </div>
+    <blockquote class="layui-elem-quote layui-text">
+    我们不是很建议直接在这里进行内容编辑,您可以复制至本地编辑器进行编辑,如:<a href="https://www.dcloud.io/hbuilderx.html" target="_blank">HBuilder</a>,<a href="https://www.adobe.com/cn/products/dreamweaver.html?tdsourcetag=s_pcqq_aiomsg" target="_blank">Dreamweaver</a>,<a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>,以防编码排版错误!
+    </blockquote>
+    <blockquote class="layui-elem-quote layui-text">
+    如果当前文件名已存在将会直接覆盖,如只需稍作修改,请转到编辑页面
+    </blockquote>
+    <div class="layui-form-item">
+		<label class="layui-form-label">页面内容:</label>
+		<div class="layui-input-block">
+			<div id="editcont">
+				<textarea id="editor" name="content">{$forminfo.content}</textarea>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" name="id" value="{$forminfo.id}"/>
+    <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button type="submit" class="layui-btn" lay-submit lay-filter="editform">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 低部区域 -->
+{include file='public/footer'}
+    {load href="__ADMINST__editor.md/examples/js/jquery.min.js"}
+	{load href="__ADMINST__editor.md/editormd.js"}
+  <script>
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form'], function(){
+    var $ = layui.$
+    ,form = layui.form ;
+    
+    form.verify({
+		fielname:function(value){
+		    var name = value.lastIndexOf(".");
+		    if(name == -1){
+		        return "文件后缀是否存在!";
+		    }
+		    var sufix = value.substr(name+1);
+		    var fixz = /^[a-z]+$/;
+		    if(!fixz.test(sufix)){
+		        return "请检查文件名的合法性!"; 
+		    }
+		},
+		finame:function(val){
+		    var fiel = /^[\u4e00-\u9fa5]+$/;
+		    var i,sum; 
+		    	sum=0;
+		    for(i=0;i<val.length;i++){ 
+			    	if ((val.charCodeAt(i)>=0) && (val.charCodeAt(i)<=255)) 
+			    		sum=sum+1; 
+			    	else 
+			    		sum=sum+2; 
+		    }
+		    if(!fiel.test(val) || sum > 20){
+		        return "请输入一个中文文件名,且最多10个汉字"; 
+		    }
+		}
+	});
+    
+    form.on('submit(editform)', function(data){
+    var Data = data.field;
+    $.ajax({
+				type: 'POST',
+				data: Data,
+				url: "{:url('admin/Template/cutformedit')}",
+				dataType: "json",
+				beforeSend: function() {
+					index = layer.load();
+				},
+				success: function(data) {
+					if (data.code == 1) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							parent.layer.close(index);
+							parent.location.reload();
+						});
+					} else {
+						layer.msg(data.msg, {
+							time: 2000
+						});
+					}
+				},
+				complete: function() {
+					layer.close(index);
+				}
+			});
+    return false;
+  });
+    
+  })
+  
+  $(function() {
+			var testEditor = editormd("editcont", {
+			    width            : "100%",
+                height           : 720,
+                watch            : false,
+                toolbar          : false,
+                codeFold         : true,
+                searchReplace    : true,
+                placeholder      : "开始编辑内容吧!",
+                theme            : "default",
+                mode             : "text/html",
+                path: '/public/static/admin/static/editor.md/lib/',
+			});
+		});
+		
+	function selectdir(){
+	    layer.open({
+			type: 2,
+			title: "选择路径",
+			maxmin: true,
+			content: "{:url('admin/template/selectdir')}",
+			area: ['40%', '70%']
+		});
+	}
+  </script>
+</body>
+</html>
