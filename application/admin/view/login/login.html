@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>后台登录 - Muyu CMS内容管理系统</title>
+  <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+  <meta name="author" content="Vincent Garreau" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" media="screen" href="__ADMINLIB__login/css/style.css">
+  <link rel="stylesheet" type="text/css" href="__ADMINLIB__login/css/reset.css"/>
+</head>
+<body>
+
+<div id="particles-js" style="background-color: #47a1f9;">
+		<div class="login">
+			<div class="login-top">
+				MuYuCMS - 后台登录
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="__ADMINLIB__login/img/name.png"/></div>
+				<div class="login-center-input">
+					<input type="text" id="adminName" name="name" value="{$Think.session.adname}" placeholder="请输入您的用户名" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'"/>
+					<div class="login-center-input-text">用户名</div>
+				</div>
+			</div>
+			<div class="login-center clearfix">
+				<div class="login-center-img"><img src="__ADMINLIB__login/img/password.png"/></div>
+				<div class="login-center-input">
+					<input type="password" id="password" name="password" value="" placeholder="请输入您的密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的密码'"/>
+					<div class="login-center-input-text">密码</div>
+				</div>
+			</div>
+			{if !empty($Think.session.pwderror)}
+			<div class="login-center clearfix">
+			<div class="login-center-img"><img src=""/></div>
+				<div class="login-center-input">
+					<input type="text" id="captcha" name="verif" value="" placeholder="验证码" onblur="if(this.value==''){this.value='验证码'}" onclick="if(this.value=='验证码'){this.value='';}" style="width: 110px;"/>
+					<img id="verif_img" src="{:captcha_src()}" onClick="this.src=this.src+'?'+Math.random()" style="width: 50%;"/>
+					<div class="login-center-input-text">验证码</div>
+					
+				</div>
+			</div>
+			{/if}
+			<div class="login-button" id="submit" type="button">
+				登录
+			</div>
+		</div>
+		<div class="sk-rotating-plane"></div>
+</div>
+<div style="text-align:center;height: 46px;line-height: 46px;bottom: 0;text-align: center;color: #fff;font-size: 12px;position: absolute;left: 0;right: 0;width: 100%;z-index: 99;">Copyright &copy;2020-<?php echo date('Y');?> MuYuCMS内容管理系统 All Rights Reserved.</p>
+</div>
+<!-- scripts -->
+<script src="__ADMINLIB__login/js/particles.min.js"></script>
+<script src="__ADMINLIB__login/js/app.js"></script>
+<script type="text/javascript" src="__ADMINLIB__jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__ADMINLIB__layer/3.1.1/layer.js"></script>
+<script>
+	  $(document).keyup(function(event){
+		  if (event.keyCode == 13){
+			  $("#submit").click();
+		  }
+	  });
+	  
+	  $('#submit').click(function(){
+		 var name = $("#adminName").val();
+		 var pwd = $("#password").val();
+		 var ver = $("#captcha").val();
+		 
+		 if(name == ""){
+			 layer.msg('账号为空!',{icon:2,time:2000},function(){
+				 $("#adminName").focus();
+			 });
+		 }else{
+			 if(pwd == ""){
+				 layer.msg('密码为空!',{icon:2,time:2000},function(){
+					$("#password").focus(); 
+				 });
+			 }else{
+				 if(ver == ""){
+					layer.msg('验证码为空!',{icon:2,time:2000},function(){
+						$("#captcha").focus();
+					}); 
+				 }else{
+				     layer.msg('正在登录…', { icon: 16, shade: 0.21,shadeClose:true,time:2000 },function(){
+				$.ajax({
+				    type:"POST",
+				    data:{adminName:name,
+				    password:pwd,
+				    captcha:ver   
+				    },
+				    dataType:'json',
+				    url:"{:url('Login/checklogin')}",
+				    success:function(data){
+				      if(data.code == 0){
+					    layer.msg(data.msg,{icon:2,time:2000},function(){
+					        location.reload(); 
+					       //document.getElementById("verif_img").onclick();
+					    });
+					}else{
+					    layer.msg(data.msg,{icon:6,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});	
+					}  
+				    }
+				});	 
+		         });
+				 }
+			 }
+		 }
+	  });
+  </script>
+
+</body>
+</html>

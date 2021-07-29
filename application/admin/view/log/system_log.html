@@ -1,0 +1,95 @@
+{include file='public/meta' }
+	<title>系统日志</title>
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			系统日志
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+
+		<article class="Hui-admin-content clearfix">
+
+			<div class="panel mt-0">
+				<div class="panel-body">
+					<div class="clearfix">
+						<span class="f-l">
+						</span>
+						<span class="f-r">当前共有数据：<strong>{$log->count('id')}</strong> 条</span>
+					</div>
+					<div class="mt-10">
+						<table class="table table-border table-bordered table-bg table-hover table-sort">
+							<thead>
+								<tr class="text-c">
+									
+									<th width="80">ID</th>
+									
+									<th>记录</th>
+									<th width="120">管理员</th>
+									<th width="120">客户端IP</th>
+									<th width="150">时间</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach $log as $val}
+								<tr class="text-c">
+									<td>{$val.id}</td>
+									
+									<td>{$val.content}</td>
+									{if condition="!empty($val['name'])"}
+									<td>
+										{foreach $val['name'] as $va}
+										{$va.name}
+										{/foreach}
+									</td>
+									{else /}
+									<td style="color:red;">异常</td>
+									{/if}
+									<td>{$val.log_ip}</td>
+									<td>{:date("Y-m-d H:i:s",$val.log_time)}</td>
+									<td>
+										<a title="详情" href="javascript:;" onclick="admin_edit('查看日志','{:url('Log/edit',['id'=>$val.id,'ids'=>$val.user_id])}',{$val.id})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>
+									</td>
+								</tr>
+							</tbody>
+							{/foreach}
+						</table>
+					</div>
+					{$log|raw}
+				</div>
+			</div>
+		</article>
+	</div>
+
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			runDatetimePicker();
+      // 全选 页面调用
+      $(".table").HuicheckAll(
+        {
+          checkboxAll: 'thead input[type="checkbox"]',
+          checkbox: 'tbody input[type="checkbox"]'
+        },
+        function(checkedInfo) {
+          console.log(checkedInfo);
+        }
+      )
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$article.title} - {muy:siteseo name='title'}</title>
+    <meta name="keywords" content="{muy:siteseo name='key'}" />
+    <meta name="description" content="{muy:siteseo name='dec'}" />
+    <link href="__INDEXST__static/css/dgy.base.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/dgy.grid.v.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/dgy.nav.t.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/font_1809908_xpn2c7cw8fi.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__INDEXST__static/js/digg.js"></script>
+</head>
+<body>
+    <div class="baseLayout">
+        <!--头部-->
+			{include file='public/header'}
+			<!--头部end-->
+        <div class="productGrid">
+		<div class="fullTabs location">
+			<div class="tagWrap">
+				<span class="tagLabel">当前位置:</span>
+				<div class="tagBox">
+					<a href="{muy:urls id='1'}">主页</a> &gt; 
+					{foreach $n as $ns}
+					<a href="{muy:urls id='$ns.id'}">{$ns.title}</a> &gt;
+					{/foreach}
+				</div>
+			</div>
+		</div>
+		<div class="downLoadWrapper">
+			<div class="detailGrid" deep="3">
+				<div class="articleHeadWrapper">
+					<div class="thumbBox">
+						<img class="thumb" src="{$article.titlepic}" alt="{$article.title}">
+					</div>
+					<div class="detailHeadLabel">
+						<h1 class="title">{$article.title}<small> / {if condition="!empty($ids)"}{muy:nav name="ty" id="$ids"}{$ty.title}{/muy:nav}{/if}</small></h1>
+						<p class="info">
+							<span>{$article.create_time|date='Y-m-d'}</span>
+							   来源 / 
+							<span>{$article.source}</span>
+							   编辑 / 
+							<span>{$article.author}</span>
+						</p>
+					</div>
+				</div>
+				
+				<div class="description">
+					<div class="detail">
+						<p>
+						{$article.abstract}
+						</p>
+					</div>
+				</div>
+				<article class="articleDetailGroup">
+					{$article.editor|raw}
+				</article>
+				<div class="tagGroup star quickDownLoad">
+					<div class="tagBox">
+						{muy:tags name="tg" id="$article.id"}
+						 <a href="/search/index.html?search={$tg}" class="tag" target="_blank"># {$tg}</a>
+						 {/muy:tags}
+					</div>
+					<div class="fr" id="newdigg">
+						<a href="javascript:;" onclick="dianzan()">
+							<i class="iconfont icondgy dgy-biaoqian icon-dianzan"></i>点赞({$article.likes})</a>
+							</div>
+				</div>
+				<div class="titleWrapper tabs mb0">
+				<h3 class="title item on"><b>下载地址</b></h3>
+				</div>
+				<div class="quickDownLoadGroup">
+					<div class="quickBox">
+						{if empty($Think.session.Member)}
+						<div class="item"><a href="{:url('index/Index/login')}" class="downbtn normal" target="_blank"><i class="iconfont icon-xiazai2" data-filtered="filtered"></i>登录后下载</a></div>
+						{else/}
+						{if condition="!empty($article.downputh)"}
+						{foreach $article.downputh as $val}
+						<div class="item"><a href="{$val['pturl']}" class="downbtn normal" target="_blank"><i class="iconfont icon-xiazai2" data-filtered="filtered"></i>{$val['ptname']}</a></div>
+						{/foreach}
+						{/if}
+						{/if}
+					</div>
+				</div>
+				
+                    <!-- 免责声明 -->
+                    <div class="copyrightWrapper">
+            	        <p class="cf_red mb5">#版权声明#</p>
+            	        <p>一、本站致力于为软件爱好者提供国内外软件开发技术和软件共享，着力为用户提供优资资源;</p>
+            	        <p>二、本站内提供的部分源码下载文件为网络共享资源，请于下载后的24小时内删除。如需体验更多乐趣，还请支持正版;</p>
+            	        <p>三、本站提供用户下载的所有内容均转自互联网。如有内容侵犯您的版权或其他利益的，请编辑邮件并加以说明发送到站长邮箱。站长会进行审查之后，情况属实的会在三个工作日内为您删除。</p>
+                    </div>
+    
+                    <!-- 推广 -->
+                    <div class="adWrapper w2 layoutHide">
+                        <div class="content"><a href="" target="_blank" title="860x128"><img src=""></a></div>
+                        <div class="content"><a href="" target="_blank" title="860x128"><img src=""></a></div>
+                    </div>
+    
+            		<!-- 评论区 开始 -->
+                    <div class="commonHeadLabel small">
+                       <div class="title">评论列表</div>
+                    </div>
+            		<div class="commentGrid">
+            			<div class="commentForm">
+                			<form action="{:url('index/articles/arping')}" method="post" onsubmit="return check_comm(this)">
+                    			<input type="hidden" name="id" value="{$article.id}">
+                    			<input type="hidden" name="title" value="{$article.title}">
+                    			<input name="pl" type="hidden"/>
+                    			<textarea class="commentTextarea" id="content" name="content" placeholder="我来说两句~"></textarea>
+        				        <div class="btnBox"><input type="submit" class="submitBtn" name="dosubmit" value="提交"></div>
+                			</form>
+            			</div>
+    
+            		    <!-- 评论列表 -->
+                		<div class="commentList">
+                			                			<div class="title">共{$article.comment_t}条评论</div>
+                			<div class="commentGrid">
+                			    
+                    			<ul class="itemUl">
+                    			    {muy:pl name="p" mid="$article.id"}
+                    			    <li class="item">
+                						<div class="username"># <a href="" target="blank">{$p.title}</a> <span>{:date("Y/m/d H:i:s", $p.create_time)}</span></div>
+                						<div class="commentGroup">
+                						    <p>{$p.content}</p>
+                    						<div id="rep_2" style="display:none">
+                        						<form action="{url:('index/articles/arping')}" method="post" onsubmit="return check_comm(this)">
+                    			                   <input type="hidden" name="id" value="27">
+                    			                   <input type="hidden" name="title" value="66666">
+                    			                   <textarea class="commentTextarea" id="content" name="content" placeholder="我来说两句~"></textarea>
+        				                           <div class="btnBox"><input type="submit" class="submitBtn" name="dosubmit" value="提交"></div>
+                			                   </form>
+                    						</div>
+                						</div>
+                    				</li>
+                    				{/muy:pl}
+                    		            
+                    				</ul>
+                			</div>
+                		</div>
+    
+            		</div>
+    
+            	</div>
+            	{include file='/article_right'}
+            	
+            </div>
+
+            <!-- 最新内容 -->
+		<div class="titleWrapper bb0">
+			<h3 class="title"><b>猜你喜欢</b></h3>
+		</div>
+		<div class="articleWrapper">
+			{muy:article name="sj" id="$ids" order="rand()" limt="6"}
+			<div class="itemArticle">
+				<a class="contentWrap" href="/article_{$sj.id}" title="/article_{$sj.title}" target="_blank">
+				<div class="topWrap">
+					<img class="img" src="{$sj.titlepic}" alt="{$sj.title}" title="{$sj.title}">
+					<div class="textBox">
+						<h2>{$sj.title}</h2>
+						<p>
+							{$sj.abstract}
+						</p>
+					</div>
+				</div>
+				</a>
+			</div>
+           {/muy:article}
+		</div>
+        </div>
+			<!--低部-->
+			{include file='public/footer'}
+			<!--低部end-->
+			</div>
+			<script src="{:url('articles/artcoun',['id'=>$article.id])}"></script>
+</body>
+</html>

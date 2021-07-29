@@ -1,0 +1,29 @@
+
+<body>
+		<div class="container_box">
+			<div class="yzm_member_container head">
+			  <div class="right"><a href="/"><span class="Hui-iconfont">&#xe625;</span> 返回首页</a></div>
+			  欢迎你： {$member.account}  ，<a href="javascript:void(0);" id="account">退出登录</a>
+			</div>
+		</div>
+		<div class="nav">
+		   <div class="yzm_member_container">
+		     <a href="{:url('User/index')}" class="set">会员中心</a>
+		     <a href="{:url('User/tg')}" class="set">在线投稿</a>
+		     <a href="{muy:urlsu id='$member.id'}" class="set" target="_blank">个人主页</a>
+		   </div>
+		</div>
+		
+		
+		<script>
+$('#account').click(function(){
+		  var account = '{$Think.session.Member.account}';
+				 $.post("{:url('index/User/loginout')}",{account:account},function(data){
+					layer.msg(data.msg,{icon:1,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});					
+				 });
+	  });
+</script>

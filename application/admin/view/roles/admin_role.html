@@ -1,0 +1,146 @@
+{include file='public/meta' }
+<title>角色管理 - 管理员管理 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			管理员管理
+			<span class="c-gray en">/</span>
+			角色列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="clearfix">
+						<span class="f-l">
+							<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+								批量删除</a>
+							<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','{:url('Roles/create')}')"><i
+								 class="Hui-iconfont">&#xe600;</i> 添加角色</a>
+						</span>
+						<span class="f-r">共有数据：<strong>{$role->count('id')}</strong> 条</span>
+					</div>
+					<div class="mt-20 clearfix">
+						<table class="table table-border table-bordered table-hover table-bg">
+							<thead>
+								
+								<tr class="text-c">
+									<th width="25"><input type="checkbox" value="" name=""></th>
+									<th width="40">ID</th>
+									<th width="200">角色名</th>
+									<th>管理员</th>
+									<th width="300">描述</th>
+									<th width="70">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach $role as $val}
+								<tr class="text-c">
+									{if condition="$val.id == 1"}
+									<td></td>
+									{else /}
+									<td ><input type="checkbox" value="{$val.id}" name="id"></td>
+									{/if}
+									<td>{$val.id}</td>
+									<td>{$val.name}</td>
+									{if condition="!empty($val['username'])"}
+									<td>
+										{foreach $val['username'] as $va}
+										{$va.name}
+										{/foreach}
+									</td>
+									{else /}
+									<td>暂无用户</td>
+									{/if}
+									<td>{$val.info}</td>
+									<td class="f-14"><a title="编辑" href="javascript:;" onclick="admin_edit('角色编辑','{:url('Roles/edit',['id'=>$val['id']])}')"
+										 style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> {if condition="$val.id == 1"} {else /}<a title="删除" data-name="{$val.name}" data-id="{$val.id}" class="ml-5 del"
+										 style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>{/if}</td>
+								</tr>
+								{/foreach}
+							</tbody>
+						</table>
+					</div>
+					{$role|raw}
+				</div>
+			</div>
+		</article>
+	</div>
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+	<script type="text/javascript">
+		$(function() {
+			// 全选 页面调用
+			var ids="";
+			$(".table").HuicheckAll({
+					checkboxAll: 'thead input[type="checkbox"]',
+					checkbox: 'tbody input[type="checkbox"]'
+				},
+				function(data) {
+					console.log(data);
+				}
+			)
+		});
+	</script>
+	<script>
+		//删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除\"' + name + '\"角色?', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Roles/delete')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+						});
+					})
+				}
+			});
+		})
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		console.log(ids);
+			var delid = ids;
+			console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			console.log(delid);
+			$.post("{:url('Roles/deleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+				});
+			});
+		}
+		});
+	</script>
+</body>
+</html>

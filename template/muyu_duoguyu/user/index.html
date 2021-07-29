@@ -1,0 +1,117 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+	  <title>会员中心 - {muy:siteseo name='title'}</title>
+	  <meta name="keywords" content="{muy:siteseo name='key'}" />
+      <meta name="description" content="{muy:siteseo name='desc'}" />
+	  <link href="__INDEXST__user/static/css/member_index.css" rel="stylesheet" type="text/css">
+	  <link href="__INDEXST__user/static/layui/css/layui.css" rel="stylesheet" type="text/css">
+	  <link href="__INDEXST__user/static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="__INDEXST__user/static/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+      <script type="text/javascript" src="__INDEXST__user/static/layer/layer.js"></script>
+      <script type="text/javascript" src="__INDEXST__user/static/layui/layui.js"></script>
+      <script type="text/javascript" src="__INDEXST__user/static/js/jquery-1.8.2.min.js"></script>
+  </head>
+<!--头部-->
+{include file='user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+    <!--侧边导航栏开始-->
+      {include file='user/menu'}
+      <!--侧边导航栏结束-->
+<div class="main_right">
+        <div class="tit">
+            <h3>基本资料</h3>
+        </div>
+        <div class="main_cont">
+			<div class="yzm-member-center">
+				<div class="yzm-member-left">
+					<a class="up" style="cursor:pointer;"><img style="cursor:pointer;" id="imgs" src="{$member.photo}"></a>
+				</div>
+				<div class="yzm-member-right">
+					<div class="yzm-row">
+						<label>会员名：</label> {$member.account} 
+						<a href="{:url('User/update_means')}" class="yzm-member-edit"><span class="Hui-iconfont">&#xe60c;</span>修改资料</a>
+					</div>
+					<div class="yzm-row">
+						<label>昵　称：</label> {$member.name} 
+					</div>
+					<div class="yzm-row">
+					    <label>会员介绍：</label> {$member.intro}    					 </div>
+					<div class="yzm-row">
+					    <label>绑定邮箱：</label> {$member.email}    					 </div>
+					<div class="yzm-row">
+						<label>注册时间：</label> {:date("Y-m-d H:i:s",$member.create_time)}					</div>
+					<div class="yzm-row">
+						<label>登录次数：</label> {$member.count} 次
+					</div>
+					<div class="yzm-row">
+						<label>上次登录：</label> {:date("Y-m-d H:i:s",$member.outtime)} [ IP地址： {$member.outip} ] 
+					</div>
+				</div>
+			</div>
+			<div class="yzm-member-center">
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-balance"><span class="Hui-iconfont">&#xe647;</span></div>
+					<cite>我的评论</cite>
+					<p>{$comment_sum} 条</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-point"><span class="Hui-iconfont">&#xe692;</span></div>
+					<cite>我的留言</cite>
+					<p>{$feedback_sum} 条</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-grade"><span class="Hui-iconfont">&#xe687;</span></div>
+					<cite>投稿总数</cite>
+					<p>{$article_sum} 次</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-experience"><span class="Hui-iconfont">&#xe680;</span></div>
+					<cite>我的关注</cite>
+					<p>{$attention_sum} 个</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-fans"><span class="Hui-iconfont">&#xe6ce;</span></div>
+					<cite>我的粉丝</cite>
+					<p>{$fans_sum} 个</p>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+<!--低部-->
+{include file='user/footer'}
+<!--低部end-->
+
+
+  <script>
+	  /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '.up' //绑定元素
+	    ,url: "{:url('User/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  //$("#icon").val(res.photo);
+			  $("#imgs").attr("src",res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+  </script>
+</body></html>

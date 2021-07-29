@@ -1,0 +1,41 @@
+{include file='public/meta' }
+  <title>留言详情</title>
+</head>
+<body>
+  <div class="clearfix pd-20" style=" background-color:#5bacb6">
+    <img class="avatar size-XL f-l" src="__ADMINST__h-ui/images/ucenter/avatar-default-S.gif">
+    <dl style="margin-left:80px; color:#fff">
+      <dt><span class="f-18">{$user !="" ? $user.name : '匿名'}</span></dt>
+      <dd class="pt-10 f-12" style="margin-left:0">介绍：{$user !="" ? $user.intro : '匿名'}</dd>
+    </dl>
+  </div>
+  <div class="pd-20">
+    <table class="table">
+      <tbody>
+		  <tr>
+		    <th class="text-r">手机：</th>
+			<td>{$user !="" ? $user.phone : '匿名'}</td>
+		  </tr>
+		  <tr>
+          <th class="text-r">邮箱：</th>
+          <td>{$user !="" ? $user.email : '匿名'}</td>
+        </tr>
+
+		<tr>
+		  <th class="text-r">留言时间：</th>
+		  <td>{:date("Y-m-d H:i:s",$feedback.create_time)}</td>
+		</tr>
+        <tr>
+          <th class="text-r">留言内容：</th>
+          <td>{$feedback.content}</td>
+        </tr>
+		<!--隐藏字段-->
+		<input type="hidden" name="id" value="{$feedback.id}">
+      </tbody>
+    </table>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+  <!--/_footer /作为公共模版分离出去-->
+</body>
+</html>

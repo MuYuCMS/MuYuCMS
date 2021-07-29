@@ -1,0 +1,186 @@
+{include file='public/meta' }
+	<title>广告管理 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+	{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			插件管理
+			<span class="c-gray en">/</span>
+			广告列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel mt-0">
+				<div class="panel-body">
+							<div class="clearfix">
+								<span class="f-l">
+									<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+									<a class="btn btn-primary radius" onclick="admin_edit('添加广告','{:url('Plug/addcreate')}')"
+									 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加广告</a>
+								</span>
+								<span class="f-r l-30">共有数据：<strong>{$add->count('id')}</strong> 条</span>
+							</div>
+							<div class="clearfix mt-10">
+
+								<table class="table table-border table-bordered table-hover table-bg table-sort">
+									<thead>
+										<tr class="text-c">
+											<th width="25"><input type="checkbox" name="" value=""></th>
+											<th width="40">广告ID</th>
+											<th width="150">广告名称</th>
+											<th width="150">创建时间</th>
+											<th width="120">到期时间</th>
+											<th width="50">状态</th>
+											<th width="70">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{foreach $add as $val}
+										<tr class="text-c">
+											<td><input type="checkbox" value="{$val.id}" name=""></td>
+											<td>{$val.id}</td>
+											<td>{$val.title}</td>
+											<td>{:date("Y-m-d",$val.create_time)}</td>
+											<td>{:date("Y-m-d",$val.outtime)}</td>
+											<td class="td-status">
+												{if condition="$val.status eq '显示'"}
+												<span class="label label-success radius">{$val.status}</span>
+												{else /}
+												<span class="label radius">{$val.status}</span>
+												{/if}
+											</td>
+											<td class="f-14 td-manage">
+												<ul>
+													{if condition="$val.status eq '显示'"}
+													<a style="text-decoration:none" onClick="comment_stop(this,'{$val.id}')" href="javascript:;" title="显示">隐藏</a>
+													{else /}
+													<a style="text-decoration:none" onClick="comment_start(this,'{$val.id}')" href="javascript:;" title="隐藏">显示</a>
+													{/if}
+													<a title="编辑" class="ml-5" onClick="admin_edit('广告编辑','{:url('Plug/addedit')}'+'?id='+{$val.id})" class="del">编辑</a>
+													<a title="删除" class="ml-5 dels" data-name="{$val.title}" data-id="{$val.id}">删除</a>
+												</ul>
+											</td>
+										</tr>
+											{/foreach}
+									</tbody>
+								</table>
+							</div>
+
+							{$add|raw}
+				</div>
+			</div>
+		</article>
+	</div>
+
+	<!--_footer 作为公共模版分离出去-->
+	{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script>	
+		//删除操作
+		$(".dels").click(function() {
+			//获取删除信息和对应id
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除'+name+'广告', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Plug/adddelet')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+						});
+					})
+				}
+			});
+		})
+	</script>
+	<script type="text/javascript">
+		$(function(){
+      // 全选 页面调用
+      $(".table").HuicheckAll(
+        {
+          checkboxAll: 'thead input[type="checkbox"]',
+          checkbox: 'tbody input[type="checkbox"]'
+        },
+        function(checkedInfo) {
+          console.log(checkedInfo);
+        }
+      );
+		});
+		
+		/*广告-隐藏*/
+		function comment_stop(obj,id){
+		  layer.confirm('确认要隐藏吗？',function(index){
+			
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Plug/addstatus')}",{id:id});
+			
+		    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="comment_start(this,'+id+')" href="javascript:;" title="显示" style="text-decoration:none">显示</a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label radius">隐藏</span>');
+		    $(obj).remove();
+		    layer.msg('已隐藏！',{icon: 5,time:2000},function(){
+		        location.href = 'addindex';
+		    });
+		  });
+		}
+		
+		/*广告-显示*/
+		function comment_start(obj,id){
+		  layer.confirm('确认要显示吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Plug/addstatus')}",{id:id});
+		
+		    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="comment_stop(this,'+id+')" href="javascript:;" title="隐藏" style="text-decoration:none">隐藏</a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">显示</span>');
+		    $(obj).remove();
+		    layer.msg('已显示！', {icon: 6,time:2000},function(){
+		        location.href = 'addindex';
+		    });
+		  });
+		}
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何广告!',{icon:2,time:2000});
+		}else{
+			
+			layer.confirm('确认要批量删除吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Plug/adddeleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+				});
+			});
+			});
+		}
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

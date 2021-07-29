@@ -1,0 +1,167 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>会员中心 - 投稿记录 - {muy:siteseo name='title'}</title>
+	  <meta name="keywords" content="{muy:siteseo name='key'}" />
+      <meta name="description" content="{muy:siteseo name='desc'}" />
+	  <link href="__INDEXST__user/static/css/member_index.css" rel="stylesheet" type="text/css">
+	  <link href="__INDEXST__user/static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+	  <link rel="stylesheet" href="__INDEXST__user/static/layer/theme/default/layer.css" id="layuicss-layer">	 
+	  <script type="text/javascript" src="__INDEXST__user/static/js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="__INDEXST__user/static/layer/layer.js"></script>
+	   
+  </head>
+  <body>
+<!--头部-->
+{include file='user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+     <!--侧边导航栏开始-->
+      {include file='user/menu'}
+      <!--侧边导航栏结束-->   
+<div class="main_right">
+        <div class="tit">
+            <h3>投稿记录</h3>
+        </div>
+        <div class="main_cont">
+            <div class="explain">
+                <p>说明：已通过的稿件不支持编辑.</p>
+            </div>
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th width="25%">文章标题</th>
+                        <th width="10%">所属栏目</th>
+                        <th width="8%">浏览量</th>
+                        <th width="8%">点赞量</th>
+                        <th width="19%">发布时间</th>
+                        <th width="10%">驳回原因</th>
+                        <th width="8%">状态</th>
+                        <th width="10%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $article as $val}
+                        <tr>
+                            <td title="{$val.title}" align="center" style="overflow: hidden; max-width:200px; white-space:nowrap; text-overflow:ellipsis;"><a href="{muy:urls arid='$val.id'}" style="cursor:pointer;text-decoration:none;" target="_blank">{$val.title}</a></td>
+                            <td>{$val.mid}</td>
+                            <td>{$val.browse}</td>
+                            <td>{$val.likes}</td>
+                            <td>{:date("Y/m/d H:i:s",$val.create_time)}</td>
+                            {if $val.refusal!==NULL}
+                            <td>{$val.refusal}</td>
+                            {else/}
+                            <td>无</td>
+                            {/if}
+                            <td class="td-status">
+                                {if condition="$val.status eq '0'"}
+                                <span class="label-success radius">已通过</span>
+                                {elseif condition="$val.status eq '2'"/}
+                                <span class="label-danger radius">已下架</span>
+                                {elseif condition="$val.status eq '4'"/}
+                                <span class="label-danger radius">已驳回</span>
+                                {else /}
+                                <span class="label radius">待审核</span>
+                                {/if}
+                            </td>
+                            <td class="td-manage">
+                            <ul>
+							    {if condition="$val.status eq '0'"}
+								<a title="删除" href="javascript:;" data-name="" data-id="{$val.id}" class="del">删除</a>
+								{else /}
+								<a title="编辑" class="edit" href="{:url('User/tg_edit',['id'=>$val.id])}" data-name="">编辑</a>
+								<a title="删除" href="javascript:;" data-name="" data-id="{$val.id}" class="del">删除</a>
+								{/if}
+							</ul>
+                            </td>
+                        </tr>
+                        {/foreach}
+                 </tbody>
+            </table>
+            <div id="page"><span class="pageinfo">共 {$sum}条记录</span></div>
+        </div>
+    </div>
+</div>
+		<!--底部开始-->
+{include file='user/footer'}
+<!--底部结束-->
+ <style>
+ .label-danger,
+.badge-danger {
+	background-color: #dd514c
+}
+.label-success,.badge-success {display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #5eb95e;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.label-danger,.badge-success {display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #dd514c;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.label.radius {border-radius: 3px;}
+.label,.badge {
+	display: inline-block;
+	padding: 2px 4px;
+	font-size: 11.844px;
+	font-weight: bold;
+	line-height: 14px;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: #999;
+	overflow: hidden
+}
+</style>
+<script>
+        //删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('User/tg_del')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+							location.reload();
+						});
+					})
+				}
+			});
+		});
+		
+		
+		//编辑
+		$(".edit").click(function() {
+		    var id = $(this).attr('data-id');
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.post("{:url('User/tg_edit')}",{id:id},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+				});
+			});
+		});
+</script>
+</body></html>

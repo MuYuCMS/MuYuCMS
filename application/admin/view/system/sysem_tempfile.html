@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link href="__ADMINST__h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINLIB__Hui-iconfont/1.0.9/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINST__business/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script><![endif]-->
+	<link href="__ADMINLIB__lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" />
+	<title>模板文件</title>
+		<style type="text/css">
+		.pad{padding-bottom:10px}
+		.demo{padding: 2em 0;}
+		.box{
+		    font-family: 'Merriweather Sans', sans-serif;
+		    overflow: hidden;
+		    position: relative;
+		    z-index: 1;
+		    transition: all .5s;
+		}
+		.box:hover{ box-shadow: 3px 3px 5px #999; }
+		.box:before,
+		.box:after{
+		    content: "";
+		    background: radial-gradient(circle at 23% 70%,rgba(255,255,255,0.8),#fff 30%);
+		    width: 150%;
+		    height: 150%;
+		    opacity: 0;
+		    transform: rotate(45deg);
+		    position: absolute;
+		    top:-10.5%;
+		    right:-150%;
+		    z-index: 1;
+		    transition: all 0.35s ease;
+		}
+		.box:after{
+		    background: rgba(255,255,255,0.5);
+		    width: 65%;
+		    height: 65%;
+		    right: auto;
+		    left: -20%;
+		    top: -65%;
+		}
+		.box:hover:before{
+		    opacity: 1;
+		    right: -85%;
+		}
+		.box:hover:after{
+		    opacity: 1;
+		    top: -42%;
+		}
+		.box img{
+		    width: 100%;
+		    height: auto;
+		    transition: all 0.5s ease;
+		    height: 150px;
+		}
+		.box:hover img{ transform: scale(1.2); }
+		.box .box-content{
+		    text-align: right;
+		    transform: translateY(-50%);
+		    position: absolute;
+		    top: 50%;
+		    right: -100%;
+		    z-index: 2;
+		    transition: all .5s;
+		}
+		.box:hover .box-content{ right: 5%; }
+		.box .title{
+		    color: #1e272e;
+		    font-size: 23px;
+		    font-weight: 700;
+		    text-transform: uppercase;
+		    margin: 0 0 3px 0;
+		}
+		.box .post{
+		    font-size: 16px;
+		    text-transform: capitalize;
+		    margin: 0 0 10px;
+		    display: block;
+		}
+		.box .icon{
+		    padding: 0;
+		    margin: 0;
+		    list-style: none;
+		}
+		.box .icon li{
+		    display: inline-block;
+		    margin: 0 4px;
+		}
+		.box .icon li a{
+		    color: #fff;
+		    background-color: #1e272e;
+		    font-size: 18px;
+		    text-align: center;
+		    line-height: 35px;
+		    height: 35px;
+		    width: 35px;
+		    border-radius: 50%;
+		    display: block;
+		    transition: all 0.3s;
+		}
+		.box .icon li  a:hover{
+		    color: #1e272e;
+		    background-color: #fff;
+		    border-radius: 10%;
+		    box-shadow: 0 0 5px #1e272e inset;
+		}
+		.box .tpqy{
+		        background: url(/public/static/admin/temp/ph.png) no-repeat center center;
+                background-size: 100% 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 2;
+                display: block;
+                width: 70px;
+                height: 70px;
+		}
+		.box a.disabled {
+            pointer-events: none;
+            filter: alpha(opacity=50); /*IE滤镜，透明度50%*/
+            -moz-opacity: 0.5; /*Firefox私有，透明度50%*/
+            opacity: 0.5; /*其他，透明度50%*/
+        }
+		@media only screen and (max-width:990px){
+		    .box { margin: 0 0 30px; }
+		}
+		@media only screen and (max-width:479px){
+		    .box .title{ font-size: 20px; }
+		}
+	</style>
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			模板文件
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+			<article class="Hui-admin-content clearfix">
+				<div class="panel">
+					<div class="panel-body">
+			<div id="tab-system" class="HuiTab">
+				<div class="tabBar cl"><span>模板管理</span></div>
+				<div class="">
+				<div class="clearfix pd-5 bg-1 bk-gray">
+					<span class="f-l" style="color: red;"><i class='Hui-iconfont'>&#xe62f;</i>  删除正在使用的模板文件网站前台将无法展现，请谨慎考虑!</span>
+					<span class="f-r">共有数据：<strong id="tujs">{$list}</strong> 条</span>
+				</div>
+		<div class="demo">
+        <div class="container">
+            <div class="row lists">
+                {foreach $path as $val}
+             <div class="col-md-3 col-sm-6 pad">
+                 <div class="box">{eq name="$system.temp" value="$val.tempname"}<i class="tpqy"></i>{/eq}
+                 <img src="/template/{$val.tempname}/suoluetu.png">
+                 <div class="box-content">
+                     <h3 class="title">{$val.tempname}</h3>
+                     <span class="post"><i class="Hui-iconfont">&#xe62c;</i>{$val.tempauthor}</span>
+                         <ul class="icon">
+                             <li>
+                                 <a class="statr {eq name='$system.temp' value='$val.tempname'}disabled{/eq}" data-tp="{$val.tempname}"><i class="Hui-iconfont">&#xe615;</i></a></li>
+                                 <li><a data-fil="{$val.tempname}" class="picdels"><i class="Hui-iconfont">&#xe6e2;</i></a></li>
+                                 </ul>
+                                 </div>
+                                 </div>
+                                 </div>
+                                 {/foreach}
+            </div>
+        </div>
+    </div>
+			</div>
+			</div>
+			</div>
+		</div>
+		</article>
+		</div>
+	
+
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMINLIB__lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#tab-system").Huitab();
+	
+	
+	
+				   $(".picdels").click(function() {
+				   	//获取删除信息
+				   	var filedel = $(this).attr('data-fil');
+				   	layer.msg('是否删除\"'+filedel+'\"模板', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['删除', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('System/filedel')}", {
+				   				filedelur: filedel
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+				   									location.reload();
+				   								});
+				   								
+				   			});
+				   		}
+				   	});
+				   })
+				   $(".statr").click(function() {
+				   	var name = $(this).attr('data-tp');
+				   	layer.msg('是否启用\"' + name + '\"模板?', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['启用', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('System/tempstart')}", {
+				   				tp: name
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+				   									location.reload();
+				   								});
+				   								
+				   			});
+				   		}
+				   	});
+				   })
+				   
+
+
+});
+
+</script>
+</body>
+</html>

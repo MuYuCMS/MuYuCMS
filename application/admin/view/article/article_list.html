@@ -1,0 +1,441 @@
+{include file='public/meta' }
+<title>资讯列表 - 资讯管理 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+{load href="__ADMINLIB__layui/css/layui.css"}
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页 
+			<span class="c-gray en">/</span>
+			资讯管理
+			<span class="c-gray en">/</span>
+			资讯列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="row clearfix">
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">开始日期：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" id="search-datetime-start" class="input-text datetimepicker-input">
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">结束日期：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" id="search-datetime-end" class="input-text datetimepicker-input">
+								</span>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">标题名称：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" name="searchInput" id="search-input" placeholder="资讯名称" class="input-text" />
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-1">
+							<div class="row clearfix">
+								<span class="col-xs-4 form-item-control">
+									<button name="" id="search-submit" class="btn btn-success radius" type="submit"><i class="Hui-iconfont">&#xe665;</i>
+										搜索</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel mt-10"></div>
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+						<nav class="my-nav">
+										<div class="my-cont">
+											<ul class="layui-nav layui-bg-blue" lay-filter="">
+												<li class="layui-nav-item {$menuid == NULL ? 'layui-this' :''}">
+													<a href="{:url('Article/index')}">所有文章</a>
+												</li>
+												{foreach $type as $val}
+												<li class="layui-nav-item {$menuid == $val.id ? 'layui-this' :''}">
+													<a href="{:url('Article/index',['id'=>$val.id])}">{$val.title}</a>
+												</li>
+												{/foreach}
+											</ul>
+										</div>
+									</nav>
+
+								<div class="panel mt-0">
+									<div class="panel-body">
+										<div class="clearfix">
+											<span class="f-l">
+												<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+													批量删除</a>
+												<a class="btn btn-primary radius" data-title="添加资讯" data-href="{:url('Article/create')}" onclick="Hui_admin_tab(this)"
+												 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a>
+											</span>
+											<span class="f-r">当前共有数据：<strong>{$list->count('id')}</strong> 条</span>
+										</div>
+										<div class="mt-20 clearfix">
+											<table id="data-table-list" class="table table-border table-bordered table-bg table-hover table-sort">
+												<thead>
+													<tr class="text-c">
+														<th width="25"><input class="checkbox checkbox-all" type="checkbox" name="" value="all"></th>
+														<th width="80">ID</th>
+														<th width="80">缩略图</th>
+														<th>标题</th>
+														<th width="80">作者</th>
+														<th width="120">更新时间</th>
+														<th width="70">浏览次数</th>
+														<th width="70">点赞量</th>
+														<th width="120"><span class="dropDown"> <a class="dropDown_A" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">发布状态<i class="Hui-iconfont">&#xe6d5;</i></a><ul class="dropDown-menu menu radius box-shadow"><li><a href="{:url('Article/index',['state_id'=>1])}">草　稿</a></li><li><a href="{:url('Article/index',['state_id'=>2])}">已下架</a></li><li><a href="{:url('Article/index',['state_id'=>0])}">已发布</a></li></ul></span></th>
+														<th width="120">操作</th>
+													</tr>
+												</thead>
+												{volist name='list' id='val'}
+												<tbody class="getData-list" data-currPage='1'>
+													<tr class="text-c">
+														<td><input class="checkbox" type="checkbox" value="{$val.id}" name=""></td>
+														<td><a title="点击预览前台文章" target="_blank" href="/article_{$val.id}.html">{$val.id}</a></td>
+														{if condition="!empty($val.titlepic)"}
+														<td><img src="{$val.titlepic}" height="40" width="60" alt="{$val.title}"></td>
+														{else /}
+														<td>暂无缩略图!</td>
+														{/if}
+														<td class="text-l" style="overflow: hidden; max-width:200px; white-space:nowrap; text-overflow:ellipsis;"><u style="cursor:pointer;text-decoration: none;" class="text-primary" onClick="article_edit('查看','{:url('Article/edit')}'+'?id='+{$val.id})"
+															 title="{$val.title}">{$val.title}</u></td>
+														<td>{$val.author}</td>
+														<td>{:date("Y/m/d H:i:s",$val.create_time)}</td>
+														<td>{$val.browse}</td>
+														<td>{$val.likes}</td>
+														<td class="td-status">
+															{if condition="$val.status == '已发布'"}
+															<span class="label label-success radius">已发布</span>
+															{elseif condition="$val.status == '草稿'" /}
+															<span class="label radius">草稿</span>
+															{else/}
+															<span class="label label-danger radius">已下架</span>
+															{/if}
+															<!-- 文章置顶开始 -->
+															{if condition="$val.top eq 0"}
+															<a class="label radius" style="text-decoration:none" onClick="article_tops(this,'{$val.id}')" href="javascript:;" title="点击置顶">顶</a>
+															{else /}
+															<a class="label label-danger radius" style="text-decoration:none" onClick="article_top(this,'{$val.id}')" href="javascript:;" title="点击取消置顶">顶</a>
+															{/if}
+															<!-- 文章置顶结束 -->
+															<!-- 幻灯片开始 -->
+															{if condition="$val.ppts eq 0"}
+															<a class="label radius" style="text-decoration:none" onClick="article_ppts(this,'{$val.id}')" href="javascript:;" title="点击展现到幻灯片">幻</a>
+															{else /}
+															<a class="label label-primary radius" style="text-decoration:none" onClick="article_pptss(this,'{$val.id}')" href="javascript:;" title="点击取消展现幻灯片">幻</a>
+															{/if}
+															<!-- 幻灯片结束 -->
+														</td>
+														<td class="f-14 td-manage">
+															{if condition="$val.status eq '已发布'"}
+															<a style="text-decoration:none" onClick="article_stop(this,'{$val.id}')" href="javascript:;" title="下架">下架</a>
+															{else /}
+															<a style="text-decoration:none" onClick="article_start(this,'{$val.id}')" href="javascript:;" title="发布">发布</a>
+															{/if}
+															<a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','{:url('Article/edit')}'+'?id='+{$val.id})"
+															 href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+															<a title="删除" class="del" data-name="{$val.title}" data-id="{$val.id}" class="ml-5" style="text-decoration:none"><i
+																 class="Hui-iconfont">&#xe6e2;</i></a>
+														</td>
+													</tr>
+												</tbody>
+												{/volist}
+											</table>
+										</div>
+
+										{$list|raw}
+										
+									</div>
+					</form>
+					
+				</div>
+			</div>
+		</article>
+	</div>
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+	<style>
+		.layui-bg-blue {
+		    background-color: #FFFFFF!important;
+		}
+		.layui-nav .layui-nav-item a:hover,.layui-nav .layui-this a {
+		    color: #333;
+			text-decoration: none;
+		}
+		.layui-nav .layui-nav-item a {
+		    color: rgba(0, 0, 0, 0.9);
+			text-decoration: none;
+		}
+		.layui-bg-blue .layui-nav-bar,.layui-bg-blue .layui-nav-itemed:after,.layui-bg-blue .layui-this:after {
+		    background-color: #5a98de;
+			text-decoration: none;
+		}
+
+        /*文章状态下拉框开始*/
+        .dropDown{display:inline-block}.dropDown_A{display:inline-block}
+.dropDown-menu{ display:none;transition: all 0.3s ease 0s}
+.dropDown:focus,.dropDown-menu:focus {outline:0}
+	.dropDown-menu li.arrow{ position:absolute;display:block; width:12px; height:8px; margin-top:-13px; margin-left:20%; line-height:0;background:url(../images/icon-jt.png) no-repeat 0 0}
+ 
+/*鼠标经过	*/
+.dropDown.hover.dropDown_A,.dropDown.open.dropDown_A{text-decoration:none;background-color:rgba(255,255,255,0.2)}
+.dropDown.open.dropDown_A.menu_dropdown-arrow{transition-duration:0.3s ;transition-property:all;_background-position:0 0}
+.dropDown.open.dropDown_A.menu_dropdown-arrow{transform: rotate(180deg)}
+	.menu{background-color:#fff;border:solid 1px #f2f2f2; display: inline-block}
+	.menu.radius{border-top-left-radius:0;border-top-right-radius:0}
+	.menu.box-shadow{border-top:none}
+	.menu > li{ position: relative; float: none;display:block}
+	.menu > li > a{ display: block;clear: both;border-bottom:solid 1px #f2f2f2;padding:6px 20px;text-align:left;line-height:1.5;font-weight: normal;white-space:nowrap}
+	.menu > li:last-child > a{ border-bottom:none}
+	.menu > li > a:hover,.menu > li > a:focus,.menu > li.open > a{ text-decoration:none;background-color:#fafafa}
+	.menu > li > a.arrow{ position:absolute; top:50%; margin-top:-10px; right:5px;line-height: 20px; height: 20px; color: #999}
+	.menu > li >.menu{ display: none}
+	.menu > li.open >.menu{ display: inline-block;position: absolute; left:100%;top:-1px;min-width:100%}
+	/*禁用菜单*/
+	.menu > li.disabled > a{color:#999;text-decoration:none; cursor:no-drop; background-color:transparent}
+	/*线条*/
+	.menu > li.divider{ display:block;height:0px; line-height:0px;margin:9px 0;overflow:hidden; border-top:solid 1px #eee}
+/*打开菜单*/
+.dropDown >.dropDown-menu{ display: none}
+.dropDown.open{position:relative;z-index:990}
+/*默认左对齐*/
+.dropDown.open >.dropDown-menu{position:absolute;z-index:1000;display:inline-block;top:100%;left:-1px;min-width:100%;background-color:#fff;border:solid 1px #f2f2f2}
+/*右对齐*/
+.dropDown.open.right >.dropDown-menu{right:-1px!important;left:auto!important}
+         /*文章状态下拉框结束*/
+
+
+	</style>
+	
+	<script type="text/javascript">
+			layui.use('element', function(){
+			  var element = layui.element;
+			  
+			  //一些事件监听
+			  element.on('tab(demo)', function(data){
+			    console.log(data);
+			  });
+			});
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			$("#tab-system").Huitab();
+		});
+
+	</script>
+	<script type="text/javascript">
+		/* =====所有的列表页都可照搬这套模式====== */
+
+		$(function() {
+			$("#search-datetime-start").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  language: "zh-cn",
+			  autoclose: true
+			});
+			$("#search-datetime-end").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  language: "zh-cn",
+			  autoclose: true
+			});
+			// 全选 页面调用
+			$(".table").HuicheckAll({
+					checkboxAll: 'thead input[type="checkbox"]',
+					checkbox: 'tbody input[type="checkbox"]'
+				},
+				function(checkedInfo) {
+					console.log(checkedInfo);
+				}
+			)
+		});
+
+	</script>
+
+
+	<script>
+		//删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var articleTitle = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除?', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Article/delete')}", {ids: id}, function(data) {
+						layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+							location.reload();
+						});
+					})
+				}
+			});
+		})
+	</script>
+	
+	<script>
+		/*文章-下架*/
+		function article_stop(obj,id){
+		  layer.confirm('确认要下架吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Article/setstatus')}",{id:id},function(data){
+				$(obj).parents("tr").find(".td-manage").prepend('<a onClick="article_start(this,'+id+')" href="javascript:;" title="发布" style="text-decoration:none">发布</a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">已下架</span>');
+				$(obj).remove();
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		/*文章-发布*/
+		function article_start(obj,id){
+		  layer.confirm('确认要发布吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Article/setstatus')}",{id:id},function(data){
+				$(obj).parents("tr").find(".td-manage").prepend('<a onClick="article_stop(this,'+id+')" href="javascript:;" title="下架" style="text-decoration:none">下架</a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+				$(obj).remove();
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		/*文章-取消置顶*/
+		function article_top(obj,id){
+		  layer.confirm('确认要取消置顶吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+				$.get("{:url('Article/setTop')}",{id:id},function(data){
+					$(obj).parents("tr").find(".td-status").html('<a class="label radius" style="text-decoration:none" onClick="article_tops(this,'+id+')" href="javascript:;" title="点击取消置顶">顶</a>');
+					$(obj).remove();
+					layer.msg(data.msg, {time: 2000}, function() {
+						if (data.url) location.href = data.url;
+						location.reload();
+					});
+				});
+
+		  });
+		}
+		
+		/*文章-置顶*/
+		function article_tops(obj,id){
+		  layer.confirm('确认要置顶吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Article/setTop')}",{id:id},function(data){
+				$(obj).parents("tr").find(".td-status").html('<a class="label label-danger radius" style="text-decoration:none" onClick="article_top(this,'+id+')" href="javascript:;" title="点击置顶">顶</a>');
+				$(obj).remove();
+				//location.reload(); 
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload(); 
+				});
+			});
+		  });
+		}
+		
+		/*文章-关闭幻灯片*/
+		function article_pptss(obj,id){
+		  layer.confirm('确认要关闭该幻灯片的文章吗？',function(){
+		    //此处请求后台程序，下方是成功后的前台处理……
+				$.get("{:url('Article/setPpts')}",{id:id},function(data){
+					$(obj).parents("tr").find(".td-status").html('<a class="label radius" style="text-decoration:none" onClick="article_pptss(this,'+id+')" href="javascript:;" title="点击展现幻灯片">幻</a>');
+					$(obj).remove();
+					layer.msg(data.msg, {time: 2000}, function() {
+						if (data.url) location.href = data.url;
+						location.reload();
+					});
+				});
+		  });
+		}
+		
+		/*文章-展现幻灯片*/
+		function article_ppts(obj,id){
+		  layer.confirm('确认要展现到幻灯片吗？',function(){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Article/setPpts')}",{id:id},function(data){
+				$(obj).parents("tr").find(".td-status").html('<a class="label label-primary radius" style="text-decoration:none" onClick="article_ppts(this,'+id+')" href="javascript:;" title="点击取消展现幻灯片">幻</a>');
+				$(obj).remove();
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		var delid = ids;
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			layer.confirm('确认要批量删除吗？',function(index){
+			$.post("{:url('Article/deleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		});
+		}
+		});
+		// 点击搜索执行...
+		$("#search-submit").click(function(index) {
+			var time = $('#search-datetime-start').val();
+			var time1 = $('#search-datetime-end').val();
+			var search = $('#search-input').val();
+			if(time =="" && time1 =="" && search ==""){
+				layer.msg("请输入搜索内容!", {time: 2000});
+			}else{
+				layer.open({
+					type:2,
+					area:['100%','100%'],
+					content:'{:url('Article/soulist')}'+'?so='+ search + '&t1='+time+'&t2='+time1,
+					end:function(){
+						location.reload();
+					}
+				});
+			}
+		});
+	</script>
+	
+</body>
+</html>

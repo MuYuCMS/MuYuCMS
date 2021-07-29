@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{$tdk->title}_{muy:siteseo name='title'}</title>
+<meta name="keywords" content="{muy:siteseo name='key'}"/>
+<meta name="description" content="{muy:siteseo name='desc'}"/>
+<link href="__INDEXST__static/css/dgy.base.css" rel="stylesheet" type="text/css"/>
+<link href="__INDEXST__static/css/dgy.grid.v.css" rel="stylesheet" type="text/css"/>
+<link href="__INDEXST__static/css/dgy.nav.t.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="__INDEXST__static/css/swiper.min.css"/>
+<link href="__INDEXST__static/css/font_1809908_xpn2c7cw8fi.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="baseLayout">
+            <!--头部-->
+			{include file='public/header'}
+			<!--头部end-->
+        <div class="productGrid">
+		<div class="fullTabsGroup">	
+			<div class="bestflag linearOrange">
+				精选
+			</div>
+			<div class="softWrapper swiper-container" id="topBest">
+				<div class="swiper-wrapper">
+					{muy:article name="tops" id="$ids" top="1" limt="10"}
+					<div class="item swiper-slide">
+						<a class="softBox" href="/article_{$tops.id}" title="{$tops.title}" target="_blank">
+						<img class="softIcon" src="{$tops.titlepic}" alt="{$tops.title}" title="{$tops.title}">
+						<p>
+							{$tops.title}
+						</p>
+						</a>
+					</div>
+					{/muy:article}
+				</div>
+				<div class="swiper-button-prev">
+				</div>
+				<div class="swiper-button-next">
+				</div>
+			</div>
+
+			<div class="fullTabs">
+				<div class="tagWrap">
+					<span class="tagLabel">子栏目:</span>
+					<div class="tagBox">
+					    <a href="{if condition='$pd neq 0'}/artlist_{$pd}{/if}" class="on">全部</a>
+						{muy:nav name="ty" mid="$ids" limt="99"}
+						<a href="/artlist_{$ty.id}" {eq name="$ty.id" value="$ids"}class="on"{/eq}>{$ty.title}</a>
+						{/muy:nav}
+					</div>
+				</div>
+			</div>
+			</div>
+	<div class="mb20">
+		<div class="titleWrapper bb0">
+			<h3 class="title"><b>{$tdk->title}<small>({$tdk->ar_cont})</small></b></h3>
+			<div class="searchWrap">
+				<form method="get" action="{:url('index/search/index')}" target="_blank">
+					<input name="search" type="text" placeholder="搜索" id="searchInput" class="searchInput"/>
+					<button class="searchBtn" type="submit"><i class="iconfont icondgy icon-sousuo"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="articleWrapper imgTextGrid">	
+			{muy:article name="art" id="$ids" limt="9" fykg="yes"}
+			<div class="item">
+					<div class="tophead">
+						<a href="/article_{$art.id}" title="{$art.title}" target="_blank"><img class="focus" src="{$art.titlepic}" alt="{$art.title}"></a>
+					</div>
+					<div class="article">
+					    <em><i>#{$art.hm}</i><a href="/search/index.html?search={$art.type}">{$art.type}</a></em>
+						<h2><a href="/article_{$art.id}" title="{$art.title}" target="_blank">{$art.title}</a></h2>
+						<div>
+						    <time><i class="iconfont  icon-shijian"></i>{$art.create_time|date='Y-m-d'}</time>
+						    <span><i class="iconfont  icon-yanjing1"></i>{$art.browse}</span>
+						</div>
+					</div>
+				</div>
+			{/muy:article}
+		</div>
+		<div id="pageGroup">
+			{$__DLIST|raw}
+		</div>
+	</div>
+	<div class="mb20">
+		<div class="titleWrapper">
+			<h3 class="title"><b>猜你喜欢</b></h3>
+		</div>
+		<div class="articleWrapper">
+		{muy:article name="suiji" id="$ids" limt="6" order="rand()"}	
+		<div class="itemArticle">
+				<a class="contentWrap" href="/article_{$suiji.id}" title="{$suiji.title}" target="_blank">
+				<div class="topWrap">
+					<img class="img" src="{$suiji.titlepic}" alt="{$suiji.title}" title="{$suiji.title}">
+					<div class="textBox">
+						<h2>{$suiji.title}</h2>
+						<p>
+							{$suiji.abstract}
+						</p>
+					</div>
+				</div>
+				</a>
+			</div>
+			{/muy:article}
+
+		</div>
+	</div>    
+    </div>    
+			<!--低部-->
+			{include file='public/footer'}
+			<!--低部end-->
+			</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{extend name="public/base"}
+{block name="seo"}
+  <title>{$title|default='MuYuCMS内容管理后台 - 一个简洁、轻量、实用的内容管理系统！'}</title>
+  <meta name="keywords" content="{$keywords|default='木鱼CMS内容管理后台'}" />
+  <meta name="description" content="{$desc|default='木鱼CMS内容管理后台'}" />
+</head>
+<body>
+	{/block}
+
+{block name="zttop"}
+  <div class="Hui-admin-dislpayArrow">
+    <a href="javascript:void(0);" onClick="displaynavbar(this)">
+      <i class="Hui-iconfont Hui-iconfont-left">&#xe6d4;</i>
+      <i class="Hui-iconfont Hui-iconfont-right">&#xe6d7;</i>
+    </a>
+  </div>
+
+  <section class="Hui-admin-article-wrapper">
+	  {/block}
+
+{block name="zhuti"}
+    <div id="Hui-admin-tabNav" class="Hui-admin-tabNav">
+      <div class="Hui-admin-tabNav-wp">
+        <ul id="min_title_list" class="acrossTab clearfix" style="width: 241px; left: 0px;">
+          <li class="active"><span title="我的桌面" data-href="{:url('admin/index/welcome')}">我的桌面</span><em></em></li>
+        </ul>
+      </div>
+      <div class="Hui-admin-tabNav-more btn-group" style="display: none;">
+        <a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a>
+        <a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a>
+      </div>
+    </div>
+
+    <div id="iframe_box" class="Hui-admin-article">
+      <div class="show_iframe">
+        <iframe id="iframe-welcome" data-scrolltop="0" scrolling="yes" frameborder="0" src="{:url('admin/index/welcome')}"></iframe>
+      </div>
+    </div>
+  </section>
+  <div class="contextMenu" id="Huiadminmenu">
+    <ul>
+      <li id="closethis">关闭当前 </li>
+      <li id="closeother">关闭其他 </li>
+      <li id="closeall">关闭全部 </li>
+    </ul>
+  </div>
+  {/block}
+
+{block name="dyjs"}
+  <!--请在下方写此页面业务相关的脚本-->
+  <script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+ <script>
+	  $('#userout').click(function(){
+		  var name = '{$Think.session.Adminuser.name}';
+				 $.post("{:url('Login/loginout')}",{name:name},function(data){
+					layer.msg(data.msg,{icon:6,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});					
+				 });
+	  });
+  </script>
+  	  <script>
+	  
+	  //系统更新点击触发弹出层
+	  function modaldemo(obj){
+	      var sta = 1;
+	      var st = "";
+	        layer.msg('正在检测…', { icon: 16, shade: 0.21,shadeClose:true,time:2000 },function(){
+	      $.post("{:url('Update/get_version')}",function(data){
+	            if(data.status==sta){
+			    $("#bbh").html(data.version);
+			    for(n=0;n<data.update_log.length;n++){
+			        st += "<span>"+data.update_log[n]+"</span><br>"
+			    }
+			    $("#loglist").html(st);
+			    $("#modal-demo").modal("show");
+			}else{
+			        layer.msg(data.msg, {icon:1,time: 2000}, function() {
+					location.reload();
+				});
+			}
+	        });
+		 });
+        }
+        
+        //系统更新进度条
+        function modaldemos(othis){
+            $("#modal-demo").modal("hide")
+            $("#modal-demos").modal("show")
+            //动态进度条监听事件
+    	    layui.use('element', function(){
+            var element = layui.element;
+            
+            $.post("{:url('Update/entrance')}");
+                var n = 0, timer = setInterval(function(){
+                n = n + Math.random()*4|0;  
+                if(n>100){
+                  n = 100;
+                  clearInterval(timer);
+                  $("#modal-demos").modal("hide");
+                  layer.msg("更新完成!", {icon:1,time: 3000}, function() {
+					location.reload();
+				});
+                  //othis.removeClass(DISABLED);
+                }
+                element.progress('demo', n+'%');
+              }, 300+Math.random()*1000);
+            });
+        }
+        
+	  
+	    function clearPhp(obj,url) {
+	      //询问框
+	      layer.confirm('您确定要清除吗？', {
+	            btn: ['确定','取消'] //按钮
+	          },
+	          function(){
+	            $.get(url,function(info){
+	              if(info.code === 1){
+	                setTimeout(function () {location.href = '';}, 1000);
+	              }
+	              layer.msg(info.msg);
+	            });
+	          },
+	          function(){});
+	    }
+	  </script>
+  {/block}
+</body>
+</html>

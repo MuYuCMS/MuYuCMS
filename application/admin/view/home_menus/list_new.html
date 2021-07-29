@@ -1,0 +1,266 @@
+{include file='public/meta' }
+
+	<title>添加栏目</title>
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-category-add">
+					<div id="tab-category" class="HuiTab">
+						<div class="tabBar cl"><span>栏目配置</span></div>
+						<div class="tabCon">
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>栏目名称：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="" id="title" placeholder="请输入栏目名称" name="title">
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>栏目地址：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="内部链接" id="href" placeholder="栏目外部链接地址(例如:muyucms.com)" name="href" disabled>
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>链接属性：</label>
+								<div class="form-controls col-xs-8 col-sm-6"><span class="select-box">
+									<select class="select valid" name="links" id="select" onchange="sel()">
+											<option value="0" selected>内部链接</option>
+											<option value="1">外部链接</option>
+										</select>
+								</span></div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>栏目属性：</label>
+								<div class="form-controls col-xs-8 col-sm-6"><span class="select-box">
+									<select class="select valid" name="type">
+											<option value="0" selected>列表</option>
+											<option value="99">首页</option>
+										</select>
+								</span></div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>栏目所属：</label>
+								<div class="form-controls col-xs-8 col-sm-6"> <span class="select-box">
+									<select class="select" id="" name="pid">
+										<option value="0">顶级栏目</option>
+										{foreach $menunew as $val}
+										<option value="{$val.id}">{$val.title}</option>
+										{/foreach}
+									</select>
+									</span> </div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>栏目背景图：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="" placeholder="请输入图片地址或本地上传" id="icon" name="titlepic">
+									<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+									<botton type="button" class="btn btn-secondary radius" style="margin-left: 10px;margin-top: 10px;" id="localad">本地图片</botton>
+									
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>栏目ICO：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="" placeholder="如：icon-shouye" name="icon">
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>栏目描述：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="" placeholder="请输入栏目描述内容" name="comment">
+								</div>
+								<div class="col-3"> </div>
+							</div>
+
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+							
+							<input class="btn btn-primary radius" type="button" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 展示所有图片 -->
+	<div id="lcms_notive">
+		<ul id="imglist" class="imglist">
+			
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
+	<!-- 展示所有图片end -->
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<style>
+		#lcms_notive{
+			width: 370px;
+			margin: 20px auto;
+			display: none;
+		}
+		#lcms_notive .imglist {
+			
+		}
+		#imglist li{
+			float: left;
+			width: 175px;
+			margin: 5px;
+		}
+		#imglist .photolist{
+			max-width: 100%;
+			padding: 1px;
+			border: 2px solid #ccc;
+			opacity: 0.7;
+			
+		}
+		#imglist .active{
+			border: 3px solid green !important;
+			opacity: 1 !important;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			$("#tab-category").Huitab();
+		});
+		/* 表单验证，提交 */
+		$("form").children().change(function(){
+		$("#submit").removeClass('disabled');	
+		});
+		
+		$("#submit").on("click",function(){
+			var Data={};
+			var form_arr=$('#form-category-add').serializeArray();
+			$.each(form_arr,function(){
+				Data[this.name]=this.value;
+			})
+		var name = $("#title").val();
+		var pwd = $("#href").val();
+		if(name == ""){
+					 layer.msg('栏目名称不可为空!',{icon:2,time:2000},function(){
+						 $("#title").focus();
+					 });
+		}else{
+						 if(pwd == ""){
+							layer.msg('栏目跳转地址不能为空!',{icon:2,time:2000},function(){
+								$("#href").focus();
+							}); 
+						 }else{
+						     console.log(Data);
+								 layer.confirm('确认要添加该栏目吗？',function(index){
+								 $.post("{:url('HomeMenus/save')}",Data,function(data){
+								//console.log(Data);
+								 
+								layer.msg(data.msg,{time:2000},function(){
+									//if(data.url) location.href = data.url;
+									window.parent.location.reload();
+								});
+								 });
+								  });
+							 }
+		}
+		});
+	</script>
+	<script>
+	function sel(){
+	    var zt = $("#select option:selected").val();
+	    if(zt == 1){
+	        $('#href').attr("disabled",false);
+	        $("#href").attr("value","");
+	    }else{
+	        $('#href').attr("disabled",true);
+	        $("#href").attr("value","内部链接");
+	    }
+	}
+		/*
+		*本地图片选择
+		*/
+	   $("#localad").click(function(){
+		   //获取所有图片路径
+		   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/menubg"},function(data){
+			   //讲返回数组中文件赋予给弹窗
+			   var str = "";
+			   for(i = 0;i < data.msg.length;i++){
+				   str += "<li><img src='/../public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+			   }
+			   $("#imglist").html(str);
+			   //弹出弹窗加载图片列表
+			   layer.open({
+			           type: 1 
+			           ,title: '选择本地图片'
+			           ,area: ['400px', '500px']
+			           ,shade: 0.3
+			           ,maxmin: true
+			           ,offset: [
+			             ($(window).height()/3)-180
+			             ,($(window).width()/2)-185
+			           ] 
+			           ,content: $("#lcms_notive")
+			           ,btn: ['确定', '返回'] 
+			           ,yes: function(){
+			             //将选中图片地址赋值给icon
+						 imgurl = $(".active").attr("src");
+						 $("#icon").val(imgurl);
+						 //关闭弹窗
+						 layer.closeAll();
+			           }
+			         });
+		   });
+		   
+	   });
+	   /*
+	   *点击图片操作
+	   */
+	  function activeImg(obj){
+		  $(".photolist").removeClass("active");
+		  $(obj).addClass('active');
+	  }
+	   /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#lcaupload' //绑定元素
+	    ,url: "{:url('HomeMenus/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#icon").val(res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

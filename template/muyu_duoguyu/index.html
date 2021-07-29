@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{muy:siteseo name='name'} - {muy:siteseo name='ftitle'}</title>
+<meta name="keywords" content="{muy:siteseo name='key'}"/>
+<meta name="description" content="{muy:siteseo name='desc'}"/>
+<link href="__INDEXST__static/css/dgy.base.css" rel="stylesheet" type="text/css"/>
+<link href="__INDEXST__static/css/dgy.grid.v.css" rel="stylesheet" type="text/css"/>
+<link href="__INDEXST__static/css/dgy.nav.t.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="__INDEXST__static/css/swiper.min.css"/>
+<link href="__INDEXST__static/css/font_1809908_xpn2c7cw8fi.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="/favicon.ico"/>
+</head>
+<body>
+<div class="baseLayout">
+        	<!--头部-->
+			{include file='public/header'}
+			<!--头部end-->
+	<div class="productGrid">
+		<div class="topFocusWrapper">
+			<div class="planetGroup">
+				<i class="planet a1 animateBalloon2"></i><i class="planet a2 animateBalloon4"></i><i class="planet a3 animateBalloon"></i><i class="planet a4 animateBalloon3"></i>
+			</div>
+			<div class="content">
+				<div class="textWrapper">
+					<h2>紧跟行业趋势，精选优质好源码！</h2>
+                        <div class="searchWrap">
+                            <form action="{:url('index/search/index')}" target="_blank">
+                                <input name="search" type="text" placeholder="搜索" id="searchInput" class="searchInput"/>
+                                <button class="searchBtn" type="submit"><i class="iconfont icondgy icon-sousuo"></i></button>
+                            </form>
+                        </div>
+                        <div class="tagBox">
+                        {muy:typ name="tag" limt="6" order="rand()"}    
+					    <a href="/search/index.html?search={$tag.title}" class="tag" target="_blank">{$tag.title}</a>
+					    {/muy:typ}
+					</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 精选 -->
+			<div class="fullTabsGroup index">
+			    <div class="bestflag linearOrange">精选</div>
+                <div class="softWrapper swiper-container" id="topBest">
+                    <div class="swiper-wrapper">
+        				   {muy:article id="2" name="jx" limt="20" top="1"}
+        				           				            		                            <div class="item swiper-slide">
+        				                               <a class="softBox" href="{muy:urls arid='$jx.id'}" title="{$jx.title}" target="_blank">
+        				                                   <img class="softIcon" src="{$jx.titlepic}" alt="{$jx.title}" title="{$jx.title}" />
+        				                                   <p>{$jx.title}</p>
+        				                               </a>
+        				                           </div>
+        				           				{/muy:article}
+        				                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+			</div>
+
+		{muy:nav name="lmyi" id="2"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-paihangbang"></i><b>{$lmyi.title}</b></h3>
+			<div class="tagWrap">
+				{muy:nav name="zdh" mid="$lmyi.id" limt="6"}
+				<a class="item" href="{muy:urls id='$zdh.id'}" target="_blank">{$zdh.title}</a>
+				{/muy:nav}
+				<a class="item" href="/artlist_2" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{muy:article name="lmyiw" id="$lmyi.id" limt="10"}
+				<div class="item">
+					<div class="tophead">
+						<a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank"><img class="focus" src="{$lmyiw.titlepic}" alt="{$lmyiw.title}"></a>
+					</div>
+					<div class="article">
+					    <em><i>#{$lmyiw.hm}</i><a href="/search/index.html?search={$lmyiw.tm}">{$lmyiw.tm}</a></em>
+						<h2><a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank">{$lmyiw.title}</a></h2>
+						<div>
+						    <time><i class="iconfont  icon-shijian"></i>{$lmyiw.create_time|date='Y-m-d'}</time>
+						    <span><i class="iconfont  icon-yanjing1"></i>{$lmyiw.browse}</span>
+						</div>
+					</div>
+				</div>
+           {/muy:article}
+		</div>
+		{/muy:nav}
+		{muy:nav name="lmyi" id="3"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-remen"></i><b>{$lmyi.title}</b></h3>
+			<div class="tagWrap">
+				{muy:typ name="ty" mid="$lmyi.id"}
+				<a class="item" href="/search/index.html?search={$ty.title}" target="_blank">{$ty.title}</a>
+				{/muy:typ}
+				<a class="item" href="/artlist_3" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{muy:article name="lmyiw" id="$lmyi.id" limt="10"}
+				<div class="item">
+					<div class="tophead">
+						<a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank"><img class="focus" src="{$lmyiw.titlepic}" alt="{$lmyiw.title}"></a>
+					</div>
+					<div class="article">
+					    <em><i>#{$lmyiw.hm}</i><a href="/search/index.html?search={$lmyiw.tm}">{$lmyiw.tm}</a></em>
+						<h2><a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank">{$lmyiw.title}</a></h2>
+						<div>
+						    <time><i class="iconfont  icon-shijian"></i>{$lmyiw.create_time|date='Y-m-d H:i:s'}</time>
+						    <span><i class="iconfont  icon-yanjing1"></i>{$lmyiw.browse}</span>
+						</div>
+					</div>
+				</div>
+           {/muy:article}
+		</div>
+		{/muy:nav}
+		{muy:nav name="lmyi" id="4"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-ceshi"></i><b>{$lmyi.title}</b></h3>
+			<div class="tagWrap">
+				{muy:typ name="ty" mid="$lmyi.id"}
+				<a class="item" href="/search/index.html?search={$ty.title}" target="_blank">{$ty.title}</a>
+				{/muy:typ}
+				<a class="item" href="/artlist_4" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="imgTextGrid layui-clear">
+			{muy:article name="lmyiw" id="$lmyi.id" limt="10"}
+				<div class="item">
+					<div class="tophead">
+						<a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank"><img class="focus" src="{$lmyiw.titlepic}" alt="{$lmyiw.title}"></a>
+					</div>
+					<div class="article">
+					    <em><i>#{$lmyiw.hm}</i><a href="/search/index.html?search={$lmyiw.tm}">{$lmyiw.tm}</a></em>
+						<h2><a href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank">{$lmyiw.title}</a></h2>
+						<div>
+						    <time><i class="iconfont  icon-shijian"></i>{$lmyiw.create_time|date='Y-m-d H:i:s'}</time>
+						    <span><i class="iconfont  icon-yanjing1"></i>{$lmyiw.browse}</span>
+						</div>
+					</div>
+				</div>
+           {/muy:article}
+		</div>
+		{/muy:nav}
+		            <!-- 推广 -->
+            <div class="adWrapper w2 ">
+                <div class="item">
+                    <div class="content"><a href="{muy:myad id='1' name='url'}" target="_blank" title="{muy:myad id='1' name='title'}"><img src="{muy:myad id='1' name='adphoto'}"></a></div>
+                </div>
+                <div class="item">
+                    <div class="content"><a href="{muy:myad id='1' name='url'}" target="_blank" title="{muy:myad id='1' name='title'}"><img src="{muy:myad id='1' name='adphoto'}"></a></div>
+                </div>
+            </div>
+		{muy:nav name="lmyi" id="5"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-wenda"></i><b>{$lmyi.title}</b></h3>
+			<div class="tagWrap">
+				{muy:typ name="ty" mid="$lmyi.id"}
+				<a class="item" href="/search/index.html?search={$ty.title}" target="_blank">{$ty.title}</a>
+				{/muy:typ}
+				<a class="item" href="/artlist_5" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="articleListWrapper">
+			{muy:article name="lmyiw" id="$lmyi.id" limt="10"}
+			<div class="richTextItem">
+				<a class="content" href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank">
+				<div class="article">
+					<div class="focusBox">
+						<img class="focus" src="{$lmyiw.titlepic}" alt="{$lmyiw.title}">
+					</div>
+					<div class="textBox">
+						<h4 class="title">{$lmyiw.title}</h4>
+						<p class="mb15">
+							{$lmyiw.abstract}
+						</p>
+						<p>
+							{$lmyiw.tm} · {$lmyiw.create_time|date='Y-m-d'}
+						</p>
+					</div>
+				</div>
+				</a>
+			</div>
+            {/muy:article}
+		</div>
+		{/muy:nav}
+
+
+
+            <!-- 最新内容 -->
+		{muy:nav name="lmyi" id="6"}
+		<div class="titleWrapper bb0">
+			<h3 class="titles"><i class="iconfont icon-wenda"></i><b>{$lmyi.title}</b></h3>
+			<div class="tagWrap">
+				{muy:typ name="ty" mid="$lmyi.id"}
+				<a class="item" href="/search/index.html?search={$ty.title}" target="_blank">{$ty.title}</a>
+				{/muy:typ}
+				<a class="item" href="/artlist_6" target="_blank">更多</a>
+			</div>
+		</div>
+		<div class="articleListWrapper">
+			{muy:article name="lmyiw" id="$lmyi.id" limt="10"}
+			<div class="richTextItem">
+				<a class="content" href="/article_{$lmyiw.id}" title="{$lmyiw.title}" target="_blank">
+				<div class="article">
+					<div class="focusBox">
+						<img class="focus" src="{$lmyiw.titlepic}" alt="{$lmyiw.title}">
+					</div>
+					<div class="textBox">
+						<h4 class="title">{$lmyiw.title}</h4>
+						<p class="mb15">
+							{$lmyiw.abstract}
+						</p>
+						<p>
+							{$lmyiw.tm} · {$lmyiw.create_time|date='Y-m-d'}
+						</p>
+					</div>
+				</div>
+				</a>
+			</div>
+            {/muy:article}
+		</div>
+		{/muy:nav}
+        </div>
+        	<!--低部-->
+			{include file='public/footer'}
+			<!--低部end-->
+</div>
+
+</body>
+</html>

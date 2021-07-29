@@ -1,0 +1,629 @@
+{include file='public/meta' }
+	<title>基本设置 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+    {load href="__ADMINLIB__layui/css/layui.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			系统设置
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+						<div id="tab-system" class="HuiTab">
+							<div class="tabBar cl"><span>基本设置</span><span>安全设置</span><span>功能配置</span></div>
+							<div class="tabCon">
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站名称：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="title" name="title" placeholder="一般不超过6个字符" value="{$system.title}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站简介：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="subtitle" name="ftitle" placeholder="一般不超过80个字符" value="{$system.ftitle}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关键词：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="keywords" name="keyword" placeholder="一般不超过100个字符" value="{$system.keyword}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="description" name="descri" placeholder="一般不超过200个字符" value="{$system.descri}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>网站LOGO：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" class="input-text" value="{$system.logo}" placeholder="请输入图片地址或本地上传" id="logo" name="logo">
+										<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcauploads">本地上传</botton>
+									</div>
+									<div class="col-3"> </div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>网站ICO：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" class="input-text" value="{$system.ico}" placeholder="请输入图片地址或本地上传" id="icon" name="ico">
+										<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+									</div>
+									<div class="col-3"> </div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>站长QQ：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="adminqq" name="adminqq" placeholder="如：888888888" value="{$system.adminqq}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>站长邮箱：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="adminemail" name="adminemail" placeholder="如：888888888@qq.com" value="{$system.adminemail}" class="input-text">
+									</div>
+								</div>
+								
+								<div class="row clearfix">
+								    <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>网站开关：</label>
+								    <div class="col-xs-1">
+								    <label>
+								        {eq name="$system.is_close" value="0"}
+								        <input class="btn-switch large" name="is_close" id="is_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large" name="is_close" id="is_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+								
+								
+								
+								
+								<!--隐藏发送is_update-->
+								<input type="hidden" name="is_update" value="{$system.is_update}">
+								<input type="hidden" name="id" value="{$system.id}">
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>底部版权信息：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="copyright" name="copyright" placeholder="&copy; 2020 木鱼CMS内容管理系统" value="{$system.copyright}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">备案号：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="record" name="record" placeholder="京ICP备00000000号" value="{$system.record}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">统计代码：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<textarea class="textarea" name="statistics">{$system.statistics}</textarea>
+									</div>
+								</div>
+							</div>
+							<div class="tabCon">
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">允许访问后台的IP列表：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<textarea class="textarea" name="dlip" placeholder="填写此IP后，后台只能通过这里的IP访问，多个IP用','分隔。">{$system.dlip}</textarea>
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">后台登录失败最大次数：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="" name="degree" value="{$system.degree}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">会员登录失败最大次数：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="" name="user_error" value="{$system.user_error}" class="input-text">
+									</div>
+								</div>
+							</div>
+							
+							<div class="tabCon">
+							    
+								<div class="row clearfix">
+								    <div class="tabBar rows">会员注册配置</div>
+								    <label class="form-label col-xs-4 col-sm-1 rows">注册开关：</label>
+								    <div class="col-xs-1 row">
+								    <label>
+								        {eq name="$system.userreg_close" value="0"}
+								        <input class="btn-switch large" name="userreg_close" id="userreg_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large" name="userreg_close" id="userreg_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+								
+								<div class="row clearfix">
+								    <div class="tabBar rows">投稿配置</div>
+								    <label class="form-label col-xs-4 col-sm-1 rows">投稿开关：</label>
+								    <div class="col-xs-1 row">
+								    <label>
+								        {eq name="$system.tg_close" value="0"}
+								        <input class="btn-switch large" name="tg_close" id="tg_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large" name="tg_close" id="tg_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+								
+								<div class="row clearfix">
+								    <div class="tabBar rows">全局评论配置</div>
+								    <label class="form-label col-xs-4 col-sm-1 rows">评论开关：</label>
+								    <div class="col-xs-1 row">
+								    <label>
+								        {eq name="$system.comment_close" value="0"}
+								        <input class="btn-switch large" name="comment_close" id="comment_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large" name="comment_close" id="comment_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+								
+								<div class="row clearfix">
+								    <label class="form-label col-xs-4 col-sm-1 rows">评论审核：</label>
+								    <div class="col-xs-1 row">
+								    <label>
+								        {eq name="$system.commentaudit_close" value="0"}
+								        <input class="btn-switch large up" name="commentaudit_close" id="commentAudit_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large up" name="commentaudit_close" id="commentAudit_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+								
+								<div class="row clearfix">
+								    <div class="tabBar rows">留言配置</div>
+								    <label class="form-label col-xs-4 col-sm-1 rows">留言开关：</label>
+								    <div class="col-xs-1 row">
+								    <label>
+								        {eq name="$system.feedback_close" value="0"}
+								        <input class="btn-switch large" name="feedback_close" id="feedback_close" type="checkbox" value="" checked>
+								        {else/}
+								        <input class="btn-switch large" name="feedback_close" id="feedback_close" type="checkbox" value="">
+								        {/eq}
+								    </label>
+								</div>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row clearfix">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+								<button class="btn btn-primary radius" type="button" id="btn"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</article>
+	</div>
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<!--开关样式开始-->
+	<style>
+	.row{margin-top: 15px;margin-left: 0px;
+    margin-right: 0px;}
+	.rows{margin-top: 15px;margin-left: 20px;}
+	.btn-switch {
+ cursor: pointer;
+ width: 52px;
+ height: 31px;
+ position: relative;
+ border: 1px solid #dfdfdf;
+ background-color: #fdfdfd;
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ border-radius: 20px;
+ background-clip: content-box;
+ display: inline-block;
+ -webkit-appearance: none;
+ user-select: none;
+ outline: none !important;
+ }
+
+.btn-switch.large {
+ width: 70px;
+ height: 30px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:before {
+ content: '';
+ width: 28px;
+ height: 28px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:after {
+ content: '关闭';
+color: #999;
+ left: 30px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+.btn-switch.large:checked:after {
+ content: '开启';
+color: #fff;
+ left: 10px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+ 
+.btn-switch.large.up:checked:after {
+    content: '自动';
+color: #fff;
+ left: 10px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+}
+.btn-switch.large.up:after {
+    content: '手动';
+color: #999;
+ left: 30px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+}
+
+
+
+.btn-switch.large:checked:before {
+ left: 40px;
+ }
+
+.btn-switch:before {
+ content: '';
+ width: 29px;
+ height: 29px;
+ position: absolute;
+ top: 0px;
+ left: 0;
+ border-radius: 20px;
+ background-color: #fff;
+ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+ }
+
+.btn-switch:checked {
+ border-color: #64bd63;
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ }
+
+.btn-switch:checked:before {
+ left: 21px;
+ }
+
+.btn-switch.btn-switch-animbg {
+ transition: background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-animbg:checked {
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ background-color: #64bd63;
+ transition: border-color 0.4s, background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:checked:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim {
+ transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+ }
+
+.btn-switch.btn-switch-anim:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim:checked {
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+ }
+
+.btn-switch.btn-switch-anim:checked:before {
+ transition: left 0.3s;
+ }
+
+input[type=checkbox]:checked::before {
+ font: normal normal normal 14px/2 FontAwesome;
+ }
+
+	</style>
+	<!--开关样式结束-->
+	<script type="text/javascript">
+	$(function(){
+		$('.skin-minimal input').iCheck({
+			checkboxClass: 'icheckbox-blue',
+			radioClass: 'iradio-blue',
+			increaseArea: '20%'
+		});
+		$("#tab-system").Huitab();
+	});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+	
+			/* 表单验证，提交 */
+			$("form").children().change(function(){
+			$("#btn").removeClass('disabled');	
+			});
+			$("#btn").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-system-base').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+			var name = $("#title").val();
+			var names = $("#subtitle").val();
+			var keyd = $("#keywords").val();
+			var desc = $("#description").val();
+			var is_close = $("#is_close");
+			var userreg_close = $("#userreg_close");
+			var comment_close = $("#comment_close");
+			var commentAudit_close = $("#commentAudit_close");
+			var feedback_close = $("#feedback_close");
+			var tg_close = $("#tg_close");
+			
+			var is_str=0
+			var user_str=0
+			var comment_str=0
+			var commentAudit_str=0
+			var feedback_str=0;
+			var tg_str=0;
+			if($(is_close).is(":checked")){
+					is_str = 0;
+				}else{
+				    is_str = 1;
+				}
+				
+				if($(userreg_close).is(":checked")){
+					user_str = 0;
+				}else{
+				    user_str = 1;
+				}
+				
+				if($(comment_close).is(":checked")){
+					comment_str = 0;
+				}else{
+				    comment_str = 1;
+				}
+				
+				if($(commentAudit_close).is(":checked")){
+					commentAudit_str = 0;
+				}else{
+				    commentAudit_str = 1;
+				}
+				
+				if($(feedback_close).is(":checked")){
+					feedback_str = 0;
+				}else{
+				    feedback_str = 1;
+				}
+				
+				if($(tg_close).is(":checked")){
+					tg_str = 0;
+				}else{
+				    tg_str = 1;
+				}
+				
+			Data['is_close'] = is_str;
+			Data['userreg_close'] = user_str;
+			Data['tg_close'] = tg_str;
+			Data['comment_close'] = comment_str;
+			Data['commentaudit_close'] = commentAudit_str;
+			Data['feedback_close'] = feedback_str;
+			if(name == ""){
+						 layer.msg('网站名称不能为空!',{icon:2,time:2000},function(){
+							 $("#websiteTitle").focus();
+						 });
+			}else{
+							 if(keyd == ""){
+								layer.msg('网站关键词不能为空!',{icon:2,time:2000},function(){
+									$("#websiteKeywords").focus();
+								}); 
+							 }else{
+								 if(desc == ""){
+								 	layer.msg('网站描述不能为空!',{icon:2,time:2000},function(){
+								 		$("#websiteDescription").focus();
+								 	});
+							 }else{
+								 if(names=="")
+								 {
+									layer.msg('网站副标题不能为空!',{icon:2,time:2000},function(){
+										$("#websiteSubtitle").focus();
+									}); 
+								 }else{
+								 //console.log(Data);
+									 $.post("{:url('system/update')}",Data,function(data){									 
+									layer.msg(data.msg,{time:2000},function(){
+										if(data.url) location.href = data.url;
+									});
+									 });
+								 
+							 }
+							} 
+					}
+			}
+			});
+			});
+	</script>
+	<!-- 网站logo上传 -->
+	<script>
+		/*
+		*本地图片选择
+		*/
+	   $("#localads").click(function(){
+		   //获取所有图片路径
+		   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/imgages"},function(data){
+			   //讲返回数组中文件赋予给弹窗
+			   var str = "";
+			   for(i = 0;i < data.msg.length;i++){
+				   str += "<li><img src='/../public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+			   }
+			   $("#imglist").html(str);
+			   //弹出弹窗加载图片列表
+			   layer.open({
+			           type: 1 
+			           ,title: '选择本地图片'
+			           ,area: ['370px', '500px']
+			           ,shade: 0.3
+			           ,maxmin: true
+			           ,offset: [
+			             ($(window).height()/3)-250
+			             ,($(window).width()/2)-185
+			           ] 
+			           ,content: $("#lcms_notive")
+			           ,btn: ['确定', '返回'] 
+			           ,yes: function(){
+			             //将选中图片地址赋值给icon
+						 imgurl = $(".active").attr("src");
+						 $("#logo").val(imgurl);
+						 //关闭弹窗
+						 layer.closeAll();
+			           }
+			         });
+		   });
+		   
+	   });
+	   /*
+	   *点击图片操作
+	   */
+	  function activeImg(obj){
+		  $(".photolist").removeClass("active");
+		  $(obj).addClass('active');
+	  }
+	   /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#lcauploads' //绑定元素
+	    ,url: "{:url('system/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#logo").val(res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+	
+	
+	
+	<!-- 网站ico上传 -->
+	<script>
+		/*
+		*本地图片选择
+		*/
+	   $("#localad").click(function(){
+		   //获取所有图片路径
+		   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/imgages"},function(data){
+			   //讲返回数组中文件赋予给弹窗
+			   var str = "";
+			   for(i = 0;i < data.msg.length;i++){
+				   str += "<li><img src='/../public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+			   }
+			   $("#imglist").html(str);
+			   //弹出弹窗加载图片列表
+			   layer.open({
+			           type: 1 
+			           ,title: '选择本地图片'
+			           ,area: ['370px', '500px']
+			           ,shade: 0.3
+			           ,maxmin: true
+			           ,offset: [
+			             ($(window).height()/3)-250
+			             ,($(window).width()/2)-185
+			           ] 
+			           ,content: $("#lcms_notive")
+			           ,btn: ['确定', '返回'] 
+			           ,yes: function(){
+			             //将选中图片地址赋值给icon
+						 imgurl = $(".active").attr("src");
+						 $("#icon").val(imgurl);
+						 //关闭弹窗
+						 layer.closeAll();
+			           }
+			         });
+		   });
+		   
+	   });
+	   /*
+	   *点击图片操作
+	   */
+	  function activeImg(obj){
+		  $(".photolist").removeClass("active");
+		  $(obj).addClass('active');
+	  }
+	   /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#lcaupload' //绑定元素
+	    ,url: "{:url('system/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#icon").val(res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

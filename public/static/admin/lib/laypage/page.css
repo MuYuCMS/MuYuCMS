@@ -1,0 +1,53 @@
+/*分页样式*/
+	    .pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	    .pagination li{margin:0px 2px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	    .pagination .active{background-color: #5a98de;color: #fff;}
+	    .pagination .disabled{color:#aaa;}
+	    .onfile {
+	        position: relative;
+	        display: inline-block;
+	        background: #D0EEFF;
+	        border: 1px solid #99D3F5;
+	        border-radius: 4px;
+	        padding: 4px 12px;
+	        overflow: hidden;
+	        color: #1E88C7;
+	        text-decoration: none;
+	        text-indent: 0;
+	        line-height: 20px;
+	    }
+	    .onfile input {
+	        position: absolute;
+	        font-size: 20px;
+	        right: 0;
+	        top: 0;
+	        opacity: 0;
+	    }
+	    .onfile:hover {
+	        opacity:0.8;
+	        color: #1E88C7
+	        /* background: #AADFFD;
+	         border-color: #78C3F3;
+	         color: #fff;
+	         text-decoration: none;*/
+	    }
+	    .daoru{position:absolute;top:1px;right:-90px;}
+	    .daorus{position:absolute;top:1px;right:-50px;height:35px}
+	    .bigbox{padding:10px}
+	    .bigbox input{margin-bottom:10px}
+	    #imgs{position:relative;}
+	    .batchs span{cursor:pointer;}
+	    .form-control{display: inline-block;padding: 5px;}
+	    .select_tmp{
+	        height:30px;
+	    }
+	    .layui-btn+.layui-btn{
+	        margin-left: 3px;
+	    }
+	    .ulall li{float:left;border: 1px solid #ccc;padding: 5px;margin-right: 5px;}
+	    .layui-tab-title li {
+	        padding: 0;
+	    }
+	    .layui-tab-title li a{
+	        padding: 0 25px;
+	    }

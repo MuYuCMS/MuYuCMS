@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link href="__ADMINST__h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINLIB__Hui-iconfont/1.0.9/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINST__business/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script><![endif]-->
+	<link href="__ADMINLIB__lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" />
+	<title>文件展示</title>
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			附件管理
+			<span class="c-gray en">/</span>
+			文件列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+			<article class="Hui-admin-content clearfix">
+				<div class="panel">
+					<div class="panel-body">
+			<div id="tab-system" class="HuiTab">
+				<div class="tabBar cl"><span>文件管理</span></div>
+				<div class="tabCon">
+				<div class="clearfix pd-5 bg-1 bk-gray">
+					<span class="f-l" style="color: red;"><i class='Hui-iconfont'>&#xe62f;</i>  删除的附件，所在对应位置(文章下载地址，直接下载地址)将会失效，请谨慎考虑!</span>
+					<span class="f-r">共有数据：<strong id="tujs"></strong> 条</span>
+				</div>
+				<div class="portfolio-content">
+					<ul class="clearfix Hui-admin-portfolio-area lists">
+					</ul>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+		</article>
+		</div>
+	
+
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMINLIB__lightbox2/2.8.1/js/lightbox.min.js"></script>
+<style type="text/css">
+	.picdels{
+		position: absolute;
+		right: 5px;
+		cursor: pointer;
+	}
+</style>
+<script type="text/javascript">
+$(function(){
+	$("#tab-system").Huitab();
+	$.post("{:url('Base/getMyfiles')}",{path:"public/upload/files"},function(data){
+		$(".Hui-admin-portfolio-area li").Huihover();
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li class='item'><div class='portfoliobox'><a data-fil='public"+data.msg[i]+"' class='picdels'><i class='Hui-iconfont'>&#xe6e2;</i></a><div class='picbox'><img src='/public/images/zip.svg'></div><div class='text'>"+data.msg[i]+"</div></div></li>"
+				   }
+				   $(".lists").html(str);
+				   $("#tujs").html(data.msg.length);
+				   $(".picdels").click(function() {
+				   	//获取删除信息
+				   	var filedel = $(this).attr('data-fil');
+				   	layer.msg('是否删除此文件', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['删除', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('Accessory/filesdel')}", {
+				   				filedelur: filedel
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+				   									location.reload();
+				   								});
+				   								
+				   			});
+				   		}
+				   	});
+				   })
+				   
+	});
+
+});
+</script>
+</body>
+</html>

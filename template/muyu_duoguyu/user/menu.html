@@ -1,0 +1,40 @@
+<div class="main_left">
+  <dl>
+  <dt> - 内容管理</dt>
+  <dd><a href="{:url('User/tg')}">在线投稿</a></dd>
+  <dd><a href="{:url('User/tg_record')}">投稿记录</a></dd>
+ </dl>
+ <dl>
+  <dt> - 账号设置</dt>
+  <dd><a href="{:url('User/update_means')}">修改资料</a></dd>
+  <dd><a href="{:url('User/update_passwd')}">修改密码</a></dd>
+ </dl>
+ <dl>
+  <dt> - 消息中心</dt>
+  <dd><a href="{:url('User/my_comment')}">我的评论</a></dd>
+  <dd><a href="{:url('User/my_feedback')}">我的留言</a></dd>
+ </dl>
+ <dl>
+  <dt> - 我的关注</dt>
+  <dd><a href="{:url('User/my_follow')}">我的关注</a></dd>
+  <dd><a href="{:url('User/my_fans')}">我的粉丝</a></dd>
+  <dd><a href="{:url('User/my_dynamic')}">我的动态</a></dd>
+ </dl> 
+  <dl>
+  <dt> - 我的主页</dt>
+  <dd><a href="{muy:urlsu id='$member.id'}">个人主页</a></dd>
+  <dd><a href="javascript:void(0);" id="out">退出登录</a></dd>
+ </dl>
+</div>  
+<script>
+$('#out').click(function(){
+		  var account = '{$Think.session.Member.account}';
+				 $.post("{:url('User/loginout')}",{account:account},function(data){
+					layer.msg(data.msg,{icon:1,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});					
+				 });
+	  });
+</script>

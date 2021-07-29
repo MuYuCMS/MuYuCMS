@@ -1,0 +1,209 @@
+{include file='public/meta' }
+
+	<title>分类编辑</title>
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-category-add">
+					<div id="tab-category" class="HuiTab">
+						<div class="tabBar cl"><span>分类编辑</span></div>
+						<div class="tabCon">
+							<input type="hidden" id="id" value="{$list.id}" name="id">
+							<input type="hidden" id="page" value="{$page}" name="page">
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类名称：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="{$list.title}" id="type_name" placeholder="请输入分类名称" name="title">
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>分类背景图：</label>
+								<div class="form-controls col-xs-8 col-sm-6">
+									<input type="text" class="input-text" value="{$list.titlepic}" placeholder="请输入图片地址或本地上传" id="icon" name="titlepic">
+									<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+									<botton type="button" class="btn btn-secondary radiu" style="margin-left: 10px;margin-top: 10px;" id="localad">本地图片</botton>
+									
+								</div>
+								<div class="col-3"> </div>
+							</div>
+							<div class="row clearfix">
+								<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类所属：</label>
+								<div class="form-controls col-xs-8 col-sm-6"> <span class="select-box">
+									<select class="select" id="" name="mid">
+										<option value="0">无关联</option>
+										{foreach $hmenus as $val}
+										<option value="{$val.id}" {$list['mid'] == $val['id'] ? 'selected' : ''}>{$val.title}</option>
+										{/foreach}
+									</select>
+									</span> </div>
+								<div class="col-3"> </div>
+							</div>
+
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+							<input class="btn btn-primary radius" type="button" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+							
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 展示所有图片 -->
+	<div id="lcms_notive">
+		<ul id="imglist" class="imglist">
+			
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
+	<!-- 展示所有图片end -->
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<style>
+		#lcms_notive{
+			width: 370px;
+			margin: 20px auto;
+			display: none;
+		}
+		#lcms_notive .imglist {
+			
+		}
+		#imglist li{
+			float: left;
+			width: 175px;
+			margin: 5px;
+		}
+		#imglist .photolist{
+			max-width: 100%;
+			padding: 1px;
+			border: 2px solid #ccc;
+			opacity: 0.7;
+			
+		}
+		#imglist .active{
+			border: 3px solid green !important;
+			opacity: 1 !important;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			$("#tab-category").Huitab();
+		});
+		/* 表单验证，提交 */
+		$("form").children().change(function(){
+		$("#submit").removeClass('disabled');	
+		});
+		
+		$("#submit").on("click",function(){
+			var Data={};
+			var form_arr=$('#form-category-add').serializeArray();
+			$.each(form_arr,function(){
+				Data[this.name]=this.value;
+			})
+		var name = $("#type_name").val();
+		if(name == ""){
+					 layer.msg('分类名称不可为空!',{icon:2,time:2000},function(){
+						 $("#type_name").focus();
+					 });
+		}else{
+
+					layer.confirm('确认要修改该分类吗？',function(index){
+					$.post("{:url('Types/update')}",Data,function(data){
+					//console.log(Data);
+					layer.msg(data.msg,{time:2000},function(){
+					//if(data.url) location.href = data.url;
+					window.parent.location.reload();
+					});
+					});
+					});
+				}
+		});
+	</script>
+	<script>
+		/*
+		*本地图片选择
+		*/
+	   $("#localad").click(function(){
+		   //获取所有图片路径
+		   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/menubg"},function(data){
+			   //讲返回数组中文件赋予给弹窗
+			   var str = "";
+			   for(i = 0;i < data.msg.length;i++){
+				   str += "<li><img src='/../public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+			   }
+			   $("#imglist").html(str);
+			   //弹出弹窗加载图片列表
+			   layer.open({
+			           type: 1 
+			           ,title: '选择本地图片'
+			           ,area: ['400px', '500px']
+			           ,shade: 0.3
+			           ,maxmin: true
+			           ,offset: [
+			             ($(window).height()/3)-180
+			             ,($(window).width()/2)-185
+			           ] 
+			           ,content: $("#lcms_notive")
+			           ,btn: ['确定', '返回'] 
+			           ,yes: function(){
+			             //将选中图片地址赋值给icon
+						 imgurl = $(".active").attr("src");
+						 $("#icon").val(imgurl);
+						 //关闭弹窗
+						 layer.closeAll();
+			           }
+			         });
+		   });
+		   
+	   });
+	   /*
+	   *点击图片操作
+	   */
+	  function activeImg(obj){
+		  $(".photolist").removeClass("active");
+		  $(obj).addClass('active');
+	  }
+	   /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#lcaupload' //绑定元素
+	    ,url: "{:url('Types/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#icon").val(res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

@@ -1,0 +1,261 @@
+{include file='public/meta' }
+	<title>评论列表 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			搜索评论
+			<span class="c-gray en">/</span>
+			评论列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+
+			<div class="panel mt-0">
+				<div class="panel-body">
+							<div class="clearfix">
+								<span class="f-l">
+									<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+									<a href="javascript:;" id="audit" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6a7;</i> 批量审核</a>
+								</span>
+								<span class="f-r l-30">共有数据：<strong>{$comment != ""? $comment->count('id') : '0'}</strong> 条</span>
+							</div>
+							<div class="clearfix mt-10">
+
+								<table class="table table-border table-bordered table-hover table-bg table-sort">
+									<thead>
+										<tr class="text-c">
+											<th width="25"><input type="checkbox" name="" value=""></th>
+											<th width="80">评论ID</th>
+											<th width="100">评论会员</th>
+											<th width="150">所在文章</th>
+											<th>评论内容</th>
+											<th width="120">时间</th>
+											<th width="50">状态</th>
+											<th width="100">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{foreach $comment as $val}
+										<tr class="text-c">
+											<td><input type="checkbox" value="{$val.id}" name=""></td>
+											<td>{$val.id}</td>
+											{if condition="!empty($val.name)"}
+											<td>{$val.name}
+											</td>
+											{else /}
+											<td>{$val.plname}</td>
+											{/if}
+											<td>{$val.title}</td>
+											<td>{$val.content}</td>
+											<td>{:date("Y-m-d",$val.create_time)}</td>
+											<td class="td-status">
+												{if condition="$val.status eq '已通过'"}
+												<span class="label label-success radius">{$val.status}</span>
+												{elseif condition="$val.status eq '已下架'"/}
+												<span class="label label-danger radius">{$val.status}</span>
+												{else /}
+												<span class="label radius">{$val.status}</span>
+												{/if}
+											</td>
+											<td class="td-manage">
+												<ul>
+													{if condition="$val.status eq '已通过'"}
+													<a style="text-decoration:none" onClick="comment_stop(this,'{$val.id}')" href="javascript:;" title="下架">下架</a>
+													{else /}
+													<a style="text-decoration:none" onClick="comment_start(this,'{$val.id}')" href="javascript:;" title="通过">通过</a>
+													{/if}
+													
+													<a title="删除" href="javascript:;" data-name="" data-id="{$val.id}" class="del">删除</a>
+												</ul>
+											</td>
+										</tr>
+											{/foreach}
+									</tbody>
+								</table>
+							</div>
+
+							<div id="laypage" class="text-c"></div>
+					
+				</div>
+			</div>
+		</article>
+	</div>
+
+	<!--_footer 作为公共模版分离出去-->
+	{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#search-datetime-start").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  language: "zh-cn",
+			  autoclose: true
+			});
+			$("#search-datetime-end").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  language: "zh-cn",
+			  minView: "month",
+			  autoclose: true
+			});
+			/* =====列表页的业务脚本可参考article-list.html 这个页面 ====== */
+      // 全选 页面调用
+      $(".table").HuicheckAll(
+        {
+          checkboxAll: 'thead input[type="checkbox"]',
+          checkbox: 'tbody input[type="checkbox"]'
+        },
+        function(checkedInfo) {
+          console.log(checkedInfo);
+        }
+      );
+		});
+		
+		/*评论-下架*/
+		function comment_stop(obj,id){
+		  layer.confirm('确认要下架吗？',function(index){
+			
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Comment/setstatus')}",{id:id},function(data){
+			$(obj).parents("tr").find(".td-manage").prepend('<a onClick="comment_start(this,'+id+')" href="javascript:;" title="通过" style="text-decoration:none">通过</a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label radius">待审核</span>');
+		    $(obj).remove();
+		    layer.msg('已下架！', {icon:5,time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		/*评论-通过*/
+		function comment_start(obj,id){
+		  layer.confirm('确认要通过吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Comment/setstatus')}",{id:id},function(data){
+			    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="comment_stop(this,'+id+')" href="javascript:;" title="下架" style="text-decoration:none">下架</a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已通过</span>');
+		    $(obj).remove();
+		    layer.msg('已通过！', {icon:6,time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		//删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Comment/delete')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+							location.reload();
+						});
+					})
+				}
+			});
+		})
+		
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			
+			layer.confirm('确认要批量删除吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Comment/deleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+			});
+			
+			
+
+		}
+		});
+		
+		//批量审核通过
+		$("#audit").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=new Array();
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+			//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+
+			layer.confirm('确认要审核通过吗？',function(index){
+			$.post("{:url('Comment/audit')}",{id:delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+			});
+		}
+		});
+		
+		// 点击搜索执行...
+		$("#search-submit").click(function(index) {
+			var time = $('#search-datetime-start').val();
+			var time1 = $('#search-datetime-end').val();
+			var search = $('#search-input').val();
+			if(time =="" && time1 =="" && search ==""){
+				layer.msg("请输入搜索内容!", {time: 2000});
+			}else{
+				layer.open({
+					type:2,
+					area:['100%','100%'],
+					content:'{:url('Comment/soulist')}'+'?so='+ search + '&t1='+time+'&t2='+time1,
+					end:function(){
+						location.reload();
+					}
+				});
+			}
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

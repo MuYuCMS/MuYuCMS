@@ -1,0 +1,364 @@
+{include file='public/meta' }
+
+	<title>友链编辑 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+    
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-member-add"> 
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>友链名称：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="{$link.title}" placeholder="网站名称" id="linkname" name="title">
+					</div>
+				</div>
+
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>友链跳转地址：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="{$link.url}" placeholder="网站地址" id="linkurl" name="url">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>友链图标：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="{$link.ico}" placeholder="网站图标" name="ico" id="linkico">
+						<div class="album-item" style="width:200px">
+						<div class="album-img">
+							<img id="photoshow" src="{$link.ico}">
+						</div>
+						</div>
+						<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+						<botton type="button" class="btn btn-secondary radius" style="margin-left: 10px;margin-top: 10px;" id="localad">本地图片</botton>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>友链站长邮箱：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="{$link.email}" placeholder="友链站长邮箱" id="linkemail" name="email">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>友链简介：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<textarea name="intro" cols="" rows="" id="linkintro" class="textarea" placeholder="这里是目标站的简介" >{$link.intro}</textarea>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*[值越小越靠前]</span>排序：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="{$link.orders}" placeholder="值越小越靠前" id="linkorder" name="orders">
+					</div>
+				</div>
+				<div class="row clearfix" id="listatus">
+					<label class="form-label col-xs-4 col-sm-3 rows">是否显示：</label>
+					<div class="form-controls col-xs-8 col-sm-6 row">
+					<label>
+						<input class="btn-switch large" name="status" id="status" type="checkbox" value="" {eq name="$link.status" value="显示"}checked{else/}{/eq}>
+					</label>
+				</div>
+				</div>
+	
+				<!--隐藏字段-->
+				<input type="hidden" name="id" value="{$link.id}">
+				<div class="row clearfix">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input class="btn btn-primary radius" type="botton" id="submit" value="&nbsp;&nbsp;确认&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<!-- 展示所有图片 -->
+	<div id="mcms_notive">
+		<ul id="imglists" class="imglist">
+			
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
+	<!-- 展示所有图片end -->
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<style>
+		#mcms_notive{
+			width: 370px;
+			margin: 20px auto;
+			display: none;
+		}
+		#mcms_notive .imglist {
+			
+		}
+		#imglists li{
+			float: left;
+			width: 175px;
+			margin: 5px;
+		}
+		#imglists .photolist{
+			max-width: 100%;
+			padding: 1px;
+			border: 2px solid #ccc;
+			opacity: 0.7;
+			
+		}
+		#imglists .active{
+			border: 3px solid green !important;
+			opacity: 1 !important;
+		}
+		
+		/* 标签 */
+		.Huitags-wraper{
+			width: 70.4%;
+			margin-right:10% ;
+			margin-left: 18%;
+		}
+		
+	</style>
+		<style>
+	.row{margin-top: 15px;margin-left: 0px;
+    margin-right: 0px;}
+	.rows{margin-top: 15px;margin-left: 0px;}
+	.btn-switch {
+ cursor: pointer;
+ width: 52px;
+ height: 31px;
+ position: relative;
+ border: 1px solid #dfdfdf;
+ background-color: #fdfdfd;
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ border-radius: 20px;
+ background-clip: content-box;
+ display: inline-block;
+ -webkit-appearance: none;
+ user-select: none;
+ outline: none !important;
+ }
+
+.btn-switch.large {
+ width: 70px;
+ height: 30px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:before {
+ content: '';
+ width: 28px;
+ height: 28px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:after {
+ content: '隐藏';
+color: #999;
+ left: 30px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+.btn-switch.large:checked:after {
+ content: '显示';
+color: #fff;
+ left: 10px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+.btn-switch.large:checked:before {
+ left: 40px;
+ }
+
+.btn-switch:before {
+ content: '';
+ width: 29px;
+ height: 29px;
+ position: absolute;
+ top: 0px;
+ left: 0;
+ border-radius: 20px;
+ background-color: #fff;
+ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+ }
+
+.btn-switch:checked {
+ border-color: #64bd63;
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ }
+
+.btn-switch:checked:before {
+ left: 21px;
+ }
+
+.btn-switch.btn-switch-animbg {
+ transition: background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-animbg:checked {
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ background-color: #64bd63;
+ transition: border-color 0.4s, background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:checked:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim {
+ transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+ }
+
+.btn-switch.btn-switch-anim:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim:checked {
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+ }
+
+.btn-switch.btn-switch-anim:checked:before {
+ transition: left 0.3s;
+ }
+
+input[type=checkbox]:checked::before {
+ font: normal normal normal 14px/2 FontAwesome;
+ }
+
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$("form").children().change(function(){
+			$("#submit").removeClass('disabled');	
+			});
+			//提交触发
+			$("#submit").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-member-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+				var linkstatus = $("#listatus input:checkbox");
+				var str = "";
+				if($(linkstatus).is(":checked")){
+					str = "1";
+				}else{
+				    str = "0";
+				}	
+				Data['status'] = str;	
+			if(Data['linkname'] == ""){
+						 layer.msg('友链名称不可为空!',{icon:2,time:2000},function(){
+							 $("#linkname").focus();
+						 });
+			}else{
+					if(Data['linkurl'] == ""){
+						layer.msg('友链跳转地址不能为空!',{icon:2,time:2000},function(){
+													 $("#linkurl").focus();
+													 });			 
+					}else {			
+								// 	 console.log(Data);
+									 layer.confirm('确认要修改吗？',function(index){
+									 $.post("{:url('Plug/linkupdate')}",Data,function(data){
+									 	layer.msg(data.msg, {time: 2000}, function() {
+											//if(data.url) location.href = data.url;
+											window.parent.location.reload();
+									 	});
+									 });
+									 });
+	 
+							 }
+					}
+			
+			});
+		});
+	</script>
+	<script>
+			/*
+			*本地图片选择
+			*/
+		   $("#localad").click(function(){
+			   //获取所有图片路径
+			   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/linkpic"},function(data){
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li><img src='/public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>";
+				   }
+				   $("#imglists").html(str);
+				   //弹出弹窗加载图片列表
+				   layer.open({
+				           type: 1 
+				           ,title: '选择本地图片'
+				           ,area: ['400px', '500px']
+				           ,shade: 0.3
+				           ,maxmin: true
+				           ,offset: [
+				             ($(window).height()/3)-180
+				             ,($(window).width()/2)-185
+				           ] 
+				           ,content: $("#mcms_notive")
+				           ,btn: ['确定', '返回'] 
+				           ,yes: function(){
+				             //将选中图片地址赋值给icon
+							 imgurl = $(".active").attr("src");
+							 $("#photoshow").attr("src",imgurl);
+							 $("#linkico").val(imgurl);
+							 //关闭弹窗
+							 layer.closeAll();
+				           }
+				         });
+			   });
+			   
+		   });
+		   /*
+		   *点击图片操作
+		   */
+		  function activeImg(obj){
+			  $(".photolist").removeClass("active");
+			  $(obj).addClass('active');
+		  }
+		   /*
+		   *本地图片上传的操作
+		   */
+		layui.use('upload', function(){
+		  var upload = layui.upload;
+		   
+		  //执行上传图片，并获取图片信息
+		  var uploadInst = upload.render({
+		    elem: '#lcaupload' //绑定元素
+		    ,url: "{:url('Plug/linkload')}" //上传接口
+		    ,done: function(res){
+		      //上传完毕回调
+			  // console.log(res);
+			  if(res.code == 1){
+				  $("#linkico").val(res.photo);
+				  $("#photoshow").attr("src",res.photo);
+				  layer.msg(res.msg,{time:2000});
+			  }else{
+				  layer.msg(res.msg,{time:2000});
+			  }
+		    }
+		    ,error: function(){
+		      //请求异常回调
+		    }
+		  });
+		});
+		</script>
+	
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

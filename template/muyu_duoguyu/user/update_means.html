@@ -1,0 +1,191 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+	  <title>会员中心 - 修改资料 - {muy:siteseo name='title'}</title>
+	  <meta name="keywords" content="{muy:siteseo name='key'}" />
+      <meta name="description" content="{muy:siteseo name='desc'}" />
+	  <link rel="stylesheet" href="__INDEXST__user/static/layer/theme/default/layer.css" id="layuicss-layer">
+	  <link href="__INDEXST__user/static/css/member_index.css" rel="stylesheet" type="text/css">
+      <link type="text/css" rel="stylesheet" href="__INDEXST__user/static/css/laydate.css">
+      <link type="text/css" rel="stylesheet" href="__INDEXST__user/static/css/laydate(1).css" id="LayDateSkin">
+      <link href="__INDEXST__user/static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+      <script type="text/javascript" src="__INDEXST__user/static/js/jquery-1.8.2.min.js"></script>
+      <script type="text/javascript" src="__INDEXST__user/static/layer/layer.js"></script>
+      <script type="text/javascript" src="__INDEXST__user/static/js/address.js"></script>
+      </head>
+<!--头部-->
+{include file='user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+    <!--侧边导航栏开始-->
+      {include file='user/menu'}
+      <!--侧边导航栏结束-->
+      <div class="main_right">
+        <div class="tit">
+            <h3>修改资料</h3>
+        </div>
+        <div class="main_cont">
+            <form method="post" action="" onsubmit="return chcekall(this)">
+                <table>
+                    <tbody>
+                        <tr>
+                        <td>会员名：</td>
+                        <td><input type="text" value="{$member.account}" class="input" disabled><span class="red">*</span></td>
+                    </tr>
+                    <tr>
+                        <td>昵称：</td>
+                        <td><input type="text" value="{$member.name}" name="name" id="name" class="input"></td>
+                    </tr>
+                    <tr>
+                        <td>性别：</td>
+                        <td>
+                            <select class="select valid" size="1" name="sex" id="">
+							{if condition="$member.sex eq '男'"}
+							<option value="0" selected>男</option>
+							<option value="1">女</option>
+							<option value="2">保密</option>
+							{elseif condition="$member.sex eq '女'"/}
+							<option value="0">男</option>
+							<option value="1" selected>女</option>
+							<option value="2">保密</option>
+							{else/}
+							<option value="0">男</option>
+							<option value="1">女</option>
+							<option value="2" selected>保密</option>
+							{/if}
+						    </select>
+						</td> 
+					</tr> 
+					<tr>
+                        <td>个人简介：</td>
+                        <td><textarea name="intro" id="intro" value="" class="textarea">{$member.intro}</textarea></td>
+                    </tr>
+                    <tr>
+                        <td>手机号码：</td>
+                        <td><input type="text" name="phone" id="phone" value="{$member.phone}" class="input"></td>
+                    </tr>
+                    <tr>
+                        <td>邮箱：</td>
+                        <td><input type="text" name="email" id="email" value="{$member.email}" class="input"></td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" placeholder="请输入验证码" class="input" required="" name="verif" id="captcha">
+                            	<img style="margin-bottom: -10px;" id="verif_img" src="{:captcha_src()}" onclick="this.src=this.src+'?'+Math.random()" class="qrcode verifyimg" title="看不清，换一张"></td>
+                        </tr>
+                        <tr>
+                        <td>邮箱验证码：</td>
+                        <td><input type="text" class="input" name="email_code" id="email_code" placeholder="邮箱验证码">
+            					 <a class="sendMail" onclick="send_code()"><span id="send_code">发送验证码</span><span id="send_show" style="display:none;">重新发送(60s)</span></a></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" name="dosubmit" class="submit" value="提交"></td>
+                    </tr>
+                </tbody></table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--验证码发送触发样式开始-->
+<style>
+.sendMail>span{cursor: pointer;}
+</style>
+<!--验证码发送触发样式结束-->
+<!--底部开始-->
+{include file='user/footer'}
+<!--底部结束-->
+  
+<script type="text/javascript">
+        var time = 0;
+		var res = null;
+		function setmytime(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $('#send_show').text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $('#send_show').text("重新发送(" + time + "s)");
+	        res = setTimeout("setmytime()", 1000);
+		}
+		function send_code() {
+		    var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+			if(!reg.test($("#email").val())){
+				layer.msg('电子邮箱格式不正确！', {icon:2,time: 1000});
+				$("#email").focus();
+				return false;
+			}
+			var phone= $("#phone").val();
+			if(phone.length!==11){
+				layer.msg('手机号码格式不正确！', {icon:2,time: 1000});
+				$("#phone").focus();
+				return false;
+			}
+			var captcha=$("#captcha").val();
+            if(captcha== ''){
+				layer.msg('验证码不能为空！', {icon:2,time: 1000});
+				$("#captcha").focus();
+				return false;
+			}
+		    
+			var code = $("#captcha").val()
+			if(time==0){
+				layer.msg('邮件发送中……', { icon: 16, shade: 0.21,shadeClose:true,time:2000 });
+				$.ajax({   
+					type: "post",   
+					url: "{:url('User/sendCode_means')}",   
+					dataType: "json",
+					async: false,	
+					data: "email="+$("#email").val()+"&verif="+code,		
+					success: function(msg){  
+						if(msg.code == 1){
+							$("#send_code").css('display','none'); 
+							$("#send_show").css('display','block'); 
+							time = 60;
+							res = setTimeout("setmytime()", 1000);	
+							layer.msg(msg.msg, {icon:1,time: 3000});		  
+						}else{
+							layer.msg(msg.msg, {icon:2,time: 2000});
+							$('#captcha+img').attr('src',$('#captcha+img').attr('src') + '?' + Math.random());
+							$("#captcha").focus();
+						}				 
+					} 
+				});
+			}else{
+				layer.msg('请 ' + time + ' 秒后再发送！', {icon:2,time: 2000});
+			}
+		}
+
+	function chcekall(obj){
+	    if($("#email").val() == ''){
+				layer.msg('邮箱验证码不能为空！', {icon:2,time: 1000});
+				$("#email").focus();
+				return false;
+			}
+	     
+			var dosubmit = false;
+			$.ajax({   
+				type: "post",
+				url: "{:url('User/update_meanss')}",   
+				dataType: "json",
+				async: false,
+				data:  $(obj).serialize(),
+				success: function(msg){  
+					if(msg.code == 1){
+						layer.msg(msg.msg, {icon:1,time: 3000});
+						location.reload();
+					}else{
+							layer.msg(msg.msg, {icon:2,time: 2000});
+					        $('#captcha+img').attr('src',$('#captcha+img').attr('src') + '?' + Math.random());
+							$("#captcha").focus();
+					}				 
+				} 
+			});
+			return dosubmit ? true : false;
+			}
+</script>
+		
+</body></html>

@@ -1,0 +1,243 @@
+{include file='public/meta' }
+
+	<title>添加广告 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+    
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-member-add"> 
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>广告名称：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="广告名称" id="title" name="title">
+					</div>
+				</div>
+
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>广告跳转地址：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="广告地址" id="url" name="url">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>广告展示图：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="广告展示图" name="adphoto" id="adphoto">
+						<div class="album-item" style="width:200px">
+						<div class="album-img">
+							<img id="photoshow" src="">
+						</div>
+						</div>
+						<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+						<botton type="button" class="btn btn-secondary radius" style="margin-left: 10px;margin-top: 10px;" id="localad">本地图片</botton>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>代码广告：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<textarea name="adtext" cols="" rows="" id="adtext" class="textarea" placeholder="填写代码后前台调用也可以调用图片形式" ></textarea>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>广告到期时间：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" placeholder="不填写则不过期" value="" name="outtime" id="outtime">
+					</div>
+				</div>
+				<div class="row clearfix" id="comments">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否显示：</label>
+					<div class="form-controls col-xs-8 col-sm-6 skin-minimal">
+						<div class="switch" data-on-label="显示" data-off-label="隐藏">
+						    <input type="checkbox" checked />
+						</div>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input class="btn btn-primary radius" type="botton" id="submit" value="&nbsp;&nbsp;确认&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<!-- 展示所有图片 -->
+	<div id="lcms_notive">
+		<ul id="imglist" class="imglist">
+			
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
+	<!-- 展示所有图片end -->
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<style>
+		#lcms_notive{
+			width: 370px;
+			margin: 20px auto;
+			display: none;
+		}
+		#lcms_notive .imglist {
+			
+		}
+		#imglist li{
+			float: left;
+			width: 175px;
+			margin: 5px;
+		}
+		#imglist .photolist{
+			max-width: 100%;
+			padding: 1px;
+			border: 2px solid #ccc;
+			opacity: 0.7;
+			
+		}
+		#imglist .active{
+			border: 3px solid green !important;
+			opacity: 1 !important;
+		}
+		
+		/* 标签 */
+		.Huitags-wraper{
+			width: 70.4%;
+			margin-right:10% ;
+			margin-left: 18%;
+		}
+		
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$("#outtime").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  autoclose: true
+			});
+			$("form").children().change(function(){
+			$("#submit").removeClass('disabled');	
+			});
+			//提交触发
+			$("#submit").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-member-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+				var addstatus = $("#comments input:checkbox");
+				var str = "0";
+				if($(addstatus).is(":checked")){
+					str = "1";
+				}	
+				Data['status'] = str;	
+			if(Data['title'] == ""){
+						 layer.msg('广告名称不可为空!',{icon:2,time:2000},function(){
+							 $("#title").focus();
+						 });
+			}else{
+					if(Data['url'] == ""){
+						layer.msg('广告跳转地址不能为空!',{icon:2,time:2000},function(){
+													 $("#url").focus();
+													 });			 
+					}else {			
+									 //console.log(Data);
+									 layer.confirm('确认要添加吗？',function(index){
+									 $.post("{:url('Plug/addsave')}",Data,function(data){
+									 	layer.msg(data.msg, {time: 2000}, function() {
+											//if(data.url) location.href = data.url;
+											window.parent.location.reload();
+									 	});
+									 });
+									 });
+	 
+							 }
+					}
+			
+			});
+		});
+	</script>
+	<script>
+			/*
+			*本地图片选择
+			*/
+		   $("#localad").click(function(){
+			   //获取所有图片路径
+			   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/ggpic"},function(data){
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li><img src='/public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+				   }
+				   $("#imglist").html(str);
+				   //弹出弹窗加载图片列表
+				   layer.open({
+				           type: 1 
+				           ,title: '选择本地图片'
+				           ,area: ['400px', '500px']
+				           ,shade: 0.3
+				           ,maxmin: true
+				           ,offset: [
+				             ($(window).height()/3)-180
+				             ,($(window).width()/2)-185
+				           ] 
+				           ,content: $("#lcms_notive")
+				           ,btn: ['确定', '返回'] 
+				           ,yes: function(){
+				             //将选中图片地址赋值给icon
+							 imgurl = $(".active").attr("src");
+							 $("#photoshow").attr("src",imgurl);
+							 $("#adphoto").val(imgurl);
+							 //关闭弹窗
+							 layer.closeAll();
+				           }
+				         });
+			   });
+			   
+		   });
+		   /*
+		   *点击图片操作
+		   */
+		  function activeImg(obj){
+			  $(".photolist").removeClass("active");
+			  $(obj).addClass('active');
+		  }
+		   /*
+		   *本地图片上传的操作
+		   */
+		layui.use('upload', function(){
+		  var upload = layui.upload;
+		   
+		  //执行上传图片，并获取图片信息
+		  var uploadInst = upload.render({
+		    elem: '#lcaupload' //绑定元素
+		    ,url: "{:url('Plug/addload')}" //上传接口
+		    ,done: function(res){
+		      //上传完毕回调
+			  // console.log(res);
+			  if(res.code == 1){
+				  $("#adphoto").val(res.photo);
+				  $("#photoshow").attr("src",res.photo);
+				  layer.msg(res.msg,{time:2000});
+			  }else{
+				  layer.msg(res.msg,{time:2000});
+			  }
+		    }
+		    ,error: function(){
+		      //请求异常回调
+		    }
+		  });
+		});
+		</script>
+	
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

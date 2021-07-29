@@ -1,0 +1,133 @@
+{include file='public/meta' }
+
+<title>编辑管理员 - 管理员管理 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-admin-add">
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员：</label>
+						<div class="form-controls col-xs-8 col-sm-7">
+							<input type="text" class="input-text" value="{$admin.name}" placeholder="" id="name" name="name" {$admin.id == 1 ? "disabled" : ''}>
+						</div>
+					</div>
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新的密码：</label>
+						<div class="form-controls col-xs-8 col-sm-7">
+							<input type="password" class="input-text" autocomplete="off" value="" placeholder="新密码" id="password" name="password">
+						</div>
+					</div>
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色组：</label>
+						<div class="form-controls col-xs-8 col-sm-7"> <span class="select-box">
+							<select class="select" id="" name="roles">
+								{foreach $rolename as $val}
+								<option value="{$val.id}" {$admin['roles'] == $val['id'] ? 'selected' : ''}>{$val.name}</option>
+								{/foreach}
+							</select>
+							</span> </div>
+						<div class="col-3"> </div>
+					</div>
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+						<div class="form-controls col-xs-8 col-sm-7">
+							<input type="text" class="input-text" placeholder="@" value="{$admin.email}" name="email" id="email">
+						</div>
+					</div>
+					<!--隐藏字段-->
+					<input type="hidden" name="id" value="{$admin.id}">
+					<div class="row clearfix">
+						<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+							<input class="btn btn-primary radius" type="button" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			/* 通过iCheck插件，美化checkbox */
+			// $('.skin-minimal input').iCheck({
+			// 	checkboxClass: 'icheckbox-blue',
+			// 	radioClass: 'iradio-blue',
+			// 	increaseArea: '20%'
+			// });
+
+
+//验证用户名
+			$("#name").change(function(){
+				$.post("{:url('Admin/checkname')}",{name:$(this).val()},function(data){
+					if(data.status == 1){
+						layer.msg(data.message,{time:2000});
+						$("#submit").removeClass('disabled');
+					}else{
+						layer.msg(data.message,{time:2000});
+						$("#submit").toggleClass('disabled');
+					}
+				 });
+			});
+			//验证邮箱
+			$("#email").change(function(){
+				$.post("{:url('Admin/checkemail')}",{email:$(this).val()},function(data){				 
+				if(data.status == 1){
+					layer.msg(data.message,{time:2000});
+					$("#submit").removeClass('disabled');
+				}else{
+					layer.msg(data.message,{time:2000});
+					$("#submit").toggleClass('disabled');
+				}
+				 });
+			});
+			/* 表单验证，提交 */
+			$("form").children().change(function(){
+			$("#submit").removeClass('disabled');	
+			});
+			
+			$("#submit").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-admin-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+			var name = $("#name").val();
+			var ver = $("#email").val();
+			if(name == ""){
+						 layer.msg('账号为空!',{icon:2,time:2000},function(){
+							 $("#name").focus();
+						 });
+			}else{
+							 if(ver == ""){
+								layer.msg('邮箱为空!',{icon:2,time:2000},function(){
+									$("#email").focus();
+								}); 
+							 }else{
+								 
+									 $.post("{:url('Admin/update')}",Data,function(data){
+									//console.log(Data);
+									 
+									layer.msg(data.msg,{time:2000},function(){
+										//if(data.url) location.href = data.url;
+										window.parent.location.reload();
+									});
+									 });
+								 
+							 }
+					
+			}
+			});
+			});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

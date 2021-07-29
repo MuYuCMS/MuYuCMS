@@ -1,0 +1,200 @@
+{include file='public/meta' }
+
+<title>管理员列表 - 管理员列表 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			管理员管理
+			<span class="c-gray en">/</span>
+			管理员列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+
+		<article class="Hui-admin-content clearfix">
+			<div class="panel mt-0">
+				<div class="panel-body">
+					<div class="clearfix">
+						{eq name="$Think.session.Adminuser.id" value="1"}
+						<span class="f-l">
+							<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+								批量删除</a>
+							<a href="javascript:;" onclick="admin_add('添加管理员','{:url('admin/newadd')}')" class="btn btn-primary radius"><i
+								 class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
+						</span>
+						{/eq}
+						<span class="f-r">共有数据：<strong>{$admin->count('id')}</strong> 条</span>
+					</div>
+					<div class="mt-20 clearfix">
+						<table class="table table-border table-bordered table-bg table-hover table-sort">
+							<thead>
+								
+								<tr class="text-c">
+									<th width="25"><input type="checkbox" name="" value=""></th>
+									<th width="40">ID</th>
+									<th width="150">登录名</th>
+									<th width="150">邮箱</th>
+									<th width="150">角色</th>
+									<th width="150">登录次数</th>
+									<th width="130">创建时间</th>
+									<th width="100">状态</th>
+									<th width="100">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach $admin as $vale}
+								<tr class="text-c">
+									<td><input type="checkbox" value="{$vale.id}" name=""></td>
+									<td>{$vale.id}</td>
+									<td>{$vale.name}</td>
+									<td>{$vale.email}</td>
+									{foreach $vale['rolesname'] as $va}
+									<td>{$va.name}</td>
+									{/foreach}
+									<td>{$vale.count}(次)</td>
+									<td>{:date("Y-m-d",$vale.create_time)}</td>
+									<td class="td-status">
+										{if condition="$vale.status eq '已启用'"}
+										<span class="label label-success radius">{$vale.status}</span>
+										{else /}
+										<span class="label radius">{$vale.status}</span>
+										{/if}
+										</td>
+									<td class="td-manage">
+										{eq name="$Think.session.Adminuser.id" value="1"}
+										{if condition="$vale.status eq '已启用'"}
+										<a style="text-decoration:none" onClick="admin_stop(this,{$vale.id})" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>
+										{else /}
+										<a style="text-decoration:none" onClick="admin_start(this,'{$vale.id}')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>
+										{/if}
+										{/eq}
+										<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','{:url('Admin/edit')}'+'?id='+{$vale.id})"
+										 class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+										 {eq name="$Think.session.Adminuser.name" value="admin"}
+										 <a title="删除" data-name="{$vale.name}" data-id="{$vale.id}" class="ml-5 del" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+										 {/eq}
+										 </td>
+								</tr>
+								{/foreach}
+							</tbody>
+						</table>
+					</div>
+				{if condition="$Think.session.Adminuser.id eq 1"}
+				{$admin|raw}
+				{/if}
+				</div>
+			</div>
+		</article>
+	</div>
+
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script>
+		// 全选 页面调用
+		$(".table").HuicheckAll(
+		  {
+		    checkboxAll: 'thead input[type="checkbox"]',
+		    checkbox: 'tbody input[type="checkbox"]'
+		  },
+		  function(checkedInfo) {
+		    console.log(checkedInfo);
+		  }
+		);
+		
+		
+		//删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除\"' + name + '\"管理员?', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Admin/delete')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+						});
+					})
+				}
+			});
+		})
+	</script>
+	<script>
+		/*管理员-停用*/
+		function admin_stop(obj,id){
+		  layer.confirm('确认要停用吗？',function(index){
+			  var seid=id
+			  if(seid==1)
+			  {
+				  layer.msg('初始化管理员不可停用！',{icon:5,time:1000});
+				  return false;
+			  }
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Admin/setstatus')}",{id:id});
+			
+		    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,'+id+')" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label radius">已禁用</span>');
+		    $(obj).remove();
+		    layer.msg('已停用!',{icon: 5,time:1000});
+		  });
+		}
+		
+		/*管理员-启用*/
+		function admin_start(obj,id){
+		  layer.confirm('确认要启用吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Admin/setstatus')}",{id:id});
+		
+		    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,'+id+')" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+		    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+		    $(obj).remove();
+		    layer.msg('已启用!', {icon: 6,time:1000});
+		  });
+		}
+		
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			layer.confirm('确认要批量删除吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Admin/deleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+				});
+			});
+			});
+		}
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

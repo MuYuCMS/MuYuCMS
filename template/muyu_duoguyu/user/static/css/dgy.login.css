@@ -1,0 +1,67 @@
+@charset "UTF-8";
+/*
+* login
+*/
+body{ height:100%;}
+
+.footerInfo{width: 100%; text-align: center; line-height: 24px; color: #666; font-size: 12px; position: fixed; left: 0; bottom: 20px; overflow: hidden; padding-top: 10px; border-top: 1px solid #eee;}
+.footerInfo a{ color:#409eff;}
+
+.dogo_logo{ display:block; position:absolute; left:20px; top:20px; }
+.dogo_logo .logo{ display:block; height:30px;}
+
+.dogo_loginwp .topgroup { height: 60px; overflow: hidden; }
+.dogo_loginwp .topgroup .navwrap { width: 1100px; height: 60px; margin: 0 auto; overflow: hidden; }
+.dogo_loginwp .topgroup .navwrap .logo { float: left; height: 50px; width: 100px; background:url(../images/logo.png) no-repeat center; background-size: 32px; display: block; overflow: hidden; line-height: 50px; color: #333; font-size: 14px; margin-top:5px; }
+.dogo_loginwp .topgroup .navwrap .rtwrap { float: right; display: inline-block; text-align: right; height: 14px; line-height: 14px; color: #333; font-size: 12px; overflow: hidden; margin-top: 20px; }
+.dogo_loginwp .topgroup .navwrap .rtwrap span { padding: 0 10px; border-left: 1px solid #aaa; }
+.dogo_loginwp .topgroup .navwrap .rtwrap span.bl0 { border-left: 0; }
+.dogo_loginwp .topgroup .navwrap .rtwrap a { color: #333; }
+.dogo_loginwp { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; height: 100%; background: #fff url(../images/login-bg.png) no-repeat; background-size: cover; }
+.dogo_loginwp .midgroup { width: 420px; margin: 10% auto 120px; position:relative;}
+
+/*
+.dogo_loginwp .midgroup { height: 350px; width: 1165px; margin: 70px auto 120px; position:relative;}
+.dogo_loginwp .midgroup .loginwrap { width: 420px; height: auto; position:fixed; left:50%; top:40%; margin-top:-180px; margin-left:-210px; overflow:hidden; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+*/
+
+.dogo_loginwp .midgroup .logingroup{ padding:40px; overflow:hidden;}
+.dogo_loginwp .midgroup .logingroup header{padding-bottom:30px; text-align:center; color:#999; font-size:12px; overflow:hidden;}
+.dogo_loginwp .midgroup .logingroup footer{margin-top:10px; padding-top:10px; border-top:1px dotted #ddd; color:#999; font-size:12px; overflow:hidden;}
+.dogo_loginwp .midgroup .logingroup footer .cf_green{color:#04ac71;}
+.dogo_loginwp .midgroup .logingroup footer .cf_blue{color:#0ad;}
+.dogo_loginwp .midgroup .logingroup footer .cf_999{color:#999;}
+.dogo_loginwp .midgroup .logingroup h2{ width:80px; height:80px; background:url(../images/logo_100.png) no-repeat; background-size:80px 80px; overflow:hidden; margin:5px auto; text-indent: -999em; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius:50%;}
+.dogo_loginwp .midgroup .logingroup section{ margin-bottom:15px; position:relative; border:1px solid #ddd; background:#fff; font-size:12px; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; overflow:hidden; color:#333;}
+.dogo_loginwp .midgroup .logingroup section .input_block{ display:block; width:100%; height:40px; line-height:20px; padding:10px 15px; background:none; border:0;}
+.dogo_loginwp .midgroup .logingroup section.qrcode{ padding-right:100px;}
+.dogo_loginwp .midgroup .logingroup section.qrcode:after{ content:''; display:block; height:40px; width:1px; background:#ddd; position:absolute; right:100px; top:0;}
+.dogo_loginwp .midgroup .logingroup section.qrcode .qrcode{ display:block; width:90px; height:35px; border:0; position:absolute; top:2px; right:5px; overflow:hidden;}
+.dogo_loginwp .loginbtn{ display:block; width:100%; height:40px; cursor:pointer; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; background: #409eff; color: #fff; font-size: 14px; text-align: center; line-height: 40px;}
+.dogo_loginwp .midgroup.retrieve { width: 460px; padding: 50px 30px 20px; height: auto; margin: 120px auto 180px; }
+.dogo_loginwp .midgroup.retrieve .reg_wp .loginbox { margin: 30px auto; }
+.dogo_loginwp .midgroup.retrieve .reg_wp .regbtn { margin: 10px auto; }
+.dogo_loginwp .midgroup.retrieve .reg_wp .copyright { width: 320px; margin: 20px auto 0; }
+.dogo_loginwp .btmgroup { padding: 25px 0; overflow: hidden; }
+.dogo_loginwp .btmgroup .btmwrap { width: 1100px; margin: 0 auto; ; text-align: center; overflow: hidden; }
+.dogo_loginwp .btmgroup .lfwrap { width: 700px; float: left; overflow: hidden; }
+.dogo_loginwp .btmgroup .rtwrap { width: 350px; text-align: right; float: right; overflow: hidden; }
+.dogo_loginwp .btmgroup .btmwrap p { line-height: 20px; margin-bottom: 10px; font-size: 12px; color: #666; }
+.dogo_loginwp .btmgroup .btmwrap b { font-size: 18px; line-height: 24px; color: #333; }
+
+
+.dogo_loginwp.link .midgroup{ height:650px; margin: 40px auto;}
+.dogo_loginwp.link .midgroup .loginwrap { margin-top:-260px;}
+
+.dogo_loginwp.link .midgroup .logingroup header{padding-bottom:10px;}
+.dogo_loginwp h4{ font-size:16px; color:#333; line-height:30px;}
+
+@media screen and (max-width: 640px){
+    body{ min-width:320px;}
+    .dogo_loginwp .midgroup { width: 100%; }
+}
+
+@media screen and (max-width: 360px){
+    .dogo_loginwp .midgroup { margin-top:20%; }
+    .dogo_loginwp .midgroup .logingroup { padding: 20px; }
+}

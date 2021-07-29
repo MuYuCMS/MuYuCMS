@@ -1,0 +1,58 @@
+{include file='public/meta' }
+	<title>屏蔽词</title>
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			屏蔽词
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div>
+						<textarea class="textarea" placeholder="屏蔽词之间用英文'|'分隔开" name="shielding" style="width:100%; height:300px; resize:none">{$system.shielding}</textarea>
+					</div>
+					<input type="hidden" class="uid" name="id" value="{$system.id}">
+					<div class="mt-20 text-c">
+						<button name="system-base-save" id="system-base-save" class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 确定</button>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+	<script type="text/javascript">
+			/* 表单验证，提交 */
+
+			$("#system-base-save").on("click",function(){
+				var Data={};
+				var shielding = $('.textarea').val();
+				Data['shielding'] = shielding;
+				var id = $('.uid').val();
+				Data['id'] = id;
+				 //console.log(Data);
+				$.post("{:url('system/updates')}",Data,function(data){
+				//console.log(Data);
+				layer.msg(data.msg,{time:2000},function(){
+					if(data.url) location.href = data.url;
+				});
+				});
+
+			});
+	</script>
+</body>
+</html>

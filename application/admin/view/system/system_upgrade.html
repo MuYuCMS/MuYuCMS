@@ -1,0 +1,246 @@
+{include file='public/meta' }
+	<title>系统升级 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			系统更新
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+						<div id="tab-system" class="HuiTab">
+							<div class="tabBar cl"><span>系统更新</span></div>
+	<ul class="layui-timeline" style="margin-top: 20px;">
+      <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis" style="color: #5a98de;"></i>
+        <div class="layui-timeline-content layui-text">
+            
+          <div class="layui-timeline-title">
+            <h2>v1.0 {if !empty($Think.session.update)}<button class="btn btn-primary radius" type="button" id="btn"> 立刻更新</button>{/if}</h2>
+          </div>
+          <blockquote class="layui-elem-quote" style="border-left: 5px solid #5a98de;">
+        1，资讯管理：（1）文章添加、编辑、软删除 （2）文章审核<br>
+        2，栏目管理：（1）栏目添加、编辑、删除 （2）分类添加、编辑、删除<br>
+        3，评论管理：（1）评论审核、下架、删除 （2）意见反馈<br>
+        4，会员管理：会员添加、软删除、停用、编辑<br>
+        5，插件管理：（1）广告管理 （2）友链管理<br>
+        6，附件管理：（1）图片管理 （2）文件管理<br>
+        7，管理员管理：（1）角色管理 （2）管理员添加、删除、编辑、停用<br>
+        8，系统管理：（1）系统设置 （2）屏蔽词 （3）邮箱配置 （4）系统更新 （5）系统日志 （6）模板管理<br>
+        9，会员中心：（1）在线投稿 （2）投稿记录 （3）修改资料 （4）修改密码 （5）我的评论 （6）我的留言 （7）我的关注 （8）我的粉丝 （9）我的动态 （10）个人中心<br>
+          </blockquote>
+          <ul>
+          </ul>
+        </div>
+      </li>
+      
+      <!--<li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis" style="color: #5a98de;"></i>
+        <div class="layui-timeline-content layui-text">
+          <div class="layui-timeline-title">
+            <h2>2020.1000.1034</h2>
+          </div>
+          <blockquote class="layui-elem-quote" style="border-left: 5px solid #5a98de;">
+        
+            1，修复站群和wap站点冲突的问题。<br>
+            2，修复批量操作的问题。<br>
+            3，修复ajax接口搜索开关问题。<br>
+            4，其他细节。<br>
+
+          </blockquote>
+          <ul>
+          </ul>
+        </div>
+      </li>
+      
+      <li class="layui-timeline-item">
+        <i class="layui-icon layui-timeline-axis" style="color: #5a98de;"></i>
+        <div class="layui-timeline-content layui-text">
+          <div class="layui-timeline-title">
+            <h2>2020.1000.1033</h2>
+          </div>
+          <blockquote class="layui-elem-quote" style="border-left: 5px solid #5a98de;">
+        
+            1，修复url推送跳页问题。<br>
+            2，MacPlayer对象新增Id属性表示当前数据ID。<br>
+            3，修复默认上传提示未找到类库问题，<br>
+            4，其他细节。<br>
+
+          </blockquote>
+          <ul>
+          </ul>
+        </div>
+      </li>-->
+      
+      </ul>
+							  
+							  
+						</div>
+					</form>
+				</div>
+			</div>
+		</article>
+	</div>
+{include file='public/footer' }
+
+
+<!--系统更新进度条开始-->
+<div id="modal-demos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header">
+				<h3 class="modal-title">正在更新(请勿关闭)</h3>
+				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+			</div>
+			<div class="modal-body">
+			
+			<div class="layui-progress layui-progress-big" lay-filter="demo" lay-showPercent="true">
+                <div class="layui-progress-bar" lay-percent="0%"></div>
+            </div>
+			
+			<div class="modal-footer">
+				<button class="btn btn-danger radius" data-dismiss="modal" aria-hidden="true">立即关闭</button>
+			</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!--系统更新进度条结束-->
+
+
+
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	
+ <!--系统更新弹出层开始-->
+      <style>
+          .fade {opacity: 0;
+	-webkit-transition: opacity .15s linear;
+	-o-transition: opacity .15s linear;
+	transition: opacity .15s linear}
+.fade.in {opacity: 1}
+.modal-open {overflow: hidden}
+.modal{ position:fixed; left:0; top:0; right:0; bottom:0; z-index:1040; display:none; overflow:hidden;-webkit-overflow-scrolling:touch; outline:0}
+.modal.fade .modal-dialog{
+	-webkit-transition: -webkit-transform .3s ease-out;
+	-o-transition: -o-transform .3s ease-out;
+	transition: transform .3s ease-out;
+	-webkit-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	transform: translate(0,-50%)}
+.modal.in .modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0)}
+.modal-open .modal {overflow-x: hidden;overflow-y: auto}
+	.modal-backdrop {position: fixed;top: 0;right: 0;bottom: 0;left: 0;background-color: #000}
+	.modal-backdrop.fade {filter: alpha(opacity=0);opacity: 0}
+	.modal-backdrop.in {filter: alpha(opacity=50);opacity: .5}
+	.modal-dialog {position: relative;width: auto;margin: 10px}
+	.modal-content{position: relative;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+		box-shadow: 0 3px 9px rgba(0,0,0,.5)}
+ 
+		.modal-header {min-height: 16.42857143px;padding: 15px;border-bottom: 1px solid #eee; position:relative}
+		.modal-header .close{position:absolute; right:10px; top:10px}
+		.modal-header h3,.modal-header .modal-title{margin:0; padding:10px 0; font-size:16px}
+ 
+		.modal-body {position:relative;padding: 15px;overflow-y:visible;word-break:break-all}
+			.modal-form {margin-bottom: 0}
+ 
+		.modal-footer {padding:15px;margin-bottom: 0;text-align: center;background-color: #f5f5f5;border-top: 1px solid #eee;*zoom: 1}
+		.modal-footer:before,.modal-footer:after {display: table;content: ""}
+		.modal-footer:after {clear: both}
+		.modal-footer .btn + .btn {margin-left: 5px;margin-bottom: 0}
+		.modal-footer .btn-group .btn + .btn {margin-left: -1px}
+		.modal-footer .btn-block + .btn-block {margin-left: 0}
+ 
+	.modal-scrollbar-measure {position: absolute;top: -9999px;width: 50px;height: 50px;overflow: scroll}
+ 
+	.radius .modal-content{ border-radius:6px}
+	.radius .modal-footer{ border-bottom-left-radius:6px; border-bottom-right-radius:6px}
+	@media (min-width: 768px) {
+		.modal-dialog {width: 500px;margin: 250px auto}
+		.modal-content {-webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);box-shadow: 0 5px 15px rgba(0, 0, 0, .5)}
+		.modal-sm {width: 300px}
+	}
+	@media (min-width: 992px) {
+		.modal-lg {width: 900px}
+	}
+ 
+.modal-alert{position:fixed; right:auto; bottom:auto; width:300px; left:50%;margin-left:-150px; top:50%;margin-top:-30px; z-index:9999;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+	box-shadow: 0 3px 9px rgba(0,0,0,.5)}
+.modal-alert-info{padding:30px; text-align:center; font-size:14px; background-color:#fff}
+      </style>
+      <!--系统更新弹出层结束-->	
+	
+	<script type="text/javascript">
+	//系统更新进度条
+        $("#btn").click(function() {
+        $("#modal-demos").modal("show")
+        //动态进度条监听事件
+	    layui.use('element', function(){
+        var element = layui.element;
+        $.post("{:url('Update/entrance')}");
+                var n = 0, timer = setInterval(function(){
+                n = n + Math.random()*4|0;  
+                if(n>100){
+                  n = 100;
+                  clearInterval(timer);
+                  $("#modal-demos").modal("hide");
+                  layer.msg("更新完成!", {icon:1,time: 3000}, function() {
+					location.reload();
+				});
+                  //othis.removeClass(DISABLED);
+                }
+                element.progress('demo', n+'%');
+              }, 300+Math.random()*1000);
+        });
+        });
+        
+	
+	
+	
+	
+	$(function(){
+		$('.skin-minimal input').iCheck({
+			checkboxClass: 'icheckbox-blue',
+			radioClass: 'iradio-blue',
+			increaseArea: '20%'
+		});
+		$("#tab-system").Huitab();
+	});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+	
+			/* 表单验证，提交 */
+			
+			
+			});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

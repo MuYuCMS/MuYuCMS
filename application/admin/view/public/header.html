@@ -1,0 +1,162 @@
+{load href="__ADMINLIB__layui/css/layui.css"}
+ <header class="Hui-navbar">
+      <div class="navbar">
+        <div class="container-fluid clearfix">
+          <nav id="Hui-topNav" class="nav navbar-nav">
+            <ul class="clearfix">
+              <li><a data-href="article-add.html" data-title="网站首页" target="_blank"  href="/">网站首页</a></li>
+            </ul>
+          </nav>
+          <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar">
+            <ul class="clearfix">
+              <li><a href="javascript:void(0);" rel="external nofollow" onClick="modaldemo()">系统更新 
+              {if !empty($Think.session.update)}
+              <i style="display: inline-block; color: red; font-size: 40px;position: absolute;top: -20px; font-style: normal; right: 0px;">.</i>
+              {/if}
+              </a></li>
+			  <li><a href="javascript:void(0);" rel="external nofollow" onclick="clearPhp(this,'{:url('admin/index/clear')}')">清除缓存</a></li>
+              <li>{$roname.name}</li>
+              <li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">{$Think.session.Adminuser.name} <i class="Hui-iconfont">&#xe6d5;</i></a>
+                <ul class="dropDown-menu menu radius box-shadow">
+					<li><a href="javascript:;" onclick="admin_edit('权限编辑','{:url('Roles/edit',['id'=>$Think.session.Adminuser.roles])}')">个人权限</a></li>
+                  <li><a href="javascript:;" onclick="admin_edit('修改密码','{:url('Admin/edit')}'+'?id='+{$Think.session.Adminuser.id})">修改密码</a></li>
+                  <li><a href="javascript:void(0);" id="userout">退出</a></li>
+                </ul>
+              </li>
+			  
+              <li id="Hui-msg" class="dropDown dropDown_hover right"> 
+			  <a href="javascript:;" title="消息"><span class="badge badge-danger">{$fdbs->count('id')}</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> 
+			  <ul class="dropDown-menu menu radius box-shadow">
+				  {if condition="!empty($fdb)"}
+				  {foreach $fdb as $val}
+				  <li><a href="javascript:;" title="{$val.content}" onclick="admin_edit('留言详情','{:url('Feedback/edit',['id'=>$val.id,'ids'=>$val.uid])}',{$val.id})">[未读留言] - {$val.content|mb_substr=###,0,5,'utf-8'}</a></li>
+				  {/foreach}
+				  {else /}
+				  <li><a href="/" data-val="default" title="未读信息">暂无未读</a></li>
+				  {/if}
+				  {if condition="$fdb->count('id') >= 5"}
+				  <li><a href="{:url('Feedback/index')}" data-val="default" title="未读信息">[未读留言] - >>查看更多</a></li>
+				  {/if}
+				</li>
+			 </ul>
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+      
+<!--系统更新弹出层代码开始-->
+<div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header">
+				<h3 class="modal-title">版本更新:<span id="bbh"></span></h3>
+				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+			</div>
+			<div class="modal-body" id="loglist">
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary radius" onClick="modaldemos()">立即更新</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--系统更新弹出层代码结束-->
+<!--系统更新进度条开始-->
+<div id="modal-demos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header">
+				<h3 class="modal-title">正在更新(请勿关闭)</h3>
+				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+			</div>
+			<div class="modal-body">
+			
+			<div class="layui-progress layui-progress-big" lay-filter="demo" lay-showPercent="true">
+                <div class="layui-progress-bar" lay-percent="0%"></div>
+            </div>
+			
+			<div class="modal-footer">
+				<button class="btn btn-danger radius" data-dismiss="modal" aria-hidden="true">立即关闭</button>
+			</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!--系统更新进度条结束-->
+
+      <!--系统更新弹出层开始-->
+      <style>
+          .fade {opacity: 0;
+	-webkit-transition: opacity .15s linear;
+	-o-transition: opacity .15s linear;
+	transition: opacity .15s linear}
+.fade.in {opacity: 1}
+.modal-open {overflow: hidden}
+.modal{ position:fixed; left:0; top:0; right:0; bottom:0; z-index:1040; display:none; overflow:hidden;-webkit-overflow-scrolling:touch; outline:0}
+.modal.fade .modal-dialog{
+	-webkit-transition: -webkit-transform .3s ease-out;
+	-o-transition: -o-transform .3s ease-out;
+	transition: transform .3s ease-out;
+	-webkit-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	transform: translate(0,-50%)}
+.modal.in .modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0)}
+.modal-open .modal {overflow-x: hidden;overflow-y: auto}
+	.modal-backdrop {position: fixed;top: 0;right: 0;bottom: 0;left: 0;background-color: #000}
+	.modal-backdrop.fade {filter: alpha(opacity=0);opacity: 0}
+	.modal-backdrop.in {filter: alpha(opacity=50);opacity: .5}
+	.modal-dialog {position: relative;width: auto;margin: 10px}
+	.modal-content{position: relative;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+		box-shadow: 0 3px 9px rgba(0,0,0,.5)}
+ 
+		.modal-header {min-height: 16.42857143px;padding: 15px;border-bottom: 1px solid #eee; position:relative}
+		.modal-header .close{position:absolute; right:10px; top:10px}
+		.modal-header h3,.modal-header .modal-title{margin:0; padding:10px 0; font-size:16px}
+ 
+		.modal-body {position:relative;padding: 15px;overflow-y:visible;word-break:break-all}
+			.modal-form {margin-bottom: 0}
+ 
+		.modal-footer {padding:15px;margin-bottom: 0;text-align: center;background-color: #f5f5f5;border-top: 1px solid #eee;*zoom: 1}
+		.modal-footer:before,.modal-footer:after {display: table;content: ""}
+		.modal-footer:after {clear: both}
+		.modal-footer .btn + .btn {margin-left: 5px;margin-bottom: 0}
+		.modal-footer .btn-group .btn + .btn {margin-left: -1px}
+		.modal-footer .btn-block + .btn-block {margin-left: 0}
+ 
+	.modal-scrollbar-measure {position: absolute;top: -9999px;width: 50px;height: 50px;overflow: scroll}
+ 
+	.radius .modal-content{ border-radius:6px}
+	.radius .modal-footer{ border-bottom-left-radius:6px; border-bottom-right-radius:6px}
+	@media (min-width: 768px) {
+		.modal-dialog {width: 500px;margin: 250px auto}
+		.modal-content {-webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);box-shadow: 0 5px 15px rgba(0, 0, 0, .5)}
+		.modal-sm {width: 300px}
+	}
+	@media (min-width: 992px) {
+		.modal-lg {width: 900px}
+	}
+ 
+.modal-alert{position:fixed; right:auto; bottom:auto; width:300px; left:50%;margin-left:-150px; top:50%;margin-top:-30px; z-index:9999;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+	box-shadow: 0 3px 9px rgba(0,0,0,.5)}
+.modal-alert-info{padding:30px; text-align:center; font-size:14px; background-color:#fff}
+      </style>
+      <!--系统更新弹出层结束-->
+      
+
+
+	  
+	  
+    </header>

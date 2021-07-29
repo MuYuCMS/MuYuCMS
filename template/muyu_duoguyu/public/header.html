@@ -1,0 +1,27 @@
+<div class="navGrid justify" id="navGrid">
+		<div class="wrapper">
+			<a href="/" class="topWrapper">
+			<img src="{muy:siteseo name='logo'}" class="logo" title="{muy:siteseo name='title'}" alt="{muy:siteseo name='title'}">
+			</a>
+			<div class="minMenu layoutDisplay" id="switchMenu">
+				<i class="iconDgy more"></i>
+				<i class="iconDgy close"></i>
+			</div>
+			<div class="navWrapper">
+				<a {if condition="empty($ids)"}class="on"{/if} href="/" title="首页"><span class="navName"><i class="iconfont icondgy icon-shouye"></i>首页</span></a>
+				{muy:nav name="navs"}
+				<a {if condition="$ids == $navs.id"}class="on"{/if}{if condition="$pd == $navs.id"}class="on"{/if} href="{:url($navs.href,['id'=>$navs.id])}" title="{$navs.title}"><span class="navName"><i class="{$navs.icon}"></i>{$navs.title}</span></a>
+				{/muy:nav}
+				
+			</div>
+		</div>
+		<!-- 登录/注册 START -->
+		<div class="userHeaderWrapper">
+			{if empty($Think.session.Member)}
+			<a href="{:url('index/user/index')}" rel="nofollow" target="_blank" class="menuLogin">登录/注册</a>
+			{else/}
+			<a href="{:url('index/user/index')}" rel="nofollow" target="_blank" class="menuLogin">会员中心</a>
+			{/if}
+		</div>
+	<!-- 登录/注册 END -->
+		</div>

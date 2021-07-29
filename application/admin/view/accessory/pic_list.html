@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link href="__ADMINST__h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINLIB__Hui-iconfont/1.0.9/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINST__business/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script><![endif]-->
+	<link href="__ADMINLIB__lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" />
+	<title>图片展示</title>
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			附件管理
+			<span class="c-gray en">/</span>
+			图片列表
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+				<article class="Hui-admin-content clearfix">
+					<div class="panel">
+						<div class="panel-body">
+			<div id="tab-system" class="HuiTab">
+				<div class="tabBar cl"><span>文章栏目图片</span><span>广告图片</span><span>设置图片</span></div>
+				<div class="tabCon">
+				<div class="clearfix pd-5 bg-1 bk-gray">
+					<span class="f-l" style="color: red;"><i class='Hui-iconfont'>&#xe62f;</i>  删除的图片，所在对应位置(网站LOGO，文章，栏目背景，广告)将会失效，请谨慎考虑!</span>
+					<span class="f-r">共有数据：<strong id="tujs"></strong> 条</span>
+				</div>
+				<div class="portfolio-content">
+					<ul class="clearfix Hui-admin-portfolio-area lists">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="clearfix pd-5 bg-1 bk-gray">
+					<span class="f-l" style="color: red;"><i class='Hui-iconfont'>&#xe62f;</i>  删除的图片，所在对应位置(网站LOGO，文章，栏目背景，广告)将会失效，请谨慎考虑!</span>
+					<span class="f-r">共有数据：<strong id="tujs1"></strong> 条</span>
+				</div>
+				<div class="portfolio-content">
+					<ul class="clearfix Hui-admin-portfolio-area lists1">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="clearfix pd-5 bg-1 bk-gray">
+					<span class="f-l" style="color: red;"><i class='Hui-iconfont'>&#xe62f;</i>  删除的图片，所在对应位置(网站LOGO，文章，栏目背景，广告)将会失效，请谨慎考虑!</span>
+					<span class="f-r">共有数据：<strong id="tujs2"></strong> 条</span>
+				</div>
+				<div class="portfolio-content">
+					<ul class="clearfix Hui-admin-portfolio-area lists2" >
+						
+					</ul>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+		</article>
+	</div>
+
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__ADMINLIB__lightbox2/2.8.1/js/lightbox.min.js"></script>
+<style type="text/css">
+	.picdels{
+		position: absolute;
+		right: 5px;
+		cursor: pointer;
+	}
+</style>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#tab-system").Huitab();
+	$(".Hui-admin-portfolio-area li").Huihover();
+	$.post("{:url('Base/getMyfiles')}",{path:"public/upload/menubg"},function(data){
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li class='item'><div class='portfoliobox'><a data-pic='public"+data.msg[i]+"' class='picdels'><i class='Hui-iconfont'>&#xe6e2;</i></a><div class='picbox'><a href='/public"+data.msg[i]+"' data-lightbox='gallery' data-title='"+data.msg[i]+"'><img src='/public"+data.msg[i]+"'></a></div><div class='textbox'>文章及栏目背景图</div></div></li>"
+				   }
+				   $(".lists").html(str);
+				   $("#tujs").html(data.msg.length);
+				   $(".picdels").click(function() {
+				   	//获取删除信息
+				   	var picdel = $(this).attr('data-pic');
+				   	layer.msg('是否删除此图片', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['删除', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('Accessory/picdel')}", {
+				   				picdelur: picdel
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+									location.reload();
+								});
+								
+				   			});
+				   		}
+				   	});
+				   })
+	});
+	$.post("{:url('Base/getMyfiles')}",{path:"public/upload/ggpic"},function(data){
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li class='item'><div class='portfoliobox'><a data-pic='public"+data.msg[i]+"' class='picdels'><i class='Hui-iconfont'>&#xe6e2;</i></a><div class='picbox'><a href='/public"+data.msg[i]+"' data-lightbox='gallery' data-title='"+data.msg[i]+"'><img src='/public"+data.msg[i]+"'></a></div><div class='textbox'>广告图片</div></div></li>"
+				   }
+				   $(".lists1").html(str);
+				   $("#tujs1").html(data.msg.length);
+				   $(".picdels").click(function() {
+				   	//获取删除信息
+				   	var picdel = $(this).attr('data-pic');
+				   	layer.msg('是否删除此图片', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['删除', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('Accessory/picdel')}", {
+				   				picdelur: picdel
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+				   									location.reload();
+				   								});
+				   								
+				   			});
+				   		}
+				   	});
+				   })
+	});
+	$.post("{:url('Base/getMyfiles')}",{path:"public/upload/linkpic"},function(data){
+				   //讲返回数组中文件赋予给弹窗
+				   var str = "";
+				   for(i = 0;i < data.msg.length;i++){
+					   str += "<li class='item'><div class='portfoliobox'><a data-pic='public"+data.msg[i]+"' class='picdels'><i class='Hui-iconfont'>&#xe6e2;</i></a><div class='picbox'><a href='/public"+data.msg[i]+"' data-lightbox='gallery' data-title='"+data.msg[i]+"'><img src='/public"+data.msg[i]+"'></a></div><div class='textbox'>广告图片</div></div></li>"
+				   }
+				   $(".lists2").html(str);
+				   $("#tujs2").html(data.msg.length);
+				   $(".picdels").click(function() {
+				   	//获取删除信息
+				   	var picdel = $(this).attr('data-pic');
+				   	layer.msg('是否删除此图片', {
+				   		time: 5000, //5s后自动关闭
+				   		shade: 0.3,
+				   		btn: ['删除', '取消'],
+				   		yes: function() {
+				   			//执行删除
+				   			$.post("{:url('Accessory/picdel')}", {
+				   				picdelur: picdel
+				   			}, function(data) {
+				   				layer.msg(data.msg, {
+				   					time: 2000
+				   				},function(){
+				   									location.reload();
+				   								});
+				   								
+				   			});
+				   		}
+				   	});
+				   })
+				   
+	});
+
+});
+</script>
+</body>
+</html>

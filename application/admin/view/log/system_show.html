@@ -1,0 +1,44 @@
+{include file='public/meta' }
+  <title>查看日志</title>
+</head>
+<body>
+  <div class="clearfix pd-20" style=" background-color:#5bacb6">
+    <img class="avatar size-XL f-l" src="__ADMINST__h-ui/images/ucenter/avatar-default-S.gif">
+    <dl style="margin-left:80px; color:#fff">
+      <dt><span class="f-18">{$user.name}</span></dt>
+      <dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>
+    </dl>
+  </div>
+  <div class="pd-20">
+    <table class="table">
+      <tbody>
+		  <tr>
+		    <th class="text-r">注册时间：</th>
+			<td>{:date("Y-m-d H:i:s",$user.create_time)}</td>
+		  </tr>
+		  <tr>
+          <th class="text-r">邮箱：</th>
+          <td>{$user.email}</td>
+        </tr>
+		<tr>
+		  <th class="text-r">客户端IP：</th>
+		  <td>{$log.log_ip}</td>
+		</tr>
+		<tr>
+		  <th class="text-r">操作时间：</th>
+		  <td>{:date("Y-m-d H:i:s",$log.log_time)}</td>
+		</tr>
+        <tr>
+          <th class="text-r">记录内容：</th>
+          <td>{$log.content}</td>
+        </tr>
+		<!--隐藏字段-->
+		<input type="hidden" name="id" value="{$log.id}">
+      </tbody>
+    </table>
+  </div>
+  <!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+  <!--/_footer /作为公共模版分离出去-->
+</body>
+</html>

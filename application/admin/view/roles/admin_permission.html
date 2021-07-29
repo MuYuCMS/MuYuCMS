@@ -1,0 +1,90 @@
+{include file='public/meta' }
+
+	<title>权限管理 - 管理员管理 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			管理员管理
+			<span class="c-gray en">/</span>
+			权限管理
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="text-c">
+						<form class="Huiform" method="post" action="" target="_self">
+							<input type="text" class="input-text" style="width:250px" placeholder="权限名称" id="" name="">
+							<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜权限节点</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="panel mt-20">
+				<div class="panel-body">
+					<div class="clearfix">
+						<span class="f-l">
+							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a href="javascript:;" onclick="admin_permission_add('添加权限节点','admin-permission-add.html','','310')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加权限节点</a>
+						</span>
+						<span class="f-r">共有数据：<strong>54</strong> 条</span>
+					</div>
+					<div class="mt-20 clearfix">
+						<table class="table table-border table-bordered table-bg table-hover table-sort">
+							<thead>
+								<tr>
+									<th scope="col" colspan="7">权限节点</th>
+								</tr>
+								<tr class="text-c">
+									<th width="25"><input type="checkbox" name="" value=""></th>
+									<th width="40">ID</th>
+									<th width="200">权限名称</th>
+									<th>字段名</th>
+									<th width="100">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="text-c">
+									<td><input type="checkbox" value="1" name=""></td>
+									<td>1</td>
+									<td>栏目添加</td>
+									<td></td>
+									<td><a title="编辑" href="javascript:;" onclick="admin_permission_edit('角色编辑','admin-permission-add.html','1','','310')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_permission_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</article>
+	</div>
+
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+	<script type="text/javascript">
+		$(function() {
+			// 全选 页面调用
+			var ids="";
+			$(".table").HuicheckAll({
+					checkboxAll: 'thead input[type="checkbox"]',
+					checkbox: 'tbody input[type="checkbox"]'
+				},
+				function(data) {
+					console.log(data);
+				}
+			)
+		});
+	</script>
+</body>
+</html>

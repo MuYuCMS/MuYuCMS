@@ -1,0 +1,41 @@
+  <aside class="Hui-admin-aside-wrapper">
+    <div class="Hui-admin-logo-wrapper">
+      <a class="logo navbar-logo" href="{:url('admin/index/index')}">
+        <i class="va-m iconpic global-logo"></i>
+        <span class="va-m">MuYuCMS</span>
+      </a>
+    </div>
+    <div class="Hui-admin-menu-dropdown bk_2">
+		<dl id="menu-home" class="Hui-menu">
+		  <dd class="Hui-menu-item-frist">
+		    <ul>
+		      <li><a data-href="{:url('admin/index/welcome')}" data-title="后台首页" href="javascript:void(0)"><i class="Hui-iconfont Hui-iconfont-home"></i>&nbsp; 后台首页</a></li>
+		    </ul>
+		  </dd>
+		</dl>
+		{foreach $menu as $val}
+		{if condition="!empty($val.secontit)"}
+		<dl id="menu-article" class="Hui-menu">
+		  <dt class="Hui-menu-title"><i class="Hui-iconfont Hui-iconfont-{$val.titlepic}"></i> {$val.title}<i class="Hui-iconfont Hui-admin-menu-dropdown-arrow">&#xe6d5;</i></dt>
+		  <dd class="Hui-menu-item">
+			  <ul>
+			  {foreach $val.secontit as $va}
+		      <li><a data-href="{:url($va.href)}" data-title="{$va.comment}" href="javascript:void(0)">{$va.title}</a></li>
+			{/foreach}
+			</ul>
+		  </dd>
+		</dl>
+		{else /}
+      <dl id="menu-home" class="Hui-menu">
+        <dd class="Hui-menu-item-frist">
+          <ul>
+            <li><a data-href="{:url($val.href)}" data-title="{$val.comment}" href="javascript:void(0)"><i class="Hui-iconfont Hui-iconfont-{$val.icon}"></i>&nbsp; {$val.title}</a></li>
+          </ul>
+        </dd>
+      </dl>
+	  {/if}
+	  {/foreach}
+
+    </div>
+  </aside>
+  <div class="Hui-admin-aside-mask"></div>

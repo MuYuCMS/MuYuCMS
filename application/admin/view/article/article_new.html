@@ -1,0 +1,595 @@
+{include file='public/meta' }
+
+	<title>新增文章 - 资讯管理 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			资讯管理
+			<span class="c-gray en">/</span>
+			新增资讯
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<form class="form form-horizontal" id="form-article-add">
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="请输入标题,最少5个字,最长35个字" id="articleTitle" name="title">
+							</div>
+						</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2">标题图片：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="请输入图片地址或本地上传" id="icon" name="titlepic">
+								<div class="album-item" style="width:200px">
+								<div class="album-img">
+									<img id="photoshow" src="">
+								</div>
+								</div>
+								<botton type="button" name="file" class="btn btn-success radius" style="margin-top: 10px;" id="lcaupload">本地上传</botton>
+								<botton type="button" class="btn btn-secondary radius" style="margin-left: 10px;margin-top: 10px;" id="localad">本地图片</botton>
+							</div>
+							</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>导航栏目：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<span class="select-box">
+									<select name="mid" class="select">
+										<option value="" selected >请选择栏目</option>
+										{foreach $menu as $val}
+										{if condition="!empty($val.secontit)"}
+										<option value="{$val.id}">{$val.title}</option>
+										{foreach $val.secontit as $va}
+										<option value="{$va.id}">ㅏ{$va.title}</option>
+										{/foreach}
+										{else /}
+										<option value="{$val.id}">{$val.title}</option>
+										{/if}
+										{/foreach}
+									</select>
+									
+								</span>
+								
+							</div>
+						</div>
+						<div class="row clearfix" id="checks">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章分类：</label>
+							<div class="check-box">
+								{foreach $type as $val}
+							    <input type="checkbox" id="checkbox-{$val.id}" value="{$val.id}" name="type">
+							    <label for="checkbox-{$val.id}">{$val.title}</label>
+								{/foreach}
+							  </div>
+						</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2">关键词：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="关键词之间用英文','隔开" id="articleKeywords" name="keyword">
+							</div>
+						</div>
+						<!-- 标签 -->
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2">标签：</label>
+						<div id="Huitags-demo1" class="form-controls col-xs-8 col-sm-9"></div><!-- 标签调用 -->
+						</div>
+						
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<textarea cols="" rows="" class="textarea textarea-article"  placeholder="说点什么...最少输入10个字符" id="articleAbstract" name="abstract"></textarea>
+							</div>
+						</div>
+						<div class="row clearfix" id="path">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>添加附件：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+							    <input type="text" class="input-text" id="pathname1" value="" placeholder="下载别名" style="width:10%;float:left;">
+								<input type="text" class="puthcss input-text" value="" id="path1" placeholder="可上传附件或直接填写下载地址" style="width: 77%;margin-bottom:10px;">
+    <a href='javascript:;' lay-data="{accept: 'file'}" class="muyuuplod btn btn-primary radius btn-upload" style="float: right;"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+							</div>
+							<div class="form-controls col-xs-8 col-sm-9" style="margin-left: 16.666666666666664%;" id="pathsurl">
+							</div>
+						</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red"></span>增加下载地址：</label>
+							<div class="form-controls col-xs-8 col-sm-4">
+								<input type="text" class="input-text" value="1" id="newputh" style="width: 15%;">
+								<botton type="button" name="file" class="btn btn-secondary radius" style="width: 20%;padding:4px 4px" id="newpt">增加</botton><span class="c-red" style="margin-left: 10px;">*三个最佳,五个稍多,切勿胡乱增加!</span>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章作者：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="{$Think.session.Adminuser.name}" placeholder="如:小编" id="articleAuthor" name="author">
+							</div>
+						</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2">文章来源：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<input type="text" class="input-text" value="" placeholder="如:互联网" id="articleSource" name="source">
+							</div>
+						</div>
+				<div class="row clearfix" id="comments">
+					<label class="form-label col-xs-4 col-sm-2 rows">是否允许评论：</label>
+					<div class="form-controls col-xs-8 col-sm-9 row">
+					<label>
+						<input class="btn-switch large" name="comment" id="status" type="checkbox" value="" checked>
+					</label>
+				</div>
+				</div>
+						<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章内容：</label>
+							<div class="form-controls col-xs-8 col-sm-9">
+								<textarea id="articleEditor" name="editor" type="text/plain" style="width:100%;height:400px;"></textarea>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+								<button class="btn btn-primary radius" type="button" id="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+								<button class="btn btn-secondary radius" type="button" id="submit2"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+
+							</div>
+						</div>
+					</form>
+		    </div>
+	    </div>
+		</article>
+	</div>
+	<!-- 展示所有图片 -->
+	<div id="lcms_notive">
+		<ul id="imglist" class="imglist">
+			
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
+	<!-- 展示所有图片end -->
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__webuploader/0.1.5/webuploader.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__ueditor/1.4.3/ueditor.config.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__ueditor/1.4.3/ueditor.all.min.js"> </script>
+	<script type="text/javascript" src="__ADMINLIB__ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<style>
+		#lcms_notive{
+			width: 370px;
+			margin: 20px auto;
+			display: none;
+		}
+		#lcms_notive .imglist {
+			
+		}
+		#imglist li{
+			float: left;
+			width: 175px;
+			margin: 5px;
+		}
+		#imglist .photolist{
+			max-width: 100%;
+			padding: 1px;
+			border: 2px solid #ccc;
+			opacity: 0.7;
+			
+		}
+		#imglist .active{
+			border: 3px solid green !important;
+			opacity: 1 !important;
+		}
+		
+		
+
+	</style>
+	<style>
+	.row{margin-top: 15px;margin-left: 0px;
+    margin-right: 0px;}
+	.rows{margin-top: 15px;margin-left: 0px;}
+	.btn-switch {
+ cursor: pointer;
+ width: 52px;
+ height: 31px;
+ position: relative;
+ border: 1px solid #dfdfdf;
+ background-color: #fdfdfd;
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ border-radius: 20px;
+ background-clip: content-box;
+ display: inline-block;
+ -webkit-appearance: none;
+ user-select: none;
+ outline: none !important;
+ }
+
+.btn-switch.large {
+ width: 70px;
+ height: 30px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:before {
+ content: '';
+ width: 28px;
+ height: 28px;
+ border-radius: 30px;
+ }
+
+.btn-switch.large:after {
+ content: '禁止';
+color: #999;
+ left: 30px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+.btn-switch.large:checked:after {
+ content: '允许';
+color: #fff;
+ left: 10px;
+ position: absolute;
+ line-height: 30px;
+ font-size: 14px;
+ }
+.btn-switch.large:checked:before {
+ left: 40px;
+ }
+
+.btn-switch:before {
+ content: '';
+ width: 29px;
+ height: 29px;
+ position: absolute;
+ top: 0px;
+ left: 0;
+ border-radius: 20px;
+ background-color: #fff;
+ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+ }
+
+.btn-switch:checked {
+ border-color: #64bd63;
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ }
+
+.btn-switch:checked:before {
+ left: 21px;
+ }
+
+.btn-switch.btn-switch-animbg {
+ transition: background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-animbg:checked {
+ box-shadow: #dfdfdf 0 0 0 0 inset;
+ background-color: #64bd63;
+ transition: border-color 0.4s, background-color ease 0.4s;
+ }
+
+.btn-switch.btn-switch-animbg:checked:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim {
+ transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+ }
+
+.btn-switch.btn-switch-anim:before {
+ transition: left 0.3s;
+ }
+
+.btn-switch.btn-switch-anim:checked {
+ box-shadow: #64bd63 0 0 0 16px inset;
+ background-color: #64bd63;
+ transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+ }
+
+.btn-switch.btn-switch-anim:checked:before {
+ transition: left 0.3s;
+ }
+
+input[type=checkbox]:checked::before {
+ font: normal normal normal 14px/2 FontAwesome;
+ }
+
+	</style>
+	
+	<script type="text/javascript">
+		$(function(){
+			// 复选框样式
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			
+			// 文章标题
+			$("#articleTitle").Huitextarealength({
+				minlength: 5,
+				maxlength: 35
+			});
+
+			// 文章摘要
+			$(".textarea-article").Huitextarealength({
+				minlength: 10,
+				maxlength: 50
+			});
+			
+			//标签
+			$("#Huitags-demo1").Huitags(
+				{
+					value:'',
+					maxlength : 20,
+					number : 5,
+					tagsDefault : ["软件","资源","干货"],
+				}
+			);
+
+			// 文章内容 实例化百度富文本编辑器
+			var ue = UE.getEditor('articleEditor');
+			
+			//文章保存提交审核
+			$("#submit").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-article-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+			var type=$("#checks input:checkbox");
+			var str="";
+			for(i=0;i<type.length;i++){
+				if($(type[i]).is(":checked")){
+					str += $(type[i]).val()+',';
+				}
+			}
+			Data['type'] = str.substring(0, str.length - 1);
+			
+			//下载地址的组合
+			var patsu = $(".puthcss");
+			var pat="";
+			for(n=1;n<=patsu.length;n++){
+			    if($("#pathname"+n).val() !=='' && $("#path"+n).val() !=='' && $("#pathname"+n).val() !==' ' && $("#path"+n).val() !==' ' && $("#pathname"+n).val() !== undefined && $("#path"+n).val() !== undefined){
+			    pat += $("#pathname"+n).val()+','+$("#path"+n).val()+',';
+			    }
+			}
+			console.log(pat);
+			Data['downputh'] = pat.substring(0, pat.length - 1);
+			
+			var articleComment = $("#comments input:checkbox");
+			var str = "1";
+			if($(articleComment).is(":checked")){
+				str = "0";
+			}	
+			Data['comment'] = str;
+			
+			//假设input的class=Huitags-val
+			var tag = $('.Huitags-val').val();
+			Data['tag'] = tag;
+			
+			var name = $("#articleTitle").val();//文章标题
+			var aut = $("#articleAuthor").val();//文章作者
+			var edi = $('textarea[name="articleEditor"]').val();//文章内容 		
+			if(name == ""){
+						 layer.msg('文章标题不可为空!',{icon:2,time:2000},function(){
+							 $("#articleTitle").focus();
+						 });
+			}else{
+					if(aut == ""){
+						layer.msg('文章作者不可为空!',{icon:2,time:2000},function(){
+													 $("#articleAuthor").focus();
+													 });			 
+					}else{
+					if(edi == ""){
+							layer.msg('文章内容不可为空!',{icon:2,time:2000},function(){
+														 $("#articleEditor").focus();
+														 }); 
+						}else {			
+									 //console.log(Data);
+
+									 layer.confirm('确认要提交审核吗？',function(index){
+									 $.post("{:url('Article/tonewadd')}",Data,function(data){
+									 	layer.msg(data.msg, {time: 2000}, function() {
+											if(data.url) location.href = data.url;
+									 	});
+									 });
+									 });
+	 
+							 }
+					}
+				}
+			
+			});
+			
+			//文章草稿保存
+			$("#submit2").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-article-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+				
+			var type=$("#checks input:checkbox");
+			var str="";
+			for(i=0;i<type.length;i++){
+				if($(type[i]).is(":checked")){
+					str += $(type[i]).val()+',';
+				}
+			}	
+			Data['type'] = str.substring(0, str.length - 1);
+			var articleComment = $("#comments input:checkbox");
+			var str = "1";
+			if($(articleComment).is(":checked")){
+				str = "0";
+			}	
+			Data['comment'] = str;
+			
+			//标签调用
+			var tag = $('.Huitags-val').val();
+			Data['tag'] = tag;
+			
+			var name = $("#articleTitle").val();//文章标题
+			var key = $("#articleKeywords").val();//关键词
+			var aut = $("#articleAuthor").val();//文章作者
+			var edi = $('textarea[name="articleEditor"]').val();//文章内容 		
+			if(name == ""){
+						 layer.msg('文章标题不可为空!',{icon:2,time:2000},function(){
+							 $("#articleTitle").focus();
+						 });
+			}else{
+					if(aut == ""){
+						layer.msg('文章作者不可为空!',{icon:2,time:2000},function(){
+													 $("#articleAuthor").focus();
+													 });			 
+					}else{
+					if(edi == ""){
+							layer.msg('文章内容不可为空!',{icon:2,time:2000},function(){
+														 $("#articleEditor").focus();
+														 }); 
+						}else {
+
+									 
+									 layer.confirm('确认要保存草稿吗？',function(index){
+									 $.post("{:url('Article/draft')}",Data,function(data){
+										  //console.log(edi); 
+									layer.msg(data.msg,{time:2000},function(){
+										if(data.url) location.href = data.url;
+									});
+									 });
+									 });
+								 
+							 }
+					}
+				}
+			
+			});
+			});
+	</script>
+	<script>
+	   $("#newpt") .click(function(){
+	       var yiyou = $(".puthcss");
+	       var ljsl = $("#newputh").val();
+	       var zjs = Number(yiyou.length) + Number(ljsl);
+	       var str = "";
+	       for(n=2;n<=zjs;n++){
+	          str += "<input type='text' class='input-text' id='pathname"+n+"' value='' placeholder='下载别名' style='width:10%;float:left;'><input type='text' class='puthcss input-text' value='' id='path"+n+"' placeholder='直接填写下载地址' style='width: 77%;margin-bottom:10px;'><span style='width:15%;float: right;'></span>" 
+	       }
+	       $("#pathsurl").html(str);
+	   });
+	     /*
+	   *文件上传的操作
+	   */
+	  layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '.muyuuplod' //绑定元素
+	    ,url: "{:url('Article/pathupload',['id'=>'path1'])}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  //
+			  $('#'+res.pathtext).val(res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+	<script>
+		/*
+		*本地图片选择
+		*/
+	   $("#localad").click(function(){
+		   //获取所有图片路径
+		   $.post("{:url('Base/getMyfiles')}",{path:"public/upload/menubg"},function(data){
+			   //讲返回数组中文件赋予给弹窗
+			   var str = "";
+			   for(i = 0;i < data.msg.length;i++){
+				   str += "<li><img src='/public"+data.msg[i]+"' class='photolist' onclick='activeImg(this)' /></li>"
+			   }
+			   $("#imglist").html(str);
+			   //弹出弹窗加载图片列表
+			   layer.open({
+			           type: 1 
+			           ,title: '选择本地图片'
+			           ,area: ['400px', '500px']
+			           ,shade: 0.3
+			           ,maxmin: true
+			           ,offset: [
+			             ($(window).height()/3)-180
+			             ,($(window).width()/2)-185
+			           ] 
+			           ,content: $("#lcms_notive")
+			           ,btn: ['确定', '返回'] 
+			           ,yes: function(){
+			             //将选中图片地址赋值给icon
+						 imgurl = $(".active").attr("src");
+						 $("#photoshow").attr("src",imgurl);
+						 $("#icon").val(imgurl);
+						 //关闭弹窗
+						 layer.closeAll();
+			           }
+			         });
+		   });
+		   
+	   });
+	   /*
+	   *点击图片操作
+	   */
+	  function activeImg(obj){
+		  $(".photolist").removeClass("active");
+		  $(obj).addClass('active');
+	  }
+	   /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '#lcaupload' //绑定元素
+	    ,url: "{:url('Article/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  $("#icon").val(res.photo);
+			  $("#photoshow").attr("src",res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	</script>
+
+
+
+</body>
+</html>

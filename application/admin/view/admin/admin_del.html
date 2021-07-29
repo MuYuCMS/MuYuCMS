@@ -1,0 +1,167 @@
+{include file='public/meta' }
+<title>删除的管理 - 已删除管理 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			已删除管理
+			<span class="c-gray en">/</span>
+			删除的管理
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel mt-0">
+				<div class="panel-body">
+					<div class="clearfix">
+						<span class="f-l">
+							<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+								批量删除</a>
+								<a href="javascript:;" id="huanyuanall" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6a7;</i> 批量还原</a>
+						</span>
+						<span class="f-r">共有数据：<strong>{$deluser->count('id')}</strong> 条</span>
+					</div>
+					<div class="clearfix mt-20">
+						<table class="table table-border table-bordered table-hover table-bg table-sort">
+							<thead>
+								<tr class="text-c">
+									<th width="25"><input type="checkbox" name="" value=""></th>
+									<th width="80">ID</th>
+									<th width="100">用户名</th>
+									<th width="150">邮箱</th>
+									<th width="130">删除时间</th>
+									<th width="70">状态</th>
+									<th width="100">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach $deluser as $vale}
+								<tr class="text-c">
+									<td><input type="checkbox" value="{$vale.id}" name=""></td>
+									<td>{$vale.id}</td>
+									<td><u style="cursor:pointer" class="text-primary" onclick="admin_add('编辑管理员','{:url('Admin/edit',['id'=>$vale.id])}')">{$vale.name}</u></td>
+									<td>{$vale.email}</td>
+									<td>{:date("Y-m-d",$vale.delete_time)}</td>
+									<td class="td-status"><span class="label label-danger radius">已删除</span></td>
+									<td class="td-manage"><a style="text-decoration:none" href="javascript:;" onClick="admin_huanyuan(this,'{$vale.id}')"
+										 title="还原"><i class="Hui-iconfont">&#xe66b;</i></a> <a title="彻底删除" href="javascript:;" onclick="admin_del(this,'{$vale.id}')"
+										 class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+								</tr>
+								{/foreach}
+							</tbody>
+						</table>
+					</div>
+					{$deluser|raw}
+				</div>
+			</div>
+		</article>
+	</div>
+	{include file='public/footer' }
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script>
+		// 全选 页面调用
+		$(".table").HuicheckAll(
+		  {
+		    checkboxAll: 'thead input[type="checkbox"]',
+		    checkbox: 'tbody input[type="checkbox"]'
+		  },
+		  function(checkedInfo) {
+		    console.log(checkedInfo);
+		  }
+		);
+		
+/*彻底删除*/
+function admin_del(obj,id){
+  layer.msg('是否彻底删除?', {
+  	time: 5000, //5s后自动关闭
+  	shade: 0.3,
+  	btn: ['删除', '取消'],
+  	yes: function() {
+  		//执行删除
+	  $.get("{:url('Admin/setdel')}",{id:id},function(data){
+            layer.msg(data.msg,{time:1000},function(){
+                $(obj).parents("tr").remove();
+                if(data.url) location.href = data.url;
+            });
+	  });
+  	}
+  });
+}
+/*管理员还原*/
+function admin_huanyuan(obj,id){
+  layer.confirm('确认要还原吗?',function(index){
+    $.get("{:url('Admin/huanyuan')}",{id:id},function(data){
+        layer.msg(data.msg,{icon:1,time:1000},function(){
+            $(obj).parents("tr").remove();
+            if(data.url) location.href = data.url;
+        });
+    });
+	
+  });
+}
+
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			layer.confirm('确认要批量删除吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Admin/deletealls')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+				});
+			});
+			});
+		}
+		});
+		
+		//批量还原
+		$("#huanyuanall").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			
+			layer.confirm('确认要批量还原吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Admin/huanyuanall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+				});
+			});
+			});
+		
+		}
+		});
+		
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

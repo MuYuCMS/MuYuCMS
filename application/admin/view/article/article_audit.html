@@ -1,0 +1,347 @@
+{include file='public/meta' }
+<title>资讯列表 - 资讯审核 - Muyu CMS内容管理系统</title>
+<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+<meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+{load href="__ADMINLIB__layui/css/layui.css"}
+{load href="__ADMINLIB__laypage/page.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页 
+			<span class="c-gray en">/</span>
+			资讯管理
+			<span class="c-gray en">/</span>
+			资讯审核
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="row clearfix">
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">开始日期：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" id="search-datetime-start" class="input-text datetimepicker-input">
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">结束日期：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" id="search-datetime-end" class="input-text datetimepicker-input">
+								</span>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="row clearfix mb-10">
+								<span class="col-xs-4 form-item-label">标题名称：</span>
+								<span class="col-xs-8 form-item-control">
+									<input type="text" name="searchInput" id="search-input" placeholder="资讯名称" class="input-text" />
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-1">
+							<div class="row clearfix">
+								<span class="col-xs-4 form-item-control">
+									<button name="" id="search-submit" class="btn btn-success radius" type="submit"><i class="Hui-iconfont">&#xe665;</i>
+										搜索</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel mt-10"></div>
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+					
+								<div class="panel mt-0">
+									<div class="panel-body">
+										<div class="clearfix">
+											<span class="f-l">
+												<a href="javascript:;" id="datadel" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
+													批量删除</a>
+												<a href="javascript:;" id="audit" class="btn btn-success radius"><i class="Hui-iconfont">&#xe6a7;</i> 批量审核</a>
+											</span>
+											<span class="f-r">当前共有数据：<strong>{$article->count('id')}</strong> 条</span>
+										</div>
+										<div class="mt-20 clearfix">
+											<table id="data-table-list" class="table table-border table-bordered table-bg table-hover table-sort">
+												<thead>
+													<tr class="text-c">
+														<th width="25"><input class="checkbox checkbox-all" type="checkbox" name="" value="all"></th>
+														<th width="80">ID</th>
+														<th width="80">缩略图</th>
+														<th>标题</th>
+														<th width="80">发布者</th>
+														<th width="120">更新时间</th>
+														<th width="70">浏览次数</th>
+														<th width="70">点赞量</th>
+														<th width="120">发布状态</th>
+														<th width="120">操作</th>
+													</tr>
+												</thead>
+												{volist name='article' id='val'}
+												<tbody class="getData-list" data-currPage='1'>
+													<tr class="text-c">
+														<td><input class="checkbox" type="checkbox" value="{$val.id}" name=""></td>
+														<td>{$val.id}</td>
+														{if condition="!empty($val.titlepic)"}
+														<td><img src="{$val.titlepic}" height="40" width="60" alt="{$val.title}"></td>
+														{else /}
+														<td>暂无!</td>
+														{/if}
+														<td class="text-l" style="overflow: hidden; max-width:200px; white-space:nowrap; text-overflow:ellipsis;"><u style="cursor:pointer;text-decoration: none;" class="text-primary" onClick="article_edit('查看','{:url('Article/edit')}'+'?id='+{$val.id})"
+															 title="{$val.title}">{$val.title}</u></td>
+														<td>{$val.author}</td>
+														<td>{:date("Y/m/d H:i:s",$val.create_time)}</td>
+														<td>{$val.browse}</td>
+														<td>{$val.likes}</td>
+														<td class="td-status">
+														    {if condition="$val.status eq '待审核'"}
+															<span class="label radius">待审核</span>
+															{else /}
+															<span class="label label label-danger radius">已驳回</span>
+															{/if}
+														</td>
+														<td class="f-14 td-manage">
+														    <a style="text-decoration:none" onClick="article_start(this,'{$val.id}')" href="javascript:;" title="点击审核通过">审核</a>
+															<a style="text-decoration:none" onClick="article_stop(this,'{$val.id}')" href="javascript:;" title="点击驳回">驳回</a>
+															<a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','{:url('Article/edit')}'+'?id='+{$val.id})"
+															 href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+															<a title="删除" class="del" data-name="{$val.title}" data-id="{$val.id}" class="ml-5" style="text-decoration:none"><i
+																 class="Hui-iconfont">&#xe6e2;</i></a>
+														</td>
+													</tr>
+												</tbody>
+												{/volist}
+											</table>
+										</div>
+
+										{$article|raw}
+										
+									</div>
+					</form>
+					
+				</div>
+			</div>
+		</article>
+	</div>
+	
+	{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__datatables/1.10.15/jquery.dataTables.min.js"></script>
+	<!--<script type="text/javascript" src="__ADMINLIB__jquery/1.9.1/jquery.js"></script>-->
+	<script type="text/javascript" src="__ADMINLIB__laypage/1.2/laypage.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+	<!--/请在上方写此页面业务相关的脚本-->
+	<style>
+		.layui-bg-blue {
+		    background-color: #FFFFFF!important;
+		}
+		.layui-nav .layui-nav-item a:hover,.layui-nav .layui-this a {
+		    color: #333;
+			text-decoration: none;
+		}
+		.layui-nav .layui-nav-item a {
+		    color: rgba(0, 0, 0, 0.9);
+			text-decoration: none;
+		}
+		.layui-bg-blue .layui-nav-bar,.layui-bg-blue .layui-nav-itemed:after,.layui-bg-blue .layui-this:after {
+		    background-color: #5a98de;
+			text-decoration: none;
+		}
+
+	</style>
+	
+	<script type="text/javascript">
+			layui.use('element', function(){
+			  var element = layui.element;
+			  
+			  //一些事件监听
+			  element.on('tab(demo)', function(data){
+			    console.log(data);
+			  });
+			});
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			$("#tab-system").Huitab();
+		});
+
+	</script>
+	<script type="text/javascript">
+		/* =====所有的列表页都可照搬这套模式====== */
+
+		$(function() {
+			$("#search-datetime-start").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  language: "zh-cn",
+			  autoclose: true
+			});
+			$("#search-datetime-end").datetimepicker({
+			  format: "yyyy-mm-dd",
+			  minView: "month",
+			  language: "zh-cn",
+			  autoclose: true
+			});
+			// 全选 页面调用
+			$(".table").HuicheckAll({
+					checkboxAll: 'thead input[type="checkbox"]',
+					checkbox: 'tbody input[type="checkbox"]'
+				},
+				function(checkedInfo) {
+					console.log(checkedInfo);
+				}
+			)
+		});
+
+	</script>
+
+
+	<script>
+		//删除操作
+		$(".del").click(function() {
+			//获取删除信息和对应id
+			var articleTitle = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			layer.msg('是否删除?', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['删除', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Article/delete')}", {
+						ids: id
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							if (data.url) location.href = data.url;
+							location.reload();
+						});
+					})
+				}
+			});
+		})
+	</script>
+	
+	<script>
+		/*文章-驳回*/
+		function article_stop(obj,id){
+		    layer.prompt({
+                  formType: 2,
+                  value: '如：该文章抄袭严重，原创度过低，请重新修改后提交审核。',
+                  title: '驳回原因：',
+                  maxlength: 50,//最大输入字数
+                  scrollbar: false,//屏蔽滚动条
+                  area: ['300px', '150px'] //自定义文本域宽高
+                }, function(value, index, elem){
+                    //console.log(alert(value));
+                    $.get("{:url('Article/refusal')}",{id:id,refusal:value},function(data){
+                        layer.msg(data.msg,{time:2000},function(){
+                            if(data.url) location.href=data.url;
+                            location.reload();
+                        });
+                    });
+                });
+		}
+		
+		/*文章-审核发布*/
+		function article_start(obj,id){
+		  layer.confirm('确认要审核发布吗？',function(index){
+		    //此处请求后台程序，下方是成功后的前台处理……
+			$.get("{:url('Article/setstatus')}",{id:id},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if (data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		  });
+		}
+		
+		//批量删除
+		$("#datadel").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=[];
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		//console.log(ids);
+			var delid = ids;
+			//console.log(delid);
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+			layer.confirm('确认要批量删除吗？',function(index){
+			//console.log(delid);
+			$.post("{:url('Article/deleteall')}",{delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+		});
+		}
+		});
+		//文章批量审核通过
+		$("#audit").click(function() {
+		var id=$("tbody input:checkbox");
+		var ids=new Array();
+		for(i=0;i<id.length;i++){
+			if($(id[i]).is(":checked")){
+				ids += $(id[i]).val()+',';
+			}
+		}
+		var delid = ids;
+		if(delid == ""){
+			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+		}else{
+
+			layer.confirm('确认要批量审核吗？',function(index){
+			$.post("{:url('Article/audits')}",{id:delid},function(data){
+				layer.msg(data.msg, {time: 2000}, function() {
+					if(data.url) location.href = data.url;
+					location.reload();
+				});
+			});
+			});
+		}
+		});
+		
+		// runGetDataList(); // 页面载入，自执行加载数据...
+		// 点击搜索执行...
+		$("#search-submit").click(function(index) {
+			var time = $('#search-datetime-start').val();
+			var time1 = $('#search-datetime-end').val();
+			var search = $('#search-input').val();
+			if(time =="" && time1 =="" && search ==""){
+				layer.msg("请输入搜索内容!", {time: 2000});
+			}else{
+				layer.open({
+					type:2,
+					area:['100%','100%'],
+					content:'{:url('Article/soulists')}'+'?so='+ search + '&t1='+time+'&t2='+time1,
+					end:function(){
+						location.reload();
+					}
+				});
+			}
+		});
+	</script>
+	
+</body>
+</html>

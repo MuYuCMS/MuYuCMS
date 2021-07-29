@@ -1,0 +1,153 @@
+{include file='public/meta' }
+	<title>邮件配置 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			邮箱设置
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+						<input type="hidden" name="id" value="{$email.id}">
+						<div id="tab-system" class="HuiTab">
+							<div class="tabBar cl"><span>邮件设置</span></div>
+							<div class="tabCon">
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="smtp" name="smtp" value="{$email.smtp}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="sll" name="sll" value="{$email.sll}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="text" id="email" name="email" value="{$email.email}" class="input-text">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>
+									<div class="form-controls col-xs-8 col-sm-9">
+										<input type="password" id="emailpaswsd" name="emailpaswsd" value="{$email.emailpaswsd}" class="input-text">
+										<span>请填写授权码</span>
+									</div>
+								</div>
+								<div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>
+									<div class="form-controls col-xs-8 col-sm-6">
+										<input type="text" id="ceemail" name="ceemail" value="{$email.ceemail}" class="input-text">
+										<button class="btn btn-default radius {$email.ceemail !="" ? '': 'disabled'}" type="button" id="btn1"><i class="Hui-iconfont">&#xe632;</i> 发送测试邮件</button>
+										<span style="color: red;">先填写测试邮箱地址保存后再点击发送!</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+								<button class="btn btn-primary radius disabled" type="button" id="btn"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</article>
+	</div>
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$('.skin-minimal input').iCheck({
+			checkboxClass: 'icheckbox-blue',
+			radioClass: 'iradio-blue',
+			increaseArea: '20%'
+		});
+		$("#tab-system").Huitab();
+	});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+	
+			/* 表单验证，提交 */
+			$("form").children().change(function(){
+			$("#btn").removeClass('disabled');	
+			});
+			$("#btn").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-system-base').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+			if(Data['email'] == ""){
+						 layer.msg('发信邮箱账号不能为空!',{icon:2,time:2000},function(){
+							 $("#email").focus();
+						 });
+			}else{
+							 if(Data['smtp'] == ""){
+								layer.msg('发信服务器不能为空!',{icon:2,time:2000},function(){
+									$("#smtp").focus();
+								}); 
+							 }else{
+								 if(Data['sll'] == ""){
+								 	layer.msg('端口号不能为空!',{icon:2,time:2000},function(){
+								 		$("#sll").focus();
+								 	});
+							 }else{
+								 if(Data['emailpaswsd'] == ""){
+								 	layer.msg('发信邮箱密码不能为空!',{icon:2,time:2000},function(){
+								 		$("#emailpaswsd").focus();
+								 	});
+							 }else{
+								 //console.log(Data);
+									 $.post("{:url('Emails/update')}",Data,function(data){									 
+									layer.msg(data.msg,{time:2000},function(){
+										if(data.url) location.href = data.url;
+									});
+									 });
+								 
+							 }
+					}
+			}
+			}
+			});
+			//发送测试邮件
+			$("#btn1").on("click",function(){
+				var email = $("#ceemail").val();
+				var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+				var isok = reg.test(email);
+				if(!isok) {
+					layer.msg('邮箱格式不正确，请修改!',{icon:5,time:2000},function(){
+					document.getElementById("ceemail").focus();
+					});
+						
+				}else{
+				$.post("{:url('Emails/sendEmail')}",{},function(data){
+				layer.msg('已发送',{icon:6,time:5000},function(){
+					location.href = 'index';
+				});
+				 });
+				 }
+				});
+			});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

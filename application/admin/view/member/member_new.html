@@ -1,0 +1,205 @@
+{include file='public/meta' }
+
+	<title>添加用户 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-member-add">
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>会员昵称：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="会员名" id="username" name="name">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3">会员账号：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="昵称" id="nickname" name="account">
+					</div>
+				</div>
+				<div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-3">性别：</label>
+							<div class="form-controls col-xs-8 col-sm-6">
+							<span class="select-box">
+								<select class="select valid" size="1" name="sex" id="">
+									<option value="0">女</option>
+									<option value="1" selected>男</option>
+									<option value="2">保密</option>
+								</select>
+							</span>
+						</div>
+						</div>
+				<div class="row clearfix" id="supers">
+							<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>超级会员：</label>
+							<div class="form-controls col-xs-8 col-sm-6 skin-minimal">
+								<div class="check-box">
+									<input type="checkbox" id="super" name="super">
+									<label for="super">&nbsp;</label>
+								</div>
+							</div>
+						</div>		
+                <div class="row clearfix">
+							<label class="form-label col-xs-4 col-sm-3">介绍：</label>
+							<div class="form-controls col-xs-8 col-sm-6">
+								<textarea cols="" rows="" class="textarea textarea-article"  placeholder="说点什么...最少输入10个字符" id="introduce" name="intro"></textarea>
+							</div>
+						</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="手机号码" id="mobile" name="phone">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+					<div class="form-controls col-xs-8 col-sm-6">
+						<input type="text" class="input-text" value="" placeholder="邮箱" name="email" id="email">
+					</div>
+				</div>
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
+						<div class="form-controls col-xs-8 col-sm-6">
+							<input type="password" class="input-text" autocomplete="off" value="" placeholder="初始密码" id="password" name="password">
+						</div>
+					</div>
+					<div class="row clearfix">
+						<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次确认密码：</label>
+						<div class="form-controls col-xs-8 col-sm-6">
+							<input type="password" class="input-text" autocomplete="off" value="" placeholder="确认密码" id="password2">
+						</div>
+					</div>
+
+
+				<div class="row clearfix">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input class="btn btn-primary radius" type="botton" id="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+	<!--/_footer /作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			// 复选框样式
+			$('.skin-minimal input').iCheck({
+				checkboxClass: 'icheckbox-blue',
+				radioClass: 'iradio-blue',
+				increaseArea: '20%'
+			});
+			// 备注标题
+			$("#beizhu").Huitextarealength({
+				minlength: 10,
+				maxlength: 100
+			});
+
+			//验证用户名
+			$("#username").change(function(){
+				$.post("{:url('Member/checkname')}",{username:$(this).val()},function(data){
+					if(data.state == 1){
+						layer.msg(data.message,{time:2000});
+						$("#submit").removeClass('disabled');
+					}else{
+						layer.msg(data.message,{time:2000});
+						$("#submit").toggleClass('disabled');
+					}
+				 });
+			});
+			//验证邮箱
+			$("#email").change(function(){
+				$.post("{:url('Member/checkemail')}",{email:$(this).val()},function(data){				 
+				if(data.state == 1){
+					layer.msg(data.message,{time:2000});
+					$("#submit").removeClass('disabled');
+				}else{
+					layer.msg(data.message,{time:2000});
+					$("#submit").toggleClass('disabled');
+				}
+				 });
+			});
+			//验证手机
+			$("#mobile").change(function(){
+				$.post("{:url('Member/checkmobile')}",{mobile:$(this).val()},function(data){				 
+				if(data.state == 1){
+					layer.msg(data.message,{time:2000});
+					$("#submit").removeClass('disabled');
+				}else{
+					layer.msg(data.message,{time:2000});
+					$("#submit").toggleClass('disabled');
+				}
+				 });
+			});
+			//介绍
+			$(".textarea-article").Huitextarealength({
+				minlength: 0,
+				maxlength: 50
+			});
+			//提交触发
+			$("#submit").on("click",function(){
+				var Data={};
+				var form_arr=$('#form-member-add').serializeArray();
+				$.each(form_arr,function(){
+					Data[this.name]=this.value;
+				})
+			var membersuper = $("#supers input:checkbox");
+			var str = "0";
+			if($(membersuper).is(":checked")){
+				str = "1";
+			}	
+			Data['super'] = str;	
+			var pwd = $("#password").val();
+			var pwd1 = $("#password2").val();	
+			if(Data['username'] == ""){
+						 layer.msg('用户名不能为空!',{icon:2,time:2000},function(){
+							 $("#username").focus();
+						 });
+			}else{
+					if(pwd == ""){
+						layer.msg('密码不能为空!',{icon:2,time:2000},function(){
+													 $("#password").focus();
+													 });			 
+					}else{
+				if(pwd1 !==pwd){
+					layer.msg('两次密码不正确!',{icon:2,time:2000},function(){
+												 $("#password2").focus();
+					});
+			}else{
+					if(Data['email'] == ""){
+							layer.msg('邮箱不能为空!',{icon:2,time:2000},function(){
+														 $("#email").focus();
+														 }); 
+						}else {			
+									 //console.log(Data);
+									 layer.confirm('确认要提交吗？',function(index){
+									 $.post("{:url('Member/tonewadd')}",Data,function(data){
+									 	layer.msg(data.msg, {time: 2000}, function() {
+											//if(data.url) location.href = data.url;
+											window.parent.location.reload();
+									 	});
+									 });
+									 });
+	 
+							 }
+					}
+				}
+			
+			}
+		});
+		});
+	
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

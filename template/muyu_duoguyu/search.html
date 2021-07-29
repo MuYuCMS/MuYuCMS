@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="{muy:siteseo name='key'}" />
+    <meta name="description" content="{muy:siteseo name='desc'}" />
+    <title>
+        <?php echo input('search');?>_{muy:siteseo name='title'}
+    </title>
+    <link href="__INDEXST__static/css/dgy.base.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/dgy.grid.v.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/dgy.nav.t.css" rel="stylesheet" type="text/css" />
+    <link href="__INDEXST__static/css/font_1809908_xpn2c7cw8fi.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__INDEXST__static/js/digg.js"></script>
+</head>
+
+<body>
+    <div class="baseLayout">
+        <!--头部-->
+        {include file='public/header'}
+        <!--头部end-->
+        <div class="productGrid">
+            <div class="searchPageWrap">
+            <!-- 频道导航 -->
+            <div class="mainWrap">
+                <div class="titleWrapper bb0">
+                    <h3 class="title"><b>“
+                            <?php echo input('search');?>”
+                        </b>的搜索结果。</h3>
+                </div>
+
+                <!-- 全部内容 -->
+                <div class="articleListWrapper">
+                    {foreach $scar as $val}
+                    <div class="richTextItem search">
+                        <a class="content" href="{muy:urls arid='$val.id'}" title="{$val.title}" target="_blank">
+                            <div class="article">
+                                <div class="focusBox">
+                                    <img class="focus" src="{$val.titlepic}" alt="{$val.title}">
+                                </div>
+                                <div class="textBox">
+                                    <h4 class="title">{$val.title}</h4>
+                                    <p>
+                                        {$val.abstract}...
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {/foreach}
+                    <div id="pageGroup">
+                    </div>
+                </div>
+            </div>
+            <div class="asideWrap">
+                <div class="articleListBox">
+                    <div class="titleWrapper mb0">
+                        <h3 class="title"><b>随机推荐</b></h3>
+                    </div>
+                    {muy:article name="sj" id="$ids" order="rand()" limt="6"}
+                    <div class="richTextItem search aside">
+                        <a class="content" href="/article_{$sj.id}" title="{$sj.title}" target="_blank">
+                            <div class="article">
+                                <div class="focusBox">
+                                    <img class="focus" src="{$sj.titlepic}" alt="{$sj.title}" />
+                                </div>
+                                <div class="textBox">
+                                    <h4 class="title">{$sj.title}</h4>
+                                    <p>
+                                        <span class="mr5">{$sj.abstract}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {/muy:article}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--低部-->
+    {include file='public/footer'}
+    <!--低部end-->
+    </div>
+</body>
+
+</html>

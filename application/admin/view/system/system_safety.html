@@ -1,0 +1,87 @@
+{include file='public/meta' }
+	<title>基本设置 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+    {load href="__ADMINLIB__layui/css/layui.css"}
+</head>
+<body>
+	<div class="wap-container">
+		<nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+			首页
+			<span class="c-gray en">/</span>
+			系统管理
+			<span class="c-gray en">/</span>
+			安全设置
+			<a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<article class="Hui-admin-content clearfix">
+			<div class="panel">
+				<div class="panel-body">
+					<form action="" method="post" class="form form-horizontal" id="form-system-base">
+						<div id="tab-system" class="HuiTab">
+							<div class="tabBar cl"><span>安全设置</span></div>
+							<div class="tabCon">
+							    <div class="row clearfix">
+									<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>新的后台入口：</label>
+									<div class="form-controls col-xs-8 col-sm-5">
+										<input type="text" id="htporch" name="htporch" placeholder="默认admin.php入口,为了安全请及时修改!" value="{$porch}" class="input-text">
+										<span class="c-red" style="margin-left: 10px;">为了安全起见,勿使用默认后台入口,输入需要使用的完整名称即可,如:muyu.php</span>
+									</div>
+									<botton type="button" name="htrk" class="btn btn-secondary radius" style="width: 10%;padding:4px 4px" id="newrk">修改</botton>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row clearfix">
+							<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</article>
+	</div>
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layui/layui.js"></script>
+		<script type="text/javascript">
+	$(function(){
+		$('.skin-minimal input').iCheck({
+			checkboxClass: 'icheckbox-blue',
+			radioClass: 'iradio-blue',
+			increaseArea: '20%'
+		});
+		$("#tab-system").Huitab();
+	});
+	</script>
+	<script type="text/javascript">
+	    		//入口修改
+		$("#newrk").click(function() {
+			//获取入口修改的对应名称
+			var currentURL = window.location;
+			var name = $('#htporch').val();
+			var url = currentURL.hostname;
+					//执行修改
+					$.post("{:url('System/htporch')}", {
+						htporch: name
+					}, function(data) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+						name+='/login/login.html';    
+						url+='/'+name;
+						if(data.url){
+						top.location.replace('http://'+url);
+						}
+						});
+					});
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

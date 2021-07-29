@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__ADMINLIB__html5shiv.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="__ADMINST__h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINLIB__Hui-iconfont/1.0.9/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="__ADMINST__business/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="__ADMINLIB__DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<title>我的桌面</title>
+	</head>
+<body>
+	<div class="wap-container">
+		<article class="Hui-admin-content clearfix">
+			<div class="row-24 clearfix" style="margin-left: -12px; margin-right: -12px;">
+				<div class="col-24-xs-24 col-24-sm-12 col-24-md-12 col-24-lg-12 col-24-xl-6" style="padding-left: 12px; padding-right: 12px; margin-bottom: 24px;">
+					<div class="panel">
+						<div class="panel-header" style="padding:15px 24px;font-weight: 400;color:#999;">文章统计：</div>
+						<div class="panel-body" style="padding:0 24px;">
+							<div class="c-primary" style="font-size: 30px;line-height: 38px;padding-bottom: 24px;">
+								{$article->count('id')} 篇
+							</div>
+							<div class="f-14" style="padding: 10px 0;border-top:solid 1px #eee"><span class="c-999">今日发布</span> <span>{$wzjs}</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-24-xs-24 col-24-sm-12 col-24-md-12 col-24-lg-12 col-24-xl-6" style="padding-left: 12px; padding-right: 12px; margin-bottom: 24px;">
+					<div class="panel">
+						<div class="panel-header" style="padding:15px 24px;font-weight: 400;color:#999;">会员总数：</div>
+						<div class="panel-body" style="padding:0 24px;">
+							<div class="c-success" style="font-size: 30px;line-height: 38px;padding-bottom: 24px;">
+								{$member->count('id')} 人
+							</div>
+							<div class="f-14" style="padding: 10px 0;border-top:solid 1px #eee"><span class="c-999">今日注册量</span> <span>{$wzjs1}</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-24-xs-24 col-24-sm-12 col-24-md-12 col-24-lg-12 col-24-xl-6" style="padding-left: 12px; padding-right: 12px; margin-bottom: 24px;">
+					<div class="panel">
+						<div class="panel-header" style="padding:15px 24px;font-weight: 400;color:#999;">管理员：</div>
+						<div class="panel-body" style="padding:0 24px;">
+							<div class="c-danger" style="font-size: 30px;line-height: 38px;padding-bottom: 24px;">
+								{$admin->count('id')} 人
+							</div>
+							<div class="f-14" style="padding: 10px 0;border-top:solid 1px #eee"><span class="c-999">当前登录</span> <span>{$Think.session.Adminuser.name}</font><span class="c-danger"> - {$roname.name}</span></span></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-24-xs-24 col-24-sm-12 col-24-md-12 col-24-lg-12 col-24-xl-6" style="padding-left: 12px; padding-right: 12px; margin-bottom: 24px;">
+					<div class="panel">
+						<div class="panel-header" style="padding:15px 24px;font-weight: 400;color:#999;">留言总数：</div>
+						<div class="panel-body" style="padding:0 24px;">
+							<div class="c-warning" style="font-size: 30px;line-height: 38px;padding-bottom: 24px;">
+								{$feedback->count('id')} 条
+							</div>
+							<div class="f-14" style="padding: 10px 0;border-top:solid 1px #eee"><span class="c-999">今日新增留言</span> <span>{$wzjs2}</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="panel-body">
+					<p class="f-20 text-success">欢迎使用MuYuCMS
+						<span class="f-14">v{$system.version}</span>
+						内容管理系统！
+					</p>
+					<p>登录次数：{$Think.session.Adminuser.count}</p>
+					<p>上次登录IP：{$Think.session.Adminuser.outip}  上次登录时间：{:date("Y/m/d H:i:s", $Think.session.Adminuser.outtime)}</p>
+					<table class="table table-border table-bordered table-bg mt-20">
+						<thead>
+							<tr>
+								<th colspan="2" scope="col">服务器信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th width="30%">服务器计算机名</th>
+								<td><span id="lbServerName">{$Request.host}</span></td>
+							</tr>
+							<tr>
+							<td>服务器IP地址</td>
+							<td>{$_SERVER['SERVER_ADDR']}</td>
+						     </tr>
+						     <tr>
+							<td>服务器端口</td>
+							<td>{$_SERVER['SERVER_PORT']}</td>
+						     </tr>
+							<tr>
+								<td>服务器域名</td>
+								<td>{$Request.domain}</td>
+							</tr>
+							<tr>
+								<td>当前PHP版本 </td>
+								<td>{$Think.const.PHP_VERSION}</td>
+							</tr>
+							<tr>
+								<td>服务器操作系统 </td>
+								<td>{$Think.const.PHP_OS}</td>
+							</tr>
+							<tr>
+								<td>服务器时间 </td>
+								<td>{:date("Y/m/d H:i:s")}</td>
+							</tr>
+							<tr>
+								<td>剩余空间 </td>
+								<td>{:round((disk_free_space(".")/(1024*1024)),2)."M"}</td>
+							</tr>
+							<tr>
+								<td>当前SessionID </td>
+								<td>{:session_id()}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</article>
+		<footer class="footer Hui-admin-footer">
+			<p>Copyright &copy;2020 MuYuCMS内容管理系统 All Rights Reserved.<br> 版权声明：本后台系统由<a href="http://www.muyucms.com/" target="_blank" title="乐小轩团队">乐小轩团队</a>开发，禁止抄袭！</p>
+		</footer>
+	</div>
+	<script type="text/javascript" src="__ADMINLIB__jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__layer/3.1.1/layer.js"></script>
+	<script type="text/javascript" src="__ADMINST__h-ui/js/H-ui.min.js"></script>
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINST__business/js/main.js"></script>
+</body>
+</html>

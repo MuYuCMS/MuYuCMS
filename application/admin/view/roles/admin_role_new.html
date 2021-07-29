@@ -1,0 +1,127 @@
+{include file='public/meta' }
+
+	<title>新建角色 - 管理员管理 - Muyu CMS内容管理系统</title>
+	<meta name="keywords" content="Muyu CMS内容管理系统,Muyu,木鱼CMS,木鱼">
+    <meta name="description" content="木鱼(muyucms.com)内容管理系统是一个简洁、轻量、实用的建站系统！">
+</head>
+<body style="background-color:#fff">
+	<div class="wap-container">
+		<div class="panel">
+			<div class="panel-body">
+				<form action="" method="post" class="form form-horizontal" id="form-admin-role-add">
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>角色名称：</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="请输入角色名" id="name" name="name" datatype="*4-16" nullmsg="角色名不能为空">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-2">角色说明：</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="info" name="info">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-2">角色权限：</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						
+							{foreach $menu as $val}
+							<dl class="Hui-admin-permission-list">
+							<dt>
+								<label>
+									<input type="checkbox" value="{$val.id}" id="Character-{$val.id}">
+									{$val.title}</label>
+							</dt>
+							<dd>
+								<dl class="clearfix Hui-admin-permission-list2">
+									<dd>
+							{if condition="!empty($val.secontit)"}
+							{foreach $val.secontit as $va}
+							<label class="">
+								<input type="checkbox" value="{$va.id}" id="Character-0-{$va.id}">
+								{$va.title}</label>
+							{/foreach}
+							{/if}
+							</dd>
+								</dl>
+							</dd>
+							</dl>
+							{/foreach}
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="mt-20 text-c">
+						<button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="__ADMINLIB__jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$(".Hui-admin-permission-list dt input:checkbox").click(function(){
+			$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+		});
+		$(".Hui-admin-permission-list2 dd input:checkbox").click(function(){
+			var l =$(this).parent().parent().find("input:checked").length;
+			var l2=$(this).parents(".Hui-admin-permission-list").find(".Hui-admin-permission-list2 dd").find("input:checked").length;
+			if($(this).prop("checked")){
+				$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+				$(this).parents(".Hui-admin-permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+			}
+			else{
+				if(l==0){
+					$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+				}
+				if(l2==0){
+					$(this).parents(".Hui-admin-permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+				}
+			}
+		});
+		
+		//提交数据到控制器
+		$("#admin-role-save").on("click",function(){
+			var Data={};
+			var form_arr=$('#form-admin-role-add').serializeArray();
+			$.each(form_arr,function(){
+				Data[this.name]=this.value;
+			})
+			//关联所选的权限
+			var chbox = $("input[type='checkbox']");
+			var str="";
+			for(i=0;i<chbox.length;i++){
+				if($(chbox[i]).is(":checked")){
+					str += $(chbox[i]).val()+',';
+				}
+			}
+			Data['jurisdiction'] = str;	
+			console.log(Data['name']);
+		if(Data['name'] == null){
+					 layer.msg('角色名不能为空!',{icon:2,time:2000},function(){
+						 $("#name").focus();
+					 });
+		}else{
+							 
+								 $.post("{:url('Roles/save')}",Data,function(data){
+								//console.log(Data);
+								 
+								layer.msg(data.msg,{time:2000},function(){
+									//if(data.url) location.href = data.url;
+									window.parent.location.reload();
+								});
+								 });
+							 
+						 }
+		});
+	});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
