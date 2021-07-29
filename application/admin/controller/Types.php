@@ -129,7 +129,7 @@ class Types extends Base
         $list = Type::get($id);
 		//查询分类所属数据
 		$menunew = CategoryModel::field('id,pid,title')->select()->toArray();
-		$menunew = json_encode(alldigui($hmenus,0),JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+		$menunew = json_encode(alldigui($menunew,0),JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
         //赋值给模板
         $this -> view -> assign(['list'=>$list,'menunew'=>$menunew]);
         return $this -> view -> fetch('edit');
