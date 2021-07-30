@@ -107,16 +107,17 @@ class Template extends base
       }
    }
     //模板在线编辑
-        public function tempEdit(Request $request)
-        {
-            $_SESSION["poc_username"];
-            //删除编辑器历史用户信息
-            delete_dir_file($_SERVER['DOCUMENT_ROOT'].'/editor/Cache/User');
-            $_SESSION["root"] = Session::get('Adminuser');
-            $domain = $request->domain();
-            $url = $domain.'/editor/index.php';
-            header("Location:".$url);
-        }
+    public function tempEdit(Request $request)
+    {
+        $admin = Db::name('admin')->where('id',Session::get('Adminuser.id'))->field('name')->find();
+        $_SESSION["poc_username"] = $admin['name'];
+        //删除编辑器历史用户信息
+        delete_dir_file($_SERVER['DOCUMENT_ROOT'].'/editor/Cache/User');
+        $_SESSION["root"] = Session::get('Adminuser');
+        $domain = $request->domain();
+        $url = $domain.'/editor/index.php';
+        header("Location:".$url);
+    }
     
     /*
     *自定义单页
