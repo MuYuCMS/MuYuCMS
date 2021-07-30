@@ -82,6 +82,9 @@ class Search extends Base
                 ->where($map)
                 ->orderRaw($order)
                 ->paginate(10,false,$config = ['query' => array('sech' => $sc)]);
+		if(!$lists->isEmpty()){
+                    $list = $lists;
+                }    
             }
         }
         return $this-> fetch('/home_temp/'.$this->config["home_temp"].'/search',['list'=>$list,'catinfo'=>$catinfo]);
