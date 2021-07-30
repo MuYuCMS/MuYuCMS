@@ -427,33 +427,6 @@
 			forceLowercase: false,
 			placeholder: '输入后按回车或者失去焦点完成 鼠标右键或Ctrl+左键删除标签'
 		});
-			var muyuEditor = editormd("editcont", {
-				placeholder: '左边编写，右边实时预览',
-				width: "70%",
-				float: 'left',
-				height: 440,
-				path: '/public/static/admin/static/editor.md/lib/',
-				watch: false,
-				saveHTMLToTextarea : true,
-				imageUpload: true,
-				imageFormats: ["jpg", "jpeg", "gif", "png"],
-				imageUploadURL: "{:url('admin/Matter/editorup')}",
-				emoji: true,
-				taskList: true,
-				tocm: true, // Using [TOCM]
-				tex: true, // 开启科学公式TeX语言支持，默认关闭
-				flowChart: true, // 开启流程图支持，默认关闭
-				sequenceDiagram: true,
-				toolbarIcons: function() { //自定义工具栏，后面有详细介绍
-					return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase",
-						"lowercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul",
-						"list-ol", "hr", "|", "link", "reference-link", "image", "code",
-						"preformatted-text", "code-block", "table", "datetime", "emoji",
-						"html-entities", "pagebreak", "|", "goto-line", "watch", "preview",
-						"fullscreen", "clear", "search", "|", "help"
-					]; // full, simple, mini
-				},
-			});
 
 		function addmatter(Data) {
 			//下载地址的组合
