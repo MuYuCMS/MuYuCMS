@@ -72,7 +72,9 @@ class Matter extends Base
 	        if(isset($data['upfile'])){
 	        unset($data['upfile']);    
 	        }
-	        $data['editor'] = html_entity_decode(htmlspecialchars_decode($data['editor']));
+		if(isset($data['editor'])){
+	        $data['editor'] = html_entity_decode(htmlspecialchars_decode($data['editor']));    
+	        }  
 	        $data['create_time'] = time();
 	        $data['update_time'] = time();
 	        $setid = setconid();
