@@ -430,10 +430,6 @@ class Update extends Base
      * @$filename 定义文件名称
      */
     public function getFile($url, $save_dir, $type = 1) {
-        //判断当前IP是否允许操作后台
-    	$ip = $this->ip_info();
-    	//判断是否登录
-    	$user = $this -> user_info();
         if (trim($url) == '') {
             return false;
         }
