@@ -141,7 +141,7 @@ class Update extends Base
 	{
     	//对php.ini参数进行修改
         ini_set("max_execution_time", "360");
-        ini_set('memory_limit', '100M');
+        ini_set('memory_limit', '300M');
         // PclZip类库不支持命名空间
         include_once $_SERVER['DOCUMENT_ROOT'] . '/extend/pclzip/PclZip.php';
         //引入数据库操作类
@@ -427,50 +427,48 @@ class Update extends Base
     /* 远程下载文件到指定目录
      * @$url 文件下载地址
      * @$save_dir 文件保存路径
-     * @$filename 定义文件名称
      */
-    public function getFile($url, $save_dir, $type = 1) {
+    public function getFile($url, $save_dir) {
         if (trim($url) == '') {
             return false;
         }
-		$key ="http";
-		if(strpos($url,$key) == false || strpos($url,$key) !== 0){
-			return false;
-		}
         if (trim($save_dir) == '') {
-            $save_dir = './';
+            return false;
         }
         if (0 !== strrpos($save_dir, '/')) {
             $save_dir.= '/';
         }
+        $filename = basename($url);
         //创建保存目录
         if (!file_exists($save_dir)) {
             return false;
         }
-        //获取远程文件所采用的方法
-        if ($type) {
-    		$options = array(
-    		'http'=>array(
-    			'method' => 'POST',//请求方式POST
-    			'header' => 'Content-type:application/x-www-form-urlencoded',
-    			'timeout' => 5 // 超时时间（单位:s）
-    		)
-    		);
-    		$context = stream_context_create($options);//创建并返回文本数据流
-    		$content = file_get_contents($url, false, $context);//将文本数据流读入字符串
+        //开始下载
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $content = curl_exec($ch);
+        $status = curl_getinfo($ch);
+        curl_close($ch);
+        // 判断执行结果
+        if ($status['http_code'] ==200) {
+            $size = strlen($content);
+            //文件大小
+            $fp2 = @fopen($save_dir . $filename , 'a');
+            fwrite($fp2, $content);
+            fclose($fp2);
+            unset($content, $url);
+            $res = [
+                'status' =>$status['http_code'] ,
+                'file_name' => $filename,
+                'save_path' => $save_dir . $filename
+            ];
         } else {
-            ob_start();
-            readfile($url);
-            $content = ob_get_contents();
-            ob_end_clean();
+            $res = false;
         }
-        $size = strlen($content);
-        //文件大小
-        $fp2 = @fopen($save_dir, 'a');
-        fwrite($fp2, $content);
-        fclose($fp2);
-        unset($content, $url);
-        return array('save_path' => $save_dir);
+        return $res;
     }
     
     
