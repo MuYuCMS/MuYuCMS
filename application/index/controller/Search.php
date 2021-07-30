@@ -17,6 +17,7 @@ class Search extends Base
         $tab = !empty(input('tab')) ? input('tab') : $request->param('tab');//可指定栏目或模型标识进行搜索范围控制
         $field = !empty(input('field')) ? input('field') : $request->param('field');//指定搜索字段
         $order = !empty(input('order')) ? input('order') : $request->param("order");
+	$list = array();
         if(empty($order)){
             $order = "create_time desc";
         }
