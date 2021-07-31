@@ -115,7 +115,7 @@
             		<div class="commentGrid">
             			<div class="commentForm">
                 			<form action="{:url('index/matters/discuss')}" method="post" onsubmit="return check_comm(this)">
-                    			<input type="hidden" name="id" value="{$matcont.id}">
+                    			<input type="hidden" name="matid" value="{$matcont.id}">
                     			<input type="hidden" name="title" value="{$matcont.title}">
                     			<input name="pl" type="hidden"/>
                     			<textarea class="commentTextarea" id="content" name="content" placeholder="我来说两句~"></textarea>
@@ -136,8 +136,9 @@
                 						    <p>{$content}</p>
                     						<div id="rep_2" style="display:none">
                         						<form action="{url:('index/matters/discuss')}" method="post" onsubmit="return check_comm(this)">
-                    			                   <input type="hidden" name="id" value="{id}">
+                    			                   <input type="hidden" name="matid" value="{$matcont.id}">
                     			                   <input type="hidden" name="title" value="{$title}">
+                    			                   <input type="hidden" name="pid" value="{$id}">
                     			                   <textarea class="commentTextarea" id="content" name="content" placeholder="我来说两句~"></textarea>
         				                           <div class="btnBox"><input type="submit" class="submitBtn" name="dosubmit" value="提交"></div>
                 			                   </form>
