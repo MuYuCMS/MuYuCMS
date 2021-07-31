@@ -153,11 +153,7 @@
 					type: "post",
 					url: "{:url('index/Matters/subLikes')}",
 					dataType: "json",
-					data: {
-						matid: {
-							$matcont.id
-						}
-					},
+					data: {matid: {$matcont.id}},
 					success: function(msg) {
 						layer.msg(msg.msg, {
 							time: 3000
