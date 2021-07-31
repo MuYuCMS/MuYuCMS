@@ -658,6 +658,8 @@ class User extends Base
         $or = array_column($all, 'create_time');
         //按照取出字段排序
         array_multisort($or, SORT_DESC, $all);
+	    }else{
+	        $all = array();
 	    }
 		//统计当前会员有多少文章
 		$tg_sum=count($all);
