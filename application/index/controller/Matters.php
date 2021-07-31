@@ -265,12 +265,14 @@ class Matters extends Base
 		      $msg = '-但需要管理员审核后展现';
 		  }
 		$compid = 0;
-		if(isset($pinl['pid']) || empty($pinl['pid'])){
+		if(isset($pinl['pid']) || !empty($pinl['pid'])){
 		    $compid = $pinl['pid'];
 		    $msg1 = "回复";
 		}
-	    $data = ['title'=>$pinl['title'],'aid'=>$pinl['matid'],$compid,'uid'=>$uid,'plname'=>$names,'plpic'=>$pic,'content'=>$pinl['content'],'status'=>$status,'create_time'=>time()];
+	    $data = ['title'=>$pinl['title'],'aid'=>$pinl['matid'],'pid'=>$compid,'uid'=>$uid,'plname'=>$names,'plpic'=>$pic,'content'=>$pinl['content'],'status'=>$status,'create_time'=>time()];
 	    $res = Db::name('comment')->insert($data);
+	   // var_dump(Db::name('comment')->getLastSql());
+	   // exit;
 	    $aid = Db::name('comment')->getLastInsID();
 	    $arct = Db::name($arcon["tab"].'_data')->where(['aid'=>$pinl['matid']])->field('comment_t')->find();
 	    $arcomt = '1';
@@ -282,9 +284,9 @@ class Matters extends Base
 	        Db::name($arcon["tab"].'_data')->where(['aid'=>$pinl['matid']])->update(['comment_t'=>$arcomt]);
 	        //今日大数据表文章评论字段自增1
 	        Db::name('bigdata')->whereTime('create_time','today')->setInc('article_comment');
-	        $this->success("$msg1成功!$msg");
+	        $this->success($msg1."成功!".$msg);
 	    }else{
-	        $this -> error("$msg1失败!");
+	        $this -> error($msg1."失败!");
 	    }
 	    }else{
 	        $this -> error("非法请求!");
