@@ -223,8 +223,15 @@ class Matters extends Base
 	    }
 	    $tab = Db::name("model")->field("tablename")->select();
 	    foreach($tab as $v){
-	    $arcon = Db::name($v["tablename"])->field('comment')->find($pinl['matid']);
+	    $arcons = Db::name($v["tablename"])->field('comment')->find($pinl['matid']);
+	    if(!empty($arcons)){
+	    $arcon = $arcons;    
 	    $arcon["tab"] = $v["tablename"];
+	    }
+	    }
+	    if(empty($arcon)){
+	        $this -> error("这篇文章找不到了!请换一篇文章吧!");
+	      return false;
 	    }
 	    if($arcon['comment'] != 0){
 	      $this -> error("当前文章评论已关闭!");
