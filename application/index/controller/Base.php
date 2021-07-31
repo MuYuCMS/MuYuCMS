@@ -163,9 +163,13 @@ class Base extends Controller
         //替换后的内容
         $stringAfter = $string;  
         //定义正则表达式
-        $pattern = "/".implode("|",$list)."/i"; 
+        $pattern = explode("|",$list);
+        foreach($pattern as $key=>$vs){
+            $pattern[$key] = "/".$vs."/i";
+        }
         //匹配到了结果
-      if(preg_match_all($pattern, $string, $matches)){ 
+      foreach($pattern as $vsl){ 
+      if(preg_match_all($vsl, $string, $matches)){ 
         //匹配到的数组
         $patternList = $matches[0];  
         $count = count($patternList);
@@ -175,6 +179,7 @@ class Base extends Controller
         $replaceArray = array_combine($patternList,array_fill(0,count($patternList),'*')); 
         //结果替换
         $stringAfter = strtr($string, $replaceArray); 
+      }
       }
       //$log = "原句为 [ {$string} ]<br/>";
       if($count==0){
