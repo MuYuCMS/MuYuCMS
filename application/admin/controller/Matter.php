@@ -52,7 +52,7 @@ class Matter extends Base
                  $contid .= ",".$vcc['id'];
             }
             }
-		    $list = Db::name($tab)->where("mid","in",$contid)->where(['status'=>[0,1,2],'delete_time'=>NULL])->order("create_time asc")->field('id,mid,title,titlepic,author,create_time,status,top,ppts,price')->paginate(25);
+		    $list = Db::name($tab)->where("mid","in",$contid)->where(['status'=>[0,1,2],'delete_time'=>NULL])->order("create_time desc")->field('id,mid,title,titlepic,author,create_time,status,top,ppts,price')->paginate(25);
 		}
 		return view('index',['list'=>$list,'category'=>$category,'cateid'=>$cateid,'status'=>$status]);
     }
