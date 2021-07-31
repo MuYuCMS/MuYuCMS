@@ -163,6 +163,7 @@ class Base extends Controller
         //替换后的内容
         $stringAfter = $string;  
         //定义正则表达式
+        if(!empty($list)){
         $pattern = explode("|",$list);
         foreach($pattern as $key=>$vs){
             $pattern[$key] = "/".$vs."/i";
@@ -195,6 +196,11 @@ class Base extends Controller
         /*$log .= "匹配到 [ {$count} ]个敏感词：[ {$sensitiveWord} ]<br/>".
           "替换后为：[ {$stringAfter} ]";*/
       }
+        }
+        $status=0;
+        //没有设置违禁词原话返回
+        $log = $string;
+        return ['status'=>$status,'log'=>$log];
     }
     
     
