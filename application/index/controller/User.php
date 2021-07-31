@@ -653,13 +653,15 @@ class User extends Base
 		}
 	    }
 	    }
-		//取出数组更新时间字段作为排序标志
+	 if(!empty($all)){
+	//取出数组更新时间字段作为排序标志
         $or = array_column($all, 'create_time');
         //按照取出字段排序
         array_multisort($or, SORT_DESC, $all);
-		//统计当前会员有多少文章
-		$tg_sum=count($all);
-		$this -> view -> assign(['article'=>$all,'sum'=>$tg_sum]);
+	 }
+	//统计当前会员有多少文章
+	$tg_sum=count($all);
+	$this -> view -> assign(['article'=>$all,'sum'=>$tg_sum]);
         return $this-> fetch('/member_temp/'.$this->config["member_temp"].'/tg_record');
     }
     
