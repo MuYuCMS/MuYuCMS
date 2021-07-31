@@ -146,7 +146,7 @@ return [
     
     
     // 错误显示信息,非调试模式有效
-    'error_message'          => '页面走丢了~从新来过吧!',
+    'error_message'          => '页面走丢了~重新来过吧!',
     // 显示错误信息
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
