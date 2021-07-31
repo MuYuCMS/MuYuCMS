@@ -12,7 +12,7 @@ class Member extends Base
 	public function index()
     {
 		//读取会员表所有信息
-		$member = MemberModel::order('update_time','desc')->paginate(25);
+		$member = MemberModel::order('create_time','desc')->paginate(25);
 		//赋值给模板
 		$this -> view -> assign('member',$member);
 		return $this -> view -> fetch('list');
