@@ -41,8 +41,8 @@ class Comment extends Base
 		$status = ['0'=>'待审核','1'=>'已通过','2'=>'已屏蔽'];
         $comment = Db::name("comment")->alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->field('a.*,b.*,c.name')->where(['a.status'=>0])->order('a.create_time','desc')->paginate(25);
         $mode = Db::name('model')->field("tablename")->select();
-        if(!empty($data)){
         $data = $comment->all();
+        if(!empty($data)){
         foreach($data as $key=>$val){
             $val['status'] = $status[$val['status']];
             $val['catetitle'] = "-文章已遗失-";
