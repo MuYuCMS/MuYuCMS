@@ -53,13 +53,13 @@
     					<td>{$v.id}</td>
     					
     					<td>{$v.name}</td>
-    					<td>{$v.title}</td>
+    					<td>{$v.catetitle}</td>
     					
     					<td>{$v.content}</td>
     					<td>{:date("Y-m-d",$v.create_time)}</td>
     					
     					<td><div class="layui-table-cell">
-    						<button type="button" class="layui-btn-xs layui-btn layui-btn-{php}echo $v['status']=='已通过' ? 'btn':'danger';{/php}">{$v.status}</button>
+    						<button type="button" class="layui-btn-xs layui-btn layui-btn-danger">{$v.status}</button>
     						</div>
     					</td>
     					<td align="center" data-off="true" class="layui-table-col-special">
