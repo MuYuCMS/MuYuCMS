@@ -4,7 +4,6 @@ namespace app\admin\controller;
 use app\admin\controller\Base;
 use think\Request;
 use app\admin\model\Comment as CommentModel;
-use app\admin\model\Member as MemberModel;
 use think\Db;
 
 class Comment extends Base
@@ -12,8 +11,26 @@ class Comment extends Base
     //评论列表
     public function index()
     {
-		//查询评论的所有信息并按时间排序
-		$comment = CommentModel::alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->leftjoin('article d','a.aid = d.id')->fieldRaw('a.id,a.plname,a.content,a.create_time,a.status,b.*,c.name,d.title')->where(['a.status'=>[1,2]])->order('a.create_time','desc')->paginate(25);
+        $status = ['0'=>'待审核','1'=>'已通过','2'=>'已屏蔽'];
+        $comment = Db::name("comment")->alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->field('a.*,b.*,c.name')->where(['a.status'=>[1,2]])->order('a.create_time','desc')->paginate(25);
+        $mode = Db::name('model')->field("tablename")->select();
+        $data = $comment->all();
+        if(!empty($data)){
+        foreach($data as $key=>$val){
+            $val['status'] = $status[$val['status']];
+            $val['catetitle'] = "-文章已遗失-";
+            if(empty($val["name"])){
+                $val["name"] = $val["plname"];
+            }
+            foreach($mode as $v){
+                $t = Db::name($v['tablename'])->field("title")->find($val['aid']);
+                if(!empty($t)){
+                    $val['catetitle'] = $t['title'];
+                }
+            }
+            $comment[$key] = $val;
+        }
+        }
 		//赋值给模板
 		return $this -> view -> fetch('list',['comment'=>$comment]);
     }
@@ -21,8 +38,26 @@ class Comment extends Base
     //待审核列表
     public function audit()
     {
-		//查询评论的待审核列表并按时间排序
-		$comment = CommentModel::alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->leftjoin('article d','a.aid = d.id')->fieldRaw('a.id,a.plname,a.content,a.create_time,a.status,b.*,c.name,d.title')->where('a.status',0)->order('a.create_time','desc')->paginate(25);
+		$status = ['0'=>'待审核','1'=>'已通过','2'=>'已屏蔽'];
+        $comment = Db::name("comment")->alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->field('a.*,b.*,c.name')->where(['a.status'=>0])->order('a.create_time','desc')->paginate(25);
+        $mode = Db::name('model')->field("tablename")->select();
+        if(!empty($data)){
+        $data = $comment->all();
+        foreach($data as $key=>$val){
+            $val['status'] = $status[$val['status']];
+            $val['catetitle'] = "-文章已遗失-";
+            if(empty($val["name"])){
+                $val["name"] = $val["plname"];
+            }
+            foreach($mode as $v){
+                $t = Db::name($v['tablename'])->field("title")->find($val['aid']);
+                if(!empty($t)){
+                    $val['catetitle'] = $t['title'];
+                }
+            }
+            $comment[$key] = $val;
+        }
+        }
 		//赋值给模板
 		return $this -> view -> fetch('audit',['comment'=>$comment]);
     }
@@ -93,16 +128,52 @@ class Comment extends Base
 			//获取搜索关键词和参数
 			$res = $request -> param('keywords');
 			$t = $request->param('t');
+			$comment = array();
+			if(!empty($res)){
 			if($t=='list'){//评论列表搜索
-			    if($res != ''){
-    			    $comment =CommentModel::alias('a')->join('comment_data b','a.id = b.cid')->join('member c','a.uid = c.id')->join('article d','a.aid = d.id')->fieldRaw('a.id,a.plname,a.content,a.create_time,a.status,b.*,c.name,d.title')->where([['d.title|a.content|c.name', 'like', "%{$res}%"]])->where(["a.status"=>[1,2]])->select();
-    			}
+			$status = ['0'=>'待审核','1'=>'已通过','2'=>'已屏蔽'];
+            $comment = Db::name("comment")->alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->field('a.*,b.*,c.name')->where([['a.content|c.name', 'like', "%{$res}%"]])->where(['a.status'=>[1,2]])->order('a.create_time','desc')->paginate(25);
+            $mode = Db::name('model')->field("tablename")->select();
+            $data = $comment->all();
+            if(!empty($data)){
+            foreach($data as $key=>$val){
+            $val['status'] = $status[$val['status']];
+            $val['catetitle'] = "-文章已遗失-";
+            if(empty($val["name"])){
+                $val["name"] = $val["plname"];
+            }
+            foreach($mode as $v){
+                $t = Db::name($v['tablename'])->field("title")->find($val['aid']);
+                if(!empty($t)){
+                    $val['catetitle'] = $t['title'];
+                }
+            }
+            $comment[$key] = $val;
+            }
+            }
 			}else if($t == 'audit'){//审核列表搜索
-			    if($res != ''){
-    			    $comment =CommentModel::alias('a')->join('comment_data b','a.id = b.cid')->join('member c','a.uid = c.id')->join('article d','a.aid = d.id')->fieldRaw('a.id,a.plname,a.content,a.create_time,a.status,b.*,c.name,d.title')->where([['d.title|a.content|c.name', 'like', "%{$res}%"],['a.status','=',0]])->select();
-    			}
+    			    $status = ['0'=>'待审核','1'=>'已通过','2'=>'已屏蔽'];
+            $comment = Db::name("comment")->alias('a')->join('comment_data b','a.id = b.cid')->leftjoin('member c','a.uid = c.id')->field('a.*,b.*,c.name')->where([['a.content|c.name', 'like', "%{$res}%"]])->where(['a.status'=>0])->order('a.create_time','desc')->paginate(25);
+            $mode = Db::name('model')->field("tablename")->select();
+            $data = $comment->all();
+            if(!empty($data)){
+            foreach($data as $key=>$val){
+            $val['status'] = $status[$val['status']];
+            $val['catetitle'] = "-文章已遗失-";
+            if(empty($val["name"])){
+                $val["name"] = $val["plname"];
+            }
+            foreach($mode as $v){
+                $t = Db::name($v['tablename'])->field("title")->find($val['aid']);
+                if(!empty($t)){
+                    $val['catetitle'] = $t['title'];
+                }
+            }
+            $comment[$key] = $val;
+            }
+    		}
 			}
-			
+			}
 			$this ->assign('comment',$comment);
 			return view('list');
 		}
