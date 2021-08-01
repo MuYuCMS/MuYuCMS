@@ -21,6 +21,9 @@ class Update extends Base
     {
         //当前系统的版本 这个在实际应用中应该是虫数据库获取得到的
         $sys_version_num = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version_num['version']) || $sys_version_num['version'] == NULL){
+            $sys_version_num['version'] = Config::get('app.version');
+        }
         //更新日志内容接口
         $update_log = 'http://api.muyucms.com/version/update.log';
     	//获取更新日志内容
@@ -54,6 +57,9 @@ class Update extends Base
     {
     	//当前系统的版本
         $sys_version = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version['version']) || $sys_version['version'] == NULL){
+            $sys_version['version'] = Config::get('app.version');
+        }
     	//写入日志文件
     	$this->write_log("读取系统版本信息!");
         //更新日志内容接口
@@ -141,7 +147,7 @@ class Update extends Base
 	{
     	//对php.ini参数进行修改
         ini_set("max_execution_time", "360");
-        ini_set('memory_limit', '100M');
+        ini_set('memory_limit', '300M');
         // PclZip类库不支持命名空间
         include_once $_SERVER['DOCUMENT_ROOT'] . '/extend/pclzip/PclZip.php';
         //引入数据库操作类
@@ -150,6 +156,9 @@ class Update extends Base
         $time = time();
         //当前系统的版本
         $sys_version = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version['version']) || $sys_version['version'] == NULL){
+            $sys_version['version'] = Config::get('app.version');
+        }
         //定义备份路径
         $folder = $_SERVER['DOCUMENT_ROOT'].'/mdata/update/backup_dir/'.$time;
         //创建文件
@@ -427,54 +436,48 @@ class Update extends Base
     /* 远程下载文件到指定目录
      * @$url 文件下载地址
      * @$save_dir 文件保存路径
-     * @$filename 定义文件名称
      */
-    public function getFile($url, $save_dir, $type = 1) {
-        //判断当前IP是否允许操作后台
-    	$ip = $this->ip_info();
-    	//判断是否登录
-    	$user = $this -> user_info();
+    public function getFile($url, $save_dir) {
         if (trim($url) == '') {
             return false;
         }
-		$key ="http";
-		if(strpos($url,$key) == false || strpos($url,$key) !== 0){
-			return false;
-		}
         if (trim($save_dir) == '') {
-            $save_dir = './';
+            return false;
         }
         if (0 !== strrpos($save_dir, '/')) {
             $save_dir.= '/';
         }
+        $filename = basename($url);
         //创建保存目录
         if (!file_exists($save_dir)) {
             return false;
         }
-        //获取远程文件所采用的方法
-        if ($type) {
-    		$options = array(
-    		'http'=>array(
-    			'method' => 'POST',//请求方式POST
-    			'header' => 'Content-type:application/x-www-form-urlencoded',
-    			'timeout' => 5 // 超时时间（单位:s）
-    		)
-    		);
-    		$context = stream_context_create($options);//创建并返回文本数据流
-    		$content = file_get_contents($url, false, $context);//将文本数据流读入字符串
+        //开始下载
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $content = curl_exec($ch);
+        $status = curl_getinfo($ch);
+        curl_close($ch);
+        // 判断执行结果
+        if ($status['http_code'] ==200) {
+            $size = strlen($content);
+            //文件大小
+            $fp2 = @fopen($save_dir . $filename , 'a');
+            fwrite($fp2, $content);
+            fclose($fp2);
+            unset($content, $url);
+            $res = [
+                'status' =>$status['http_code'] ,
+                'file_name' => $filename,
+                'save_path' => $save_dir . $filename
+            ];
         } else {
-            ob_start();
-            readfile($url);
-            $content = ob_get_contents();
-            ob_end_clean();
+            $res = false;
         }
-        $size = strlen($content);
-        //文件大小
-        $fp2 = @fopen($save_dir, 'a');
-        fwrite($fp2, $content);
-        fclose($fp2);
-        unset($content, $url);
-        return array('save_path' => $save_dir);
+        return $res;
     }
     
     
