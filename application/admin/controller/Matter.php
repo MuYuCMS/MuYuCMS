@@ -66,13 +66,10 @@ class Matter extends Base
 	        if(isset($data['file'])){
 	        unset($data['file']);
 	        }
-	        if(isset($data['editor'])){
-	        unset($data['editor']);
-	        }
 	        if(isset($data['upfile'])){
 	        unset($data['upfile']);    
 	        }
-		if(isset($data['editor'])){
+		    if(isset($data['editor'])){
 	        $data['editor'] = html_entity_decode(htmlspecialchars_decode($data['editor']));    
 	        }  
 	        $data['create_time'] = time();
@@ -145,7 +142,9 @@ class Matter extends Base
 	        if(isset($data['upfile'])){
 	        unset($data['upfile']);    
 	        }
+	        if(isset($data['editor'])){
 	        $data['editor'] = html_entity_decode(htmlspecialchars_decode($data['editor']));
+	        }
 	        $data['update_time'] = time();
 	        if($data['abstract']){
 	        $data['abstract'] = substr($data['abstract'],0,90);
@@ -478,7 +477,9 @@ class Matter extends Base
 	        if(isset($data['upfile'])){
 	        unset($data['upfile']);    
 	        }
+	        if(isset($data['editor'])){
 	        $data['editor'] = html_entity_decode(htmlspecialchars_decode($data['editor']));
+	        }
 	        $data['update_time'] = time();
 	        
 	        $data['abstract'] = substr($data['editor'],0,90);
