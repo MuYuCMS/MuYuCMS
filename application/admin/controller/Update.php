@@ -21,6 +21,9 @@ class Update extends Base
     {
         //当前系统的版本 这个在实际应用中应该是虫数据库获取得到的
         $sys_version_num = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version_num['version']) || $sys_version_num['version'] == NULL){
+            $sys_version_num['version'] = Config::get('app.version');
+        }
         //更新日志内容接口
         $update_log = 'http://api.muyucms.com/version/update.log';
     	//获取更新日志内容
@@ -54,6 +57,9 @@ class Update extends Base
     {
     	//当前系统的版本
         $sys_version = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version['version']) || $sys_version['version'] == NULL){
+            $sys_version['version'] = Config::get('app.version');
+        }
     	//写入日志文件
     	$this->write_log("读取系统版本信息!");
         //更新日志内容接口
@@ -150,6 +156,9 @@ class Update extends Base
         $time = time();
         //当前系统的版本
         $sys_version = Db::name('system')->where('id',1)->field('version')->find();
+        if(empty($sys_version['version']) || $sys_version['version'] == NULL){
+            $sys_version['version'] = Config::get('app.version');
+        }
         //定义备份路径
         $folder = $_SERVER['DOCUMENT_ROOT'].'/mdata/update/backup_dir/'.$time;
         //创建文件
