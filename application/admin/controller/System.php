@@ -35,6 +35,7 @@ class System extends Base
 		//if($request->isPost(true)){
 			//获取提交数据
 			$data = $request->param();
+			$data['statistics'] = html_entity_decode(htmlspecialchars_decode($data['statistics']));
 			$res = Db::name('system')->where('id', 1)->update($data);
 			if($res){
 			    $this->logs("网站配置编辑");
