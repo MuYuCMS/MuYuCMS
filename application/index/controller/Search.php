@@ -33,14 +33,21 @@ class Search extends Base
         $map[] = ['a.delete_time','=',NULL];
         if($field){
         $f = explode("|",$field);
+        $a = array('a.','e.','d.','c.');
         $new = "";
         foreach($f as $fe){
+            if(substr($fe, 1, 1) == "."){
+            if(in_array(substr($fe, 0, 2),$a,true)){
+                $new .= $fe."|";
+            }
+            }else{
             $new .= "a.".$fe."|";
+            }
         }
         $field = substr($new,0,-1);
         $map[] = [$field,'like', "%{$sc}%"];    
         }else{
-        $map[] = ['a.title|a.keyword|a.ftitle|a.abstract|e.title','like', "%{$sc}%"];
+        $map[] = ['a.title|a.keyword|a.ftitle|a.abstract|e.title|d.name|c.title','like', "%{$sc}%"];
         }
         if($tab){
             if(is_numeric($tab)){
@@ -67,7 +74,7 @@ class Search extends Base
                 ->leftjoin("category c","c.id=a.mid")
 	            ->leftjoin("member d","d.id=a.uid")
 	            ->leftjoin("type e","e.id=a.type")
-                ->fieldRaw("a.*,b.likes,b.browse,comment_t,c.title as catitle,d.name,e.title as tytitle")
+                ->fieldRaw("a.*,b.likes,b.browse,b.comment_t,c.title as catitle,d.name,e.title as tytitle")
                 ->where($map)
                 ->orderRaw($order)
                 ->paginate(10,false,$config = ['query' => array('sech' => $sc)]);
