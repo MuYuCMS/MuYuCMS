@@ -1,5 +1,5 @@
 {include file='public/meta'}
-  <title>管理员列表 - 管理员添加 - 木鱼内容管理系统</title>
+  <title>管理员列表 - 管理员编辑 - 木鱼内容管理系统</title>
 </head>
 <body>
   <div class="layui-form" lay-filter="layuiadmin-form-role" id="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
@@ -95,7 +95,8 @@ layui.use('upload', function(){
     //普通图片上传
   var uploadInst = upload.render({
     elem: '#test1'
-    ,url: "{:url('Base/upload')}" //改成您自己的上传接口
+    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+    ,data:{upurl:'/public/upload/userimages'}
     ,before: function(obj){
       //预读本地文件示例，不支持ie8
       obj.preview(function(index, file, result){
