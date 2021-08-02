@@ -165,6 +165,7 @@ class Base extends Controller
         //定义正则表达式
         if(!empty($list)){
         $pattern = explode("|",$list);
+	$pattern = array_filter($pattern);
         foreach($pattern as $key=>$vs){
             $pattern[$key] = "/".$vs."/i";
         }
