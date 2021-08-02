@@ -46,8 +46,8 @@ class Matters extends Base
 	        ->find();
 	        if($infos !== NULL){
 	            $matcont = $infos;
+	            $matcont['tabname'] = $tb['id'];
 	        }
-	        $matcont['tabname'] = $tb['id'];
 	    }
 	    $category = Db::name("category")->find($matcont['mid']);
 		$matcont['catitle'] = $category['title'];
