@@ -34,7 +34,7 @@
 		     <h1>内容列表</h1>
 			 <ul class="list">
 			     {foreach $article['mat'] as $val}
-                        <li title="{$val.title}" style="overflow: hidden; max-width:705px; white-space:nowrap; text-overflow:ellipsis;"><a href="{muy:urls arid='$val.id'}" style="cursor:pointer;text-decoration:none;">{$val.title}</a></li>
+                        <li title="{$val.title}" style="overflow: hidden; max-width:705px; white-space:nowrap; text-overflow:ellipsis;"><a href="{maturl contid='$val.id'}" style="cursor:pointer;text-decoration:none;">{$val.title}</a></li>
                   {/foreach}
 			 </ul>
 			 <div id="page"><span class="pageinfo">共{$article['cont']}条记录</span></div>			 
