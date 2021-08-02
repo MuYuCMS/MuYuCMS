@@ -60,25 +60,18 @@ $.post("{:url('Base/getMyfiles')}",{path:"public/upload/files"},function(data){
         
             str+="<div class='layui-col-md2 layui-col-sm4'>";
                 str+="<div class='cmdlist-container'>";
-                    str+="<a class='' style='float:right;' onclick='picdel("+data.msg[i]+")' href='javascript:;'>";
+                    str+="<a class='' style='float:right;' onClick=picdel('"+data.msg[i]+"') href='javascript:;'>";
                               str+="<i class='layui-icon layui-icon-delete tpqy'></i>";
                     str+="</a>";
                     str+="<a href='javascript:;'><img src='/public/images/zip.svg' height='150px'></a>";
                       str+="<div class='cmdlist-text'>";
                         str+="<p class='info2' title='"+data.msg[i]+"'>"+data.msg[i]+"</p>";
-                        //str+="<div class='price'>";
-                            //str+="<a href='/public"+data.msg[i]+"' target='_blank'><i class='layui-icon layui-icon-search'></i></a>";
-                            //str+="<a class='' style='float:right;' onclick='picdel(\"public"+data.msg[i]+"\")' href='javascript:;'>";
-                              //str+="<i class='layui-icon layui-icon-delete'></i>";
-                            //str+="</a>";
-                        //str+="</div>";
                       str+="</div>";
                 str+="</div>";
             str+="</div>";
         
     }
     $(".lists").html(str);
-    console.log();
 });
 
 
