@@ -73,7 +73,7 @@ class Search extends Base
                 ->paginate(10,false,$config = ['query' => array('sech' => $sc)]);
         }else{
             foreach($tablename as $asv){
-                $list = Db::name($asv["tablename"])
+                $lists = Db::name($asv["tablename"])
                 ->alias("a")
                 ->join($asv["tablename"]."_data b","b.aid=a.id")
                 ->leftjoin("category c","c.id=a.mid")
