@@ -74,7 +74,7 @@ $.post("{:url('Base/getMyfiles')}",{path:"public/upload/menubg"},function(data){
         str+="";
             str+="<div class='layui-col-md2 layui-col-sm4'>";
                 str+="<div class='cmdlist-container'>";
-                    str+="<a class='' style='float:right;' onclick='picdel("+data.msg[i]+")' href='javascript:;'>";
+                    str+="<a class='' style='float:right;' onclick='picdel('"+data.msg[i]+"')' href='javascript:;'>";
                               str+="<i class='layui-icon layui-icon-delete tpqy'></i>";
                     str+="</a>";
                     str+="<a href='/public"+data.msg[i]+"' target='_blank'><img src='/public"+data.msg[i]+"' height='200px'></a>";
@@ -94,7 +94,7 @@ $.post("{:url('Base/getMyfiles')}",{path:"public/upload/ggpic"},function(data){
         str+="";
             str+="<div class='layui-col-md2 layui-col-sm4'>";
                 str+="<div class='cmdlist-container'>";
-                    str+="<a class='' style='float:right;' onclick='picdel("+data.msg[i]+")' href='javascript:;'>";
+                    str+="<a class='' style='float:right;' onclick='picdel('"+data.msg[i]+"')' href='javascript:;'>";
                               str+="<i class='layui-icon layui-icon-delete tpqy'></i>";
                     str+="</a>";
                     str+="<a href='/public"+data.msg[i]+"' target='_blank'><img src='/public"+data.msg[i]+"' height='200px'></a>";
@@ -113,7 +113,7 @@ $.post("{:url('Base/getMyfiles')}",{path:"public/upload/linkpic"},function(data)
         str+="";
             str+="<div class='layui-col-md2 layui-col-sm4'>";
                 str+="<div class='cmdlist-container'>";
-                    str+="<a class='' style='float:right;' onclick='picdel("+data.msg[i]+")' href='javascript:;'>";
+                    str+="<a class='' style='float:right;' onclick='picdel('"+data.msg[i]+"')' href='javascript:;'>";
                               str+="<i class='layui-icon layui-icon-delete tpqy'></i>";
                     str+="</a>";
                     str+="<a href='/public"+data.msg[i]+"' target='_blank'><img src='/public"+data.msg[i]+"' height='200px'></a>";
