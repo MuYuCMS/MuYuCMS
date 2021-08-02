@@ -171,7 +171,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">评论审核</label>
                 <div class="layui-input-block">
-                  <input type="checkbox" name="commentaudit_close" id="commentaudit_close" value="{$system.commentaudit_close}" lay-filter="commentaudit_close" lay-skin="switch" lay-text="自动|手动" {if $system.commentaudit_close == "0"}checked{/if}>
+                  <input type="checkbox" name="commentaudit_close" id="commentaudit_close" value="{$system.commentaudit_close}" lay-filter="commentaudit_close" lay-skin="switch" lay-text="手动|自动" {if $system.commentaudit_close == "1"}checked{/if}>
                 </div>
               </div>
               <div class="layui-card-header">留言配置</div>
@@ -247,7 +247,7 @@
 		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
     });
     form.on('switch(commentaudit_close)', function(data){
-        var value = this.checked ? '0' : '1';
+        var value = this.checked ? '1' : '0';
         $("#commentaudit_close").val(value);
 		$("#btn").removeClass('layui-btn-disabled').attr("disabled",false);
     });
