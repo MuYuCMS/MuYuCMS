@@ -213,10 +213,9 @@ class Matters extends Base
 	{
 	    if(request()->isPost()){
 	    $pinl  = !empty(input('post.')) ? input('post.') : $request->post();
-	    $config = $this->getsystems();
 	    $msg="";
 	    $msg1 = "评论";
-	    if($config['comment_close'] != 0)
+	    if($this->config['comment_close'] != 0)
 	    {
 	       $this -> error("管理员已关闭评论功能!");
 	       return false;
@@ -242,12 +241,12 @@ class Matters extends Base
 	      $this -> error("请先填写内容!");
 	      return false;
 	    }
-	    $pbcc = $this->sensitive($config["shielding"],$pincon);
+	    $pbcc = $this->sensitive($this->config["shielding"],$pincon);
 	    if($pbcc['status'] != 0)
 	    {
 	      $this -> error("您的内容包含(-".$pbcc['message']."-)敏感词,请修正!");
 	      return false;  
-	    }elseif ($pbcc['status'] = 1) {
+	    }elseif ($pbcc['status'] == 1) {
 	        $pbcc = $pbcc['log'];
 	    }
 	    $names = "游客".time()."";
@@ -260,7 +259,7 @@ class Matters extends Base
 			  $pic = $res['photo'];
 		  }
 		  $status = '1';
-		  if($config['commentaudit_close'] = 1){
+		  if($this->config['commentaudit_close'] == 1){
 		      $status = '0';
 		      $msg = '-但需要管理员审核后展现';
 		  }
