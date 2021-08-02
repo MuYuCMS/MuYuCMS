@@ -40,7 +40,7 @@ class Search extends Base
         $field = substr($new,0,-1);
         $map[] = [$field,'like', "%{$sc}%"];    
         }else{
-        $map[] = ['a.title|a.keyword|a.ftitle|a.abstract','like', "%{$sc}%"];
+        $map[] = ['a.title|a.keyword|a.ftitle|a.abstract|e.title','like', "%{$sc}%"];
         }
         if($tab){
             if(is_numeric($tab)){
