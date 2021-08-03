@@ -48,7 +48,11 @@
 						</div>
 					</div>
 					<article class="articleDetailGroup">
+					    {if ($matcont.isprice == 2)}
+					    {$matcont.preditor|raw}
+					    {else/}
 						{$matcont.editor|raw}
+						{/if}
 					</article>
 					<div class="tagGroup star">
 						<div class="tagBox">
