@@ -82,7 +82,7 @@ $.post("{:url('Base/getMyfiles')}",{path:"public/upload/files"},function(data){
 	        shade:0.3,
 	        btn:['删除','取消'],
 	        yes:function(){
-	            $.post("{:url('admin/Accessory/filesdel')}",{picdelur:url},function(datas){
+	            $.post("{:url('admin/Accessory/filesdel')}",{filedelur:url},function(datas){
 	                if(datas.code == 1){
 	                    layer.msg(datas.msg,{time:2000},function(){
 	                        if(datas.url) location.href = datas.url;
