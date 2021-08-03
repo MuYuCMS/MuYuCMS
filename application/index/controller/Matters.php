@@ -176,7 +176,7 @@ class Matters extends Base
 	    $matcont["price"] = $prices[$matcont["price"]];
 	    $matcont['isprice'] = $price;
 	    if($matcont['isprice'] == 2){
-	    $matcont['editor'] = '<span><a href="../index.php/matters/toplay?matterid='.$matcont['id'].'">请登录后付费查看</a></span>';
+	    $matcont['preditor'] = '<span><a href="../index.php/matters/toplay?matterid='.$matcont['id'].'">请登录后付费查看</a></span>';
 	    }
 	    return $this-> fetch('/home_temp/'.$this->config["home_temp"].'/'.$category['conttemp'],['matcont'=>$matcont,'catinfo'=>$catinfo]);
 	}
