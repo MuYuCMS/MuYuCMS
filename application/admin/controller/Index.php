@@ -8,6 +8,7 @@ use app\admin\model\Member;
 use app\admin\model\Feedback;
 use think\Db;
 use think\facade\Env;
+use think\Cache;
 
 class Index extends Base
 {
@@ -344,19 +345,29 @@ class Index extends Base
 	}
 	
 	/**
-	* 后台首页刷新
+	* 后台首页清除缓存
 	*/
 	public function clear()
 	{
+	    $msg = "清除成功";
+	    $code = 1;
     	$CACHE_PATH = Env::get('runtime_path') . 'cache/';
     	$TEMP_PATH = Env::get('runtime_path'). 'temp/';
-    	$EDITTOR_LOG_PATH = $_SERVER['DOCUMENT_ROOT'].'/editor/Log';
-    	$EDITTOR_CACHE_PATH = $_SERVER['DOCUMENT_ROOT'].'/editor/Cache';
-        if (delete_dir_file($CACHE_PATH) || delete_dir_file($TEMP_PATH) || delete_dir_file($EDITTOR_LOG_PATH) || delete_dir_file($EDITTOR_CACHE_PATH)) {
-            return json(["code"=>1,"msg"=>"清除成功!"]);
-        } else {
-            return json(["code"=>0,"msg"=>"清除失败!"]);
-        }
+    	$EDITTOR_LOG_PATH = Env::get('root_path').'editor/Log';
+    	$EDITTOR_CACHE_PATH = Env::get('root_path').'editor/Cache';
+    	if(!delete_dir_file($CACHE_PATH)){
+    	    $msg .= "-cache清除失败";
+    	}elseif(!delete_dir_file($TEMP_PATH)){
+    	    $msg .= "-temp清除失败";
+    	}elseif(!delete_dir_file($EDITTOR_LOG_PATH)){
+    	    $msg .= "-editor/Log清除失败";
+    	}elseif(!delete_dir_file($EDITTOR_CACHE_PATH)){
+    	    $msg .= "-editor/Cache清除失败";
+    	}else{
+    	    $msg = "清除失败";
+    	    $code = 0;
+    	}
+        return json(["code"=>$code,"msg"=>$msg]);
     }
 
 }
