@@ -113,11 +113,11 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
 	    if(is_dir($dir_name)){
 	        if ($handle = opendir($dir_name)) {
 	            while (false !== ($item = readdir($handle))) {
-	                if ($item != '.' && $item != '..') {
-	                    if (is_dir($dir_name . DIRECTORY_SEPARATOR. $item)) {
-	                        delete_dir_file($dir_name . DIRECTORY_SEPARATOR. $item);
+	                if ($item !== '.' && $item !== '..') {
+	                    if (is_dir($dir_name . DIRECTORY_SEPARATOR .$item)) {
+	                        delete_dir_file($dir_name . DIRECTORY_SEPARATOR . $item);
 	                    } else {
-	                        unlink($dir_name . DIRECTORY_SEPARATOR. $item);
+	                        unlink($dir_name . DIRECTORY_SEPARATOR . $item);
 	                    }
 	                }
 	            }
