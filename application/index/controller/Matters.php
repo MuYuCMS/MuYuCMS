@@ -34,7 +34,7 @@ class Matters extends Base
 	{
 	    $tab = Db::name("model")->field("id,tablename")->select();
 	    $matcont = "";
-	    $price = false;
+	    $price = 2;
 	    $prices = ["1"=>"免费","2"=>"付费"];
 	    /****内容基本参数改写****/
 	    foreach($tab as $tb){
@@ -149,11 +149,11 @@ class Matters extends Base
 	                $ayy = array($res['buymat']);
 	            }
 	            if(in_array($matcont['id'],$ayy)){
-	                $price = true;
+	                $price = 1;
 	            }
 	                
 	        }else{
-	            $price = true;
+	            $price = 1;
 	        }
 	        }else{
 	            if(isset($res['buymat'])){
@@ -164,21 +164,21 @@ class Matters extends Base
 	                $ayy = array($res['buymat']);
 	            }
 	            if(in_array($matcont['id'],$ayy)){
-	                $price = true;
+	                $price = 1;
 	            }
 	        }
 	    }else{
-	        $this -> redirect('index/Index/login');
+	        $price = 2;
 	    }
 	    }elseif($matcont['price'] == 1){
-	        $price = true;
+	        $price = 1;
 	    }
-	        $matcont["price"] = $prices[$matcont["price"]];
-	    if($price == true){
-	        return $this-> fetch('/home_temp/'.$this->config["home_temp"].'/'.$category['conttemp'],['matcont'=>$matcont,'catinfo'=>$catinfo]);
-	    }elseif($price == false){
-	        $this->redirect('index/matters/toplay?matterid='.$matcont['id']);
+	    $matcont["price"] = $prices[$matcont["price"]];
+	    $matcont['isprice'] = $price;
+	    if($matcont['isprice'] == 2){
+	    $matcont['editor'] = '<span><a href="../index.php/matters/toplay?matterid='.$matcont['id'].'">请登录后付费查看</a></span>';
 	    }
+	    return $this-> fetch('/home_temp/'.$this->config["home_temp"].'/'.$category['conttemp'],['matcont'=>$matcont,'catinfo'=>$catinfo]);
 	}
 	
 	
