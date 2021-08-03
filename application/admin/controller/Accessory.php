@@ -43,7 +43,7 @@ class Accessory extends Base
    	*/
    public function filesdel(Request $request){
 	   
-   	   $filedelurl = Env::get('root_path'). "public" . $request ->post('filedelur');
+   	   $filedelurl = Env::get('root_path'). "public" . $request ->param('filedelur');
    	   $res = unlink($filedelurl);
    	   if($res){
    	           $this -> logs("删除文件操作 [ID: ".$filedelurl.'] 删除成功!');
