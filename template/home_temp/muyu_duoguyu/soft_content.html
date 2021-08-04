@@ -72,8 +72,8 @@
 						{if empty($Think.session.Member)}
 						<div class="item"><a href="{:url('index/Index/login')}" class="downbtn normal" target="_blank"><i class="iconfont icon-xiazai2" data-filtered="filtered"></i>登录后下载</a></div>
 						{else/}
-						{if condition="!empty($matcont.downputh)"}
-						{foreach $matcont.downputh as $val}
+						{if condition="!empty($matcont.downpath)"}
+						{foreach $matcont.downpath as $val}
 						<div class="item"><a href="{$val['pturl']}" class="downbtn normal" target="_blank"><i class="iconfont icon-xiazai2" data-filtered="filtered"></i>{$val['ptname']}</a></div>
 						{/foreach}
 						{/if}
