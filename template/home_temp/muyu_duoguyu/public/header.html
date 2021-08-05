@@ -10,7 +10,7 @@
 			<div class="navWrapper">
 				<a {if condition="empty($catinfo['id'])"}class="on"{/if} href="/" title="首页"><span class="navName"><i class="iconfont icondgy icon-shouye"></i>首页</span></a>
 				{hnav all="true"}
-				<a {if condition="$catinfo['id'] == $id"}class="on"{/if}{if condition="$catinfo['pid'] == $id"}class="on"{/if} href="{maturl cateid='$id'}" title="{$title}"><span class="navName"><i class="{icon}"></i>{$title}</span></a>
+				<a {if condition="$catinfo['id'] == $id"}class="on"{/if}{if condition="$catinfo['pid'] == $id"}class="on"{/if} href="{maturl cateid='$id'}" title="{$title}"><span class="navName"><i class="{$icon}"></i> {$title}</span></a>
 				{/hnav}
             </div>
 		</div>
