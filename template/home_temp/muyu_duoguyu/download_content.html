@@ -84,7 +84,7 @@
 				<div class="quickDownLoadGroup">
 					<div class="quickBox">
 						{if ($matcont.isprice == 2)}
-						{$matcont.preditor}
+						{$matcont.preditor|raw}
 						{else/}
 						{if condition="!empty($matcont.downpath)"}
 						{foreach $matcont.downpath as $val}
