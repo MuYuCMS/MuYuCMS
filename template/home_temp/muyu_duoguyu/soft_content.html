@@ -69,8 +69,8 @@
 				</div>
 				<div class="quickDownLoadGroup">
 					<div class="quickBox">
-						{if empty($Think.session.Member)}
-						<div class="item"><a href="{:url('index/Index/login')}" class="downbtn normal" target="_blank"><i class="iconfont icon-xiazai2" data-filtered="filtered"></i>登录后下载</a></div>
+						{if ($isprice == 2)}
+						{$preditor}
 						{else/}
 						{if condition="!empty($matcont.downpath)"}
 						{foreach $matcont.downpath as $val}
