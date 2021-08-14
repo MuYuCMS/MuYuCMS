@@ -4,11 +4,17 @@ use app\admin\controller\Base;
 use think\Request;
 use think\facade\Session;
 use think\Db;
-use think\Config;
+use think\facade\Config;
 use think\facade\Env;
 
 class Matter extends Base
 {
+    protected $entrance;
+    protected function initialize()
+    {
+        parent::initialize();
+        $this->entrance = Config::get("safety.adname");
+    }
     //资讯列表输出
     public function index(Request $request)
     {
@@ -27,7 +33,7 @@ class Matter extends Base
 		}
 		$category = Db::name('category')->where(["status"=>1,"type"=>0])->select()->toArray();
 		foreach($category as $key=>$cate){
-			$category[$key]['href'] = "/admin.php/matter/index/cateid/".$cate['id'];
+			$category[$key]['href'] = "/".$this->entrance."/matter/index/cateid/".$cate['id'];
 			$category[$key]['spread'] = true;
 		}
 		$category = json_encode(alldigui($category,0),JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
