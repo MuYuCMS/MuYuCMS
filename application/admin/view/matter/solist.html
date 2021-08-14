@@ -103,7 +103,7 @@
                                       发布
                                       {/if}</a>
                                       {/if}
-								    <a class="layui-btn layui-bg-cyan layui-btn-xs" onclick="addedit('编辑内容','{:url('admin/Matter/edit',['lmid'=>$val.mid,'modid'=>$val.modid,'aid'=>$val.id])}')" href="javascript:;"><i class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
+								    <a class="layui-btn layui-bg-cyan layui-btn-xs" onclick="addedit('编辑内容','{:url('admin/Matter/edit',['lmid'=>$val.mid,'modid'=>$val.tabname,'aid'=>$val.id])}')" href="javascript:;"><i class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
 								    <a class="layui-btn layui-btn-xs layui-bg-red" onclick="materdel('{$val.id}','{$val.mid}','{$val.modid}')" href="javascript:;"><i class="layui-icon layui-icon-delete"></i>删除</a>
 								</div>
 							</td>
