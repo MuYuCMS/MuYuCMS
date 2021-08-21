@@ -72,11 +72,11 @@
 							</td>
 							<td>{$val.id}</td>
 							<td>{$val.title}</td>
-							{if $val.price eq 0}
-							<td style="color:green">免费</td>
-							{elseif $val.price eq 1}
-							<td style="color:red">付费</td>
-							{/if}							
+							{if $val.price eq 1}
+	        					<td style="color:green">免费</td>
+	        					{elseif $val.price eq 2}
+	        					<td style="color:red">付费</td>
+	        					{/if}							
 							<td>{$val.author}</td>
 							<td>{$val.create_time|date='Y:m:d'}</td>
 							<td><div class="layui-table-cell">
