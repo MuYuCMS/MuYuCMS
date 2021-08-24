@@ -135,13 +135,19 @@ class Template extends base
         if(empty($data) || empty($data["fielname"]) || empty($data["path"]) || empty($data["finame"]) || empty($data["content"])){
             return jsonmsg(0,"参数错误!");
         }
+        if(isset($data['upfile'])){
+	        unset($data['upfile']);    
+	        }
         $fieln = explode(".",$data["fielname"]);
         $suffix = ["text","html","php","xml","css","js"];
         if(!in_array($fieln[1],$suffix)){
             return jsonmsg(0,"文件后缀名不合法!");
         }
+        if(!is_dir($data["path"])){
+		    @mkdir($data["path"],true);
+		}
         $data["path"] = $data["path"]."/".$data["fielname"];
-        $data["content"]=stripcslashes($data["content"]);
+        $data["content"]=stripslashes($data['content']);
         if(file_put_contents($data["path"],htmlspecialchars_decode($data["content"]))){
             $info = ["path"=>$data["path"],"finame"=>$data["finame"],"fielname"=>$data["fielname"],"admid"=>Session::get('Adminuser.id'),"create_time"=>time(),"update_time"=>time()];
             if(Db::name("custform")->where("fielname",$data["fielname"])->find() == NULL){
@@ -165,13 +171,16 @@ class Template extends base
             if(empty($data) || empty($data["fielname"]) || empty($data["finame"]) || empty($data["content"])){
             return jsonmsg(0,"参数错误!");
             }
+            if(isset($data['upfile'])){
+	        unset($data['upfile']);    
+	        }
             $fieln = explode(".",$data["fielname"]);
             $suffix = ["text","html","php","xml","css","js"];
             if(!in_array($fieln[1],$suffix)){
             return jsonmsg(0,"文件后缀名不合法!");
             }
-            $data["content"]=stripcslashes($data["content"]);
-            if(file_put_contents($data["path"],htmlspecialchars_decode($data["content"]),LOCK_EX)){
+            $data["content"]=stripslashes($data['content']);
+            if(file_put_contents($data["path"],htmlspecialchars_decode($data["content"]))){
             unset($data["content"]);
             $data['update_time'] = time();
             Db::name("custform")->update($data);
@@ -256,43 +265,3 @@ class Template extends base
         return $this->fetch("form_select",['dir'=>$dir]);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
