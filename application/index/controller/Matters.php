@@ -246,7 +246,7 @@ class Matters extends Base
 	    {
 	      $this -> error("您的内容包含(-".$pbcc['message']."-)敏感词,请修正!");
 	      return false;  
-	    }elseif ($pbcc['status'] == 1) {
+	    }elseif ($pbcc['status'] == 0) {
 	        $pbcc = $pbcc['log'];
 	    }
 	    $names = "游客".time()."";
@@ -268,10 +268,8 @@ class Matters extends Base
 		    $compid = $pinl['pid'];
 		    $msg1 = "回复";
 		}
-	    $data = ['title'=>$pinl['title'],'aid'=>$pinl['matid'],'pid'=>$compid,'uid'=>$uid,'plname'=>$names,'plpic'=>$pic,'content'=>$pinl['content'],'status'=>$status,'create_time'=>time()];
+	    $data = ['title'=>$pinl['title'],'aid'=>$pinl['matid'],'pid'=>$compid,'uid'=>$uid,'plname'=>$names,'plpic'=>$pic,'content'=>$pbcc,'status'=>$status,'create_time'=>time()];
 	    $res = Db::name('comment')->insert($data);
-	   // var_dump(Db::name('comment')->getLastSql());
-	   // exit;
 	    $aid = Db::name('comment')->getLastInsID();
 	    $arct = Db::name($arcon["tab"].'_data')->where(['aid'=>$pinl['matid']])->field('comment_t')->find();
 	    $arcomt = '1';
@@ -726,6 +724,8 @@ class Matters extends Base
 	    $tepm = $request->param();
 	    $info = "";
 	    $tpname = "";
+	    $catinfo['id'] = "";
+        $catinfo['pid'] = "";
 	    if(!empty($tepm["formid"])){
 	        $info = Db::name("custform")->find($tepm["formid"]);
 	        $tpname = explode(".",$info["fielname"]);
@@ -734,12 +734,56 @@ class Matters extends Base
 	        $tpname = explode(".",$info["fielname"]);
 	    }
 	    if(!empty($info)){
-	        return $this-> fetch($info["path"]);
+	        return $this-> fetch($info["path"],['cusinfo'=>$info,'catinfo'=>$catinfo]);
 	    }else{
 	        return $this->error("访问出错啦!");
 	    }
 	}
-
+	/**
+	*留言提交方法
+	*post提交
+	* 
+	* 
+	* *
+	**/
+    public function upfeedback(Request $request){
+        if(request()->isPost()){
+	    $feedback = !empty(input('post.')) ? input('post.') : $request->post();
+	    if($this->config['feedback_close'] != 0)
+	    {
+	       $this -> error("管理员已关闭留言功能!");
+	       return false;
+	    }
+	    $cont = delete_XSS($feedback['content']);
+	    if(empty($cont) || $cont == NULL){
+	      $this -> error("请先填写留言内容!");
+	      return false;
+	    }
+	    $pbcc = $this->sensitive($this->config["shielding"],$cont);
+	    if($pbcc['status'] != 0)
+	    {
+	      $this -> error("您的内容包含(-".$pbcc['message']."-)敏感词,请修正!");
+	      return false;  
+	    }elseif ($pbcc['status'] == 0) {
+	        $pbcc = $pbcc['log'];
+	    }
+	    $uid = 0;
+	    if(Session::has('Member')){
+			  $res = Session::get('Member');
+			  $uid = $res['id'];
+		}
+	    $data = ['content'=>$pbcc,'uid'=>$uid,'create_time'=>time()];
+	    $res = Db::name('feedback')->insert($data);
+	    if($res){
+	        return jsonmsg(1,"留言成功");
+	    }else{
+	        return jsonmsg(0,"留言失败");
+	    }
+	    }else{
+	        $this -> error("非法请求!");
+	        return false;
+	    }
+    }
 }
 
 
