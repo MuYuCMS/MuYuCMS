@@ -11,7 +11,7 @@
                       <div class="layui-form">
                         <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label" style="width:200px">当前授权类型: <span style="color: #C0392B;">{$accre.accre_name}</span>({$accre.accre_sta})</label>
-                        <label class="layui-form-label" style="width:150px">授权期限: <span style="color: red;">{if(!empty($accre.accre_time))}$accre.accre_time|date='Y-m-d'{else/}无{/if}</span></label>
+                        <label class="layui-form-label" style="width:150px">授权期限: <span style="color: red;">{if(!empty($accre.accre_time))}{$accre.accre_time|date='Y-m-d'}{else/}无{/if}</span></label>
 						</div>
                      </div>
                   </div>
