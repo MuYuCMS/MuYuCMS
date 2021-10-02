@@ -30,9 +30,15 @@ class Feedback extends Base
 	{
 		//根据id获取留言信息
 		$feedback = FeedbackModel::get($id);
-		$username = "";
+		$username = ['name'=>"游客",'intro'=>'未知','phone'=>'未知','email'=>'未知'];
 		if($ids != 0){
-			$username = MemberModel::get($ids);//根据会员id获取会员信息
+			$users = Db::name("member")->find($ids);;//根据会员id获取会员信息
+		if($users){
+		$username = ['name'=>$users['name'],'intro'=>$users['intro'],'phone'=>$users['phone'],'email'=>$users['email']];   
+		}else{
+		$username = ['name'=>"获取失败..",'intro'=>'获取失败..','phone'=>'获取失败..','email'=>'获取失败..'];    
+		}
+		    	
 		}
 		//状态为0的改为1
 		FeedbackModel::update(['status'=>1],['id'=>$id]);
