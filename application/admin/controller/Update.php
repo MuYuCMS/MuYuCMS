@@ -4,6 +4,7 @@ use app\admin\controller\Base;
 use think\Request;
 use think\facade\Session;
 use think\Db;
+use think\facade\Env;
 use think\File;//文件操作类
 use think\facade\Config;//获取配置类
 
@@ -149,9 +150,9 @@ class Update extends Base
         ini_set("max_execution_time", "360");
         ini_set('memory_limit', '300M');
         // PclZip类库不支持命名空间
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/extend/pclzip/PclZip.php';
+        include_once Env::get('root_path') . 'extend/pclzip/PclZip.php';
         //引入数据库操作类
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/extend/baksql/Baksql.php';
+        include_once Env::get('root_path') . 'extend/baksql/Baksql.php';
         //获取时间戳
         $time = time();
         //当前系统的版本
@@ -168,7 +169,7 @@ class Update extends Base
         //远程获取数据库更新文件url
         $sql_url = "http://api.muyucms.com/version/$version/$version.sql";
         //定义升级包和数据库文件下载保存地址
-        $save_dir = $_SERVER['DOCUMENT_ROOT'].'/mdata/update/upload_dir/'.$time;
+        $save_dir = Env::get('root_path').'mdata/update/upload_dir/'.$time;
         //创建文件
         mkdir($save_dir);
         //判断是否需要更新网站代码
@@ -193,10 +194,23 @@ class Update extends Base
             //对更新包解压
             $zip = new \ZipArchive;
             if ($zip->open($zip_data['save_path']) === true) {
-                $zip->extractTo($save_dir);
                 $zip->close();
-                //写入日志文件
+                $pclzip = new \PclZip($zip_data['save_path']);
+                if($pclzip->extract(PCLZIP_OPT_PATH,$save_dir) != 0){
+                    //写入日志文件
                 $this->write_log("更新包解压成功!");
+                }else{
+                    $this->write_log("更新包解压失败!");
+                    //删除放置更新文件夹
+                    $this->rmdirr($save_dir);
+                    //写入日志文件
+                    $this->write_log("删除更新文件夹!");
+                    //删除备份文件夹
+                    $this->rmdirr($folder);
+                    //写入日志文件
+                    $this->write_log("删除备份文件夹!");
+                    die("Error : ".$pclzip->errorInfo(true));
+                }
             } else {
                 //写入日志文件
         	    $this->write_log("更新包解压失败!");
@@ -214,12 +228,12 @@ class Update extends Base
             //写入日志文件
         	$this->write_log("将解压的文件复制到根目录覆盖!");
             //将解压的文件复制到根目录覆盖
-            $copy_file = $this->copy_to_file($save_dir . '/temp_folder', $_SERVER['DOCUMENT_ROOT']);
+            $copy_file = $this->copy_to_file($save_dir . '/temp_folder', Env::get('root_path'));
             if($copy_file == false){
                 //写入日志文件
         	    $this->write_log("解压的文件复制到根目录覆盖失败!");
                 //还原路径
-                $reduction_path = dirname($_SERVER['DOCUMENT_ROOT']);
+                $reduction_path = dirname(Env::get('root_path'));
                 //删除网站所有文件
                 $this->rmdirr($_SERVER['DOCUMENT_ROOT']);
                 //写入日志文件
