@@ -176,7 +176,11 @@ class Matter extends Base
 	        foreach($list as $keys=>$vac){
 	                if($vals['field'] == $keys){
 	                   if($vals['forms'] == 'down'){
+	                   if(!empty($list[$keys])){    
 	                   $field[$key]['value'] = array_chunk(explode(',',$list[$keys]),2);
+	                   }else{
+	                   $field[$key]['value'] = ["0"=>["0"=>"","1"=>""]];
+	                   }
 	                   }else{
 	                   $field[$key]['value'] = $list[$keys];    
 	                   }
