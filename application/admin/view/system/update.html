@@ -1,0 +1,226 @@
+{include file='public/meta' }
+	<title>系统更新 - 木鱼内容管理系统</title>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                  <div class="layui-card-header">授权状态</div>
+                  <div class="layui-card-body">
+                      <div class="layui-form">
+                        <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label" style="width:200px">当前授权类型: <span style="color: #C0392B;">{$accre.accre_name}</span>({$accre.accre_sta})</label>
+                        <label class="layui-form-label" style="width:150px">授权期限: <span style="color: red;">{if(!empty($accre.accre_time))}{$accre.accre_time|date='Y-m-d'}{else/}无{/if}</span></label>
+						</div>
+                     </div>
+                  </div>
+                </div>
+            </div>
+    		<div class="layui-col-md6">
+    		    <div class="layui-card">
+    		      <div class="layui-card-header">变更授权</div>
+    		      <div class="layui-card-body">
+    		          <div class="layui-form">
+    		            <div class="layui-form-item layui-form-text">
+    		            <label class="layui-form-label">授权码:</label>
+    					<div class="layui-input-inline">
+    					  <input type="text" name="accre" id="accreid" value="{$accre.accre}" placeholder="请输入授权码" class="layui-input">
+    					</div>
+    					<div class="layui-input-inline">
+    					  <button class="layui-btn" type="button" id="accrebtn">授权验证</button>
+    					</div>
+    		            </div>
+    		         </div>
+    		      </div>
+    		    </div>
+    		</div>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                  <div class="layui-card-header">系统更新</div>
+                  <div class="layui-card-body">
+                      <div class="layui-form">
+                          <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label" style="width:120px">当前系统版本: v{$system.version}</label>
+                        </div>
+                      <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <button class="layui-btn" type="button" id="btn">点击更新</button>
+                        </div>
+                      </div>
+                     </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--更新日志开始-->
+    <div class="layui-col-md12" id="log" style="display:none">
+          <div class="layui-card-body">
+
+              <div id="loglist"></div>
+              
+              <div class="layui-btn-container" style="margin-top: 10px; margin-bottom: 0;text-align:center;">
+                <button class="layui-btn layui-btn-sm layui-btn-radius" id="update">立刻更新</button>
+              </div>
+              
+          </div>
+      </div>
+    <!--更细日志结束-->
+
+
+    <!--进度条开始-->
+    <div class="layui-col-md12" id="progress" style="display:none">
+        <div class="layui-card">
+          <div class="layui-card-body">
+
+              <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="component-progress-demo">
+                <div class="layui-progress-bar layui-bg-green" lay-percent="0%" style="width: 0%;"><span class="layui-progress-text">0%</span></div>
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    <!--进度条结束-->
+
+
+
+
+
+
+
+	
+<!--_footer 作为公共模版分离出去-->
+{include file='public/footer' }
+<!--/_footer /作为公共模版分离出去-->
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+  });
+  
+	/* 更新日志弹出 */
+	$("#btn").on("click",function(){
+	    var log = "";
+	    layer.msg('正在检测新版本…', { icon: 16, shade: 0.21,time:2000 },function(){
+	        $.post("{:url('Update/get_version')}",function(data){
+	            if(data.status == 1){
+    			    for(n=0;n<data.update_log.length;n++){
+    			        log += "<p>"+data.update_log[n]+"</p>"
+    			    }
+    			    $("#loglist").html(log);
+    			     layer.open({
+            		  title:"版本：v" + data.version,
+            		  area: '500px',
+                      type: 1,
+                      content: $('#log'),
+                      cancel: function(){ 
+                           $.post("{:url('Update/delSession')}",function(){
+                               location.reload();
+                           });
+                      }
+                    });
+    			}else if(data.status == 0){
+    			        layer.msg(data.msg, {icon:1,time: 2000}, function() {
+    					location.reload();
+    				});
+    			}else{
+    			    layer.msg(data.msg, {icon:2,time: 2000}, function() {
+    					location.reload();
+    				});
+    			}
+    	    });
+	    });
+	});
+	
+	/**变更授权**/
+	$("#accrebtn").on("click",function(){
+		var accre = $("#accreid").val();
+		var z = /^[A-Za-z0-9]*$/;
+		if(accre.length == 0 || !z.test(accre)){
+			layer.msg("请输入正确的授权码!",{time: 2000});
+		}else{
+		var Data = {
+			accres:accre
+		};
+		$.ajax({
+			type: 'POST',
+			data: Data,
+			url: "{:url('admin/System/accrecheck')}",
+			dataType: "json",
+			beforeSend: function() {
+				index = layer.load();
+			},
+			success: function(data) {
+				if (data.code == 1) {
+					layer.msg(data.msg, {
+						time: 2000
+					}, function() {
+						location.reload();
+					});
+				} else {
+					layer.msg(data.msg, {
+						time: 2000
+					});
+				}
+			},
+			complete: function() {
+				layer.close(index);
+			}
+		});
+		}
+	})
+	
+	/**进度条弹出**/
+	$("#update").on("click",function(){
+	    layer.closeAll();//关闭所有弹出层
+		layer.open({
+		  title:"正在更新(请勿关闭)",
+		  area: ['500px', '100px'],
+          type: 1,
+          content: $('#progress')
+        });
+         layui.use('element', function(){
+            var element = layui.element;
+            var n=0, timer = setInterval(function(){
+                n = n + Math.random()*7|0;
+                if(n>100){
+                    n = 100;
+                    clearInterval(timer);
+                }
+                $('.layui-progress-bar').attr('lay-percent',n+'%');
+                element.init();
+                element.progress('component-progress-demo', n+'%');
+            }, 300+Math.random()*1000);
+            //开始更新
+            $.post("{:url('Update/entrance')}",function(data){
+                if(data.code == 1){
+                    $('.layui-progress-bar').attr('lay-percent',100+'%');
+                    element.init();
+                    element.progress('component-progress-demo', 100+'%');
+                    clearInterval(timer);
+                    layer.msg(data.msg, {icon:1,time: 3000}, function() {
+					location.reload();
+				    });
+                }else{
+                    layer.msg(data.msg, {icon:2,time: 3000}, function() {
+					location.reload();
+				    });
+                }
+            });
+        });
+	});
+</script>
+</body>
+</html>

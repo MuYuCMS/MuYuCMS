@@ -1,0 +1,182 @@
+{include file='public/meta'}
+<title>插件列表 - 插件管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-card">
+			<!--<div class="layui-form layui-card-header layuiadmin-card-header-auto">-->
+			<!--	<div class="layui-form-item">-->
+				    
+					<!--<div class="layui-inline">-->
+     <!--                   <label class="layui-form-label">搜索插件</label>-->
+     <!--                   <div class="layui-input-block">-->
+     <!--                     <input type="text" name="keywords" id="keywords" placeholder="请输入关键词" class="layui-input">-->
+     <!--                   </div>-->
+     <!--                 </div>-->
+					<!--<div class="layui-inline">-->
+     <!--               <button class="layui-btn layuiadmin-btn-admin" onclick="" type="submit">-->
+     <!--                 <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+     <!--               </button>-->
+     <!--             </div>-->
+			<!--	</div>-->
+			<!--</div>-->
+
+			<div class="layui-card-body">
+				<div style="padding-bottom: 10px;">
+					<a class="layui-btn" onclick="" id="addonsup"><i class="layui-icon layui-icon-upload-circle"></i>上传插件</a>
+				</div>
+
+            <div class="layui-table-body layui-table-main">
+                <table class="layui-table" id="LAY-user-front-submit">
+					<thead>
+						<tr>
+							<th>
+								<div class="layui-table-cell" align="center"><span>插件标识</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>插件名称</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>插件作者</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>插件简介</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>插件版本</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>状态</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>操作</span></div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					    {foreach $aons as $val}
+						<tr align="center">
+							<td>{$val.name}</td>
+							<td>{$val.title}</td>
+							<td>{$val.author}</td>
+							<td>{$val.description}</td>
+							<td>{$val.version}</td>
+							<td><div class="layui-table-cell">
+                                      <a class="layui-btn-xs layui-btn layui-btn-{php}echo $val['status']=='1' ? 'btn' : 'danger';{/php}">{php}echo $val['status']=='1' ? '已安装' : '未安装';{/php}</a>
+                                </div>
+                            </td>
+                            
+							<td align="center" data-off="true" class="layui-table-col-special">
+								<div class="layui-table-cell">
+								<a class="layui-btn-xs layui-btn layui-btn-btn" onclick="openwind('插件设置','{:addon_url($val['name'].'://'.$val['name'].'/'.$val['name'])}')">设置</a>
+								
+								<a class="layui-btn layui-btn-{php}echo $val['status']==1 ? 'danger' : 'btn';{/php} layui-btn-xs" onclick="updates('{$val['status']}','{$val['name']}')" href="javascript:;"><i class="layui-icon layui-icon-radio"></i>{php}echo $val['status']=='1' ? '卸载' : '安装';{/php}</a>
+								
+								<a class="del layui-btn layui-btn-{php}echo $val['status']==1 ? 'disabled' : 'danger';{/php} layui-btn-xs" {neq name="$val['status']" value="1"}onclick="del('{$val.name}')"{/neq} title="请先卸载插件!"><i class="layui-icon layui-icon-delete"></i>删除</a>
+								</div>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+            </div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- 低部区域 -->
+	{include file='public/footer'}
+	<script>
+		layui.config({
+			base: '__ADMINST__layuiadmin/' //静态资源所在路径
+				,
+			version: new Date().getTime()
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'table']);
+    
+        //删除操作
+        function del(name){
+            	layer.msg('确认删除？', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Plug/addonsdel')}", {filename: name}, function(data) {
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if(data.code === 1){
+							   location.reload(); 
+							}
+						    });
+					})
+				}
+			});
+        }
+        
+        
+		
+		//插件的安装与卸载
+		function updates(status,name){
+		    var url="{:url('admin/Plug/adonsinstall')}";
+		    if(status == 1){
+		        url="{:url('admin/Plug/adonsupdate')}";
+		    }
+		    $.ajax({
+                type:"POST",
+				data:{name:name},
+				url:url,
+				dataType :"json",
+				success:function(data){
+				        layer.msg(data.msg,{time:2000},function(){
+					        //location.reload();
+					        if(data.code == 1){
+                            location.reload(); //数据刷新
+					        }
+					    });
+				}
+				
+            });
+		}
+		
+		   /*
+	   *插件上传的操作
+	   */
+	  layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传
+	  var index;
+	  var uploadInst = upload.render({
+	    elem: '#addonsup' //绑定元素
+	    ,url: "{:url('admin/Plug/addonsup')}" //上传接口
+	    ,field:'addons'
+	    ,accept:'file'
+	    ,exts:'zip'
+	    ,before:function(muyu){
+	        index = layer.load();
+	        
+	    }
+	    ,done: function(res){
+	      //上传完毕回调
+	      layer.close(index);
+		  // console.log(res);
+			  layer.msg(res.msg,{time:2000},function(){
+			      if(res.code == 1){
+			      location.reload();
+			      }
+			  });
+	    }
+	    ,error: function(upload){
+	      //请求异常回调
+	      
+	    }
+	  });
+	});
+    
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+{include file='public/meta'}
+  <title>编辑模型 - 模型管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<style>
+    .input-width{
+        width:50%;
+        float:left;
+        margin-right: 10px;
+    }
+</style>
+<form class="form form-horizontal" id="model-form">
+  <div class="layui-form" lay-filter="layuiadmin-form-role" id="model-edit-form" style="padding: 20px 30px 0 0;">
+    <input name="id" type="hidden" value="{$list.id}">
+    <div class="layui-form-item">
+    <label class="layui-form-label">模型名称:</label>
+    <div class="layui-input-block">
+      <input type="text" name="name" value="{$list.name}" lay-verify="required" placeholder="请输入模型名称" autocomplete="off" class="input-width layui-input">
+      <div class="layui-form-mid layui-word-aux">输入一个名称以便区别</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">模型别名:</label>
+    <div class="layui-input-block">
+      <input type="text" name="aliase" value="{$list.aliase}" lay-verify="required" placeholder="请输入模型别名" autocomplete="off" class="input-width layui-input">
+      <div class="layui-form-mid layui-word-aux">用作前台展示</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">模型标识:</label>
+    <div class="layui-input-block">
+      <input type="text" name="tablename" value="{$list.tablename}" lay-verify="required|tabname" placeholder="请输入模型标识" autocomplete="off" class="input-width layui-input">
+      <div class="layui-form-mid layui-word-aux">输入一个<span style="color:red;">纯小写英文</span>字符的标识!</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">模型简介:</label>
+    <div class="layui-input-block">
+      <input type="text" name="intro" value="{$list.intro}" placeholder="简单的介绍一下本模型" autocomplete="off" class="input-width layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">模型类型:</label>
+    <div class="layui-input-block">
+      {eq name="$list.type" value="1"}
+      <input type="radio" name="type" value="1" title="全局" checked>
+      <input type="radio" name="type" value="0" title="内部">
+      {else/}
+      <input type="radio" name="type" value="1" title="全局">
+      <input type="radio" name="type" value="0" title="内部" checked>
+      {/eq}
+      <div class="layui-form-mid layui-word-aux" id="typetips"><a onClick="tips()"><i class="layui-icon layui-icon-tips" style="color:red;"></i></a></div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">投稿控制:</label>
+    <div class="layui-input-block">
+    <input type="checkbox" name="issue" id="issue" value="{$list.issue}" lay-filter="issueof" lay-skin="switch" lay-text="开启|关闭" {if $list.issue == "1"}checked{/if}>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">模型状态:</label>
+    <div class="layui-input-block">
+    <input type="checkbox" name="status" id="status" value="{$list.issue}" lay-filter="statusof" lay-skin="switch" lay-text="开启|关闭" {if $list.status == "1"}checked{/if}>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="model-subt" type="button" id="btn">确认保存</button>
+    </div>
+  </div>
+  </div>
+  </form>
+{include file='public/footer'}
+<script>
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    
+    form.verify({
+		    tabname: function (value) {
+		    	var parent=/^[a-z]+$/; 
+		    	if(!parent.test(value)) 
+                {
+                    return "只能输入小写英文字母"; 
+                } 
+		    }
+		});
+    form.on('switch(issueof)', function(data){
+    var value = this.checked ? '1' : '0';
+    $("#issue").val(value);
+  });
+  form.on('switch(statusof)', function(data){
+    var value = this.checked ? '1' : '0';
+    $("#status").val(value);
+  });
+    form.on('submit(model-subt)', function(data){
+    var Data = data.field;
+    Data['issue'] = $("#issue").val();
+    Data['status'] = $("#status").val();
+    $.ajax({
+       type:'POST',
+       data:Data,
+	   url:"{:url('admin/Model/edit')}",
+	   dataType :"json",
+	   beforeSend: function() {
+			    index = layer.load();
+            },
+        success:function(data){      
+			if(data.code == 1){
+			layer.msg(data.msg,{time:2000},function(){
+			var index = parent.layer.getFrameIndex(window.name);    
+            parent.layer.close(index);
+            parent.location.reload();
+			});
+			}else{
+			layer.msg(data.msg,{time:2000}); 
+			}
+		},
+		complete:function(){
+			layer.close(index);
+        }
+    });
+  });
+  })
+  function tips(){
+      layer.tips('全局:前后台都可生成对应内容 / 内部:只针对后台生成对应内容', '#typetips', {
+        tips: [1, '#3595CC'],
+        time: 6000
+        });
+  }
+ </script>
+</body>
+</html>

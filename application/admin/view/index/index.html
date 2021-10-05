@@ -1,0 +1,177 @@
+{include file='public/meta'}
+  <title>{$title|default='木鱼内容管理系统'}</title>
+</head>
+<body class="layui-layout-body">
+  
+  <div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 -->
+      {include file='public/header'}
+      
+      <!-- 侧边菜单 -->
+       {include file='public/menu'}
+
+      <!-- 页面标签 -->
+        {include file='public/label'}
+      
+      <!-- 主体内容 -->
+      <div class="layui-body" id="LAY_app_body">
+        <div class="layadmin-tabsbody-item layui-show">
+          <iframe src="{:url('admin/Index/welcome')}" frameborder="0" class="layadmin-iframe"></iframe>
+        </div>
+      </div>
+      
+      <!-- 辅助元素，一般用于移动设备下遮罩 -->
+      <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    </div>
+  </div>
+  
+  
+      <!--更新日志开始-->
+    <div class="layui-col-md12" id="log" style="display:none">
+          <div class="layui-card-body">
+
+              <div id="loglist"></div>
+              
+              <div class="layui-btn-container" style="margin-top: 10px; margin-bottom: 0;text-align:center;">
+                <button class="layui-btn layui-btn-sm layui-btn-radius" id="update">立刻更新</button>
+              </div>
+              
+          </div>
+      </div>
+    <!--更细日志结束-->
+
+
+    <!--进度条开始-->
+    <div class="layui-col-md12" id="progress" style="display:none">
+        <div class="layui-card">
+          <div class="layui-card-body">
+
+              <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="component-progress-demo">
+                <div class="layui-progress-bar layui-bg-green" lay-percent="0%" style="width: 0%;"><span class="layui-progress-text">0%</span></div>
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    <!--进度条结束-->
+  
+  
+  
+  
+<!-- 低部区域 -->
+{include file='public/footer'}
+  <script>
+      layui.config({
+        base: '__ADMINST__layuiadmin/' //静态资源所在路径
+      }).extend({
+        index: 'lib/index' //主入口模块
+      }).use(['index','form','element'],function(){
+          var $ = layui.$
+        ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+        ,treeTable  = layui.treeTable
+        ,form = layui.form;
+      });
+  	/* 更新日志弹出 */
+  	if('{$Think.session.update}' !== ""){
+  	    	var log = "";
+	        $.post("{:url('Update/get_version')}",function(data){
+	            if(data.status == 1){
+    			    for(n=0;n<data.update_log.length;n++){
+    			        log += "<p>"+data.update_log[n]+"</p>"
+    			    }
+    			    $("#loglist").html(log);
+    			     layer.open({
+            		  title:"版本：v" + data.version,
+            		  area: '500px',
+                      type: 1,
+                      content: $('#log'),
+                      cancel: function(){ 
+                           $.post("{:url('Update/delSession')}",function(){
+                               location.reload();
+                           });
+                      }
+                    });
+    			}else{
+    			        layer.msg(data.msg, {icon:2,time: 2000}, function() {
+    					location.reload();
+    				});
+    			}
+    	    });
+  	}
+
+	
+	
+	/**进度条弹出**/
+	$("#update").on("click",function(){
+	    layer.closeAll();//关闭所有弹出层
+		layer.open({
+		  title:"正在更新(请勿关闭)",
+		  area: ['500px', '100px'],
+          type: 1,
+          content: $('#progress')
+        });
+         layui.use('element', function(){
+            var element = layui.element;
+            var n=0, timer = setInterval(function(){
+                n = n + Math.random()*7|0;
+                if(n>100){
+                    n = 100;
+                    clearInterval(timer);
+                }
+                $('.layui-progress-bar').attr('lay-percent',n+'%');
+                element.init();
+                element.progress('component-progress-demo', n+'%');
+            }, 300+Math.random()*1000);
+            //开始更新
+            $.post("{:url('Update/entrance')}",function(data){
+                if(data.code == 1){
+                    $('.layui-progress-bar').attr('lay-percent',100+'%');
+                    element.init();
+                    element.progress('component-progress-demo', 100+'%');
+                    clearInterval(timer);
+                    layer.msg(data.msg, {icon:1,time: 3000}, function() {
+					location.reload();
+				    });
+                }else{
+                    layer.msg(data.msg, {icon:2,time: 3000}, function() {
+					location.reload();
+				    });
+                }
+            });
+        });
+	});
+  
+  
+  
+  
+  </script>
+<!--退出登录-->
+   <script>
+	  $('#logout').click(function(){
+		  var name = '{$Think.session.Adminuser.name}';
+				 $.post("{:url('admin/Index/loginout')}",{name:name},function(data){
+					layer.msg(data.msg,{icon:6,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});					
+				 });
+	  });
+	  
+	  	    function clearPhp(obj,url) {
+	  	        
+  				 $.get(url,function(data){
+					if(data.code === 1){
+					    layer.msg(data.msg);
+					    setTimeout(function () {location.href = '';}, 1000);
+					}				
+				 });
+	    }
+  </script>
+
+
+</body>
+</html>
+
+

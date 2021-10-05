@@ -1,0 +1,115 @@
+{include file='public/meta' }
+	<title>安全设置 - 木鱼内容管理系统</title>
+</head>
+<body>
+    <style>
+        .layui-form-label{
+        width: 90px !important;
+        text-align: center !important;
+        padding:9px 10px;
+        }
+    </style>
+    <form class="form form-horizontal" id="model-form">
+    <div class="layui-form" lay-filter="layuiadmin-form-matter" id="matter-add-form">
+    <div class="layui-fluid">
+    <div class="layui-row layui-col-space15" style="margin: 0px;">
+    <div class="layui-card">
+    <div class="layui-card-header">安全设置</div>
+      <div class="layui-card-body">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">新后台入口:</label>
+        <div class="layui-input-inline">
+             <input type="text" name="htporch" id="htporch" value="{$porch}"  lay-verify="required" placeholder="默认admin.php入口,为了安全请及时修改!" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">为了安全起见,勿使用默认后台入口,输入需要使用的完整名称即可,如:muyu.php</div>
+    </div>
+  </div>
+    <div class="layui-card-header">图片上传配置</div>
+     <div class="layui-card-body">
+     <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">图片上传类型:</label>
+            <div class="layui-input-inline">
+            <input type="text" name="imageext"  value="{$upset.imageext}"  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        <div class="layui-form-mid layui-word-aux">[tips:多个类型以,隔开]</div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">图片上传大小:</label>
+            <div class="layui-input-inline">
+            <input type="text" name="imagesize" value="{$upset.imagesize}"  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        <div class="layui-form-mid layui-word-aux">[tips:默认1M，填写时以B计算]</div>
+    </div>
+    </div> 
+    <div class="layui-card-header">附件上传配置</div>
+    <div class="layui-card-body">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">附件上传类型:</label>
+            <div class="layui-input-inline">
+            <input type="text" name="fileext" value="{$upset.fileext}"  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        <div class="layui-form-mid layui-word-aux">[tips:多个类型以,隔开]</div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">附件上传大小:</label>
+            <div class="layui-input-inline">
+            <input type="text" name="filesize"  value="{$upset.filesize}"  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        <div class="layui-form-mid layui-word-aux">[tips:默认3M，填写时以B计算]</div>
+    </div>
+    </div>
+    <input type="hidden" name="id" id="id" value="1">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="safety-subt" type="button" id="btn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</form>	
+{include file='public/footer' }
+
+	<!--请在下方写此页面业务相关的脚本-->
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    //状态监听
+  	var htporch = $("#htporch").val();	
+	form.on('submit(safety-subt)', function(data){
+	var xurl = $("#htporch").val();    
+	var pcname = window.location.hostname;
+    var Data = data.field;
+    if(htporch === Data['htporch']){
+        delete(Data["htporch"]);
+    }
+    $.post("{:url('System/safetyedit')}", Data, function(data) {
+    if(data.code == '1'){  
+      if(data.status == '2'){
+        layer.msg(data.msg, {time: 3000}, function() {   
+        parent.location.href="http://"+pcname+"/"+xurl+"/login/login.html";
+        });    
+      }else{
+      layer.msg(data.msg,{time:2000},function(){
+        location.reload();   
+      });
+      }
+    }else{
+    layer.msg(data.msg, {time: 3000});
+    }
+    });
+	});
+	
+  });
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

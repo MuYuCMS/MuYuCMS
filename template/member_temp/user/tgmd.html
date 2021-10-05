@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>会员中心 - 在线投稿 - {siteseo name='title'}</title>
+		<meta name="keywords" content="{siteseo name='keyword'}" />
+		<meta name="description" content="{siteseo name='descri'}" />
+		<link href="__USERST__static/css/member_index.css" rel="stylesheet" type="text/css">
+		<link href="__USERST__static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css" id="layuicss-layer">
+		<script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+	</head>
+	<body>
+		<!--头部-->
+		{include file='member_temp/user/header'}
+		<!--头部end-->
+		<div class="yzm_member_container main">
+			<!--侧边导航栏开始-->
+			{include file='member_temp/user/menu'}
+			<!--侧边导航栏结束-->
+			<div class="main_right">
+				<div class="tit">
+					<h3>在线投稿 - 选择模型</h3>
+				</div>
+				<div class="main_cont">
+					<form id="usertg" onsubmit="return chcekall(this)">
+						<table>
+						<tbody>
+						<tr>
+							<td class="text-right" style="width:200px;">选择投稿模型:</td>
+							<td>
+								<select name="modid" id="modid" required style="width:100%;">
+									<option value="" selected>请选择</option>
+									{if (!empty($setmod))}
+									{foreach $setmod as $selt}
+									<option value="{$selt.id}">{$selt.aliase}</option>
+									{/foreach}
+									{/if}
+								</select>
+							</td>
+						</tr>
+								<tr>
+								    <td></td>
+								    <td>
+								<input type="submit" value="投稿内容" name="dosubmit" class="button" id="dosubmit">
+								    </td>
+								</tr>
+							</tbody>
+						</table> 
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--底部开始-->
+		{include file='member_temp/user/footer'}
+		<!--底部结束-->
+		<!--百度编辑器开始-->
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/ueditor.config.js"></script>
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+		<script type="text/javascript" src="/../public/static/admin/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+		<!--百度编辑器结束-->
+		<style>
+			/*.up{padding-left: 18px;width:100%;
+    }*/
+			.input,
+			.yzm-input-text {
+				width: 100%;
+			}
+
+			.text-right {
+				text-align: right;
+				width: 100px;
+
+			}
+			.button {
+	        width: 90px;
+            height: 30px;
+            border-width: 0px;
+            border-radius: 3px;
+            background: #1E90FF;
+            cursor: pointer;
+            outline: none;
+            font-family: Microsoft YaHei;
+            color: white;
+            font-size: 20px;
+            }
+            .button:hover {
+	        background: #5599FF;
+            }
+		</style>
+    <script type="text/javascript" charset="utf-8">
+        function chcekall(obj) {
+                    $.ajax({
+					type: "post",
+					url: "{:url('User/tg')}",
+					dataType: "json",
+					async: false,
+					data: {modid:$("#modid").val()},
+					success: function(msg) {
+						if (msg.code == 1) {
+						    
+						} else {
+							layer.msg(msg.msg, {
+								icon: 2,
+								time: 2000
+							});
+						}
+					}
+				});
+				return dosubmit ? true : false;
+        }
+    </script>
+	</body>
+</html>

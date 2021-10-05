@@ -1,0 +1,102 @@
+{include file='public/meta' }
+	<title>文件管理  - 木鱼内容管理系统</title>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">文件管理</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-fluid layadmin-cmdlist-fluid">
+                                <div class="layui-row layui-col-space30 lists">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<style>
+.cmdlist-container{position: relative;border: solid 1px #eee;}
+.cmdlist-text .info2{font-size: 14px;line-height: 20px;width: 100%;overflow: hidden;color: #666;}
+.cmdlist-container .tpqy{
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 2;
+                display: block;
+		}
+</style>
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+  });
+
+//文件管理
+$.post("{:url('Base/getMyfiles')}",{path:"public/upload/files"},function(data){
+    var str = "";
+    for(var i=0;i<data.msg.length;i++){
+        str+="";
+        
+            str+="<div class='layui-col-md2 layui-col-sm4'>";
+                str+="<div class='cmdlist-container'>";
+                    str+="<a class='' style='float:right;' onClick=picdel('"+data.msg[i]+"') href='javascript:;'>";
+                              str+="<i class='layui-icon layui-icon-delete tpqy'></i>";
+                    str+="</a>";
+                    str+="<a href='javascript:;'><img src='/public/images/zip.svg' height='150px'></a>";
+                      str+="<div class='cmdlist-text'>";
+                        str+="<p class='info2' title='"+data.msg[i]+"'>"+data.msg[i]+"</p>";
+                      str+="</div>";
+                str+="</div>";
+            str+="</div>";
+        
+    }
+    $(".lists").html(str);
+});
+
+
+	//文件删除
+	function picdel(url){
+	    layer.msg("确认要删除吗？",{
+	        time:5000,
+	        shade:0.3,
+	        btn:['删除','取消'],
+	        yes:function(){
+	            $.post("{:url('admin/Accessory/filesdel')}",{filedelur:url},function(datas){
+	                if(datas.code == 1){
+	                    layer.msg(datas.msg,{time:2000},function(){
+	                        if(datas.url) location.href = datas.url;
+	                    });
+	                }else{
+	                    layer.msg(datas.msg,{time:2000});
+	                }
+	            });
+	        }
+	    });
+	}  
+
+
+
+</script>
+</body>
+</html>

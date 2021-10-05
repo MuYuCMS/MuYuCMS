@@ -1,0 +1,81 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+	  <title>会员中心 - {siteseo name='title'}</title>
+	  <meta name="keywords" content="{siteseo name='keyword'}" />
+      <meta name="description" content="{siteseo name='descrip'}" />
+	  <link href="__USERST__static/css/member_index.css" rel="stylesheet" type="text/css">
+	  <link href="__USERST__static/layui/css/layui.css" rel="stylesheet" type="text/css">
+	  <link href="__USERST__static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+      <script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+      <script type="text/javascript" src="__USERST__static/layui/layui.js"></script>
+      <script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+      <style>
+          .layui-icon{
+              font-size: 25px;
+          }
+      </style>
+  </head>
+<!--头部-->
+{include file='member_temp/user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+    <!--侧边导航栏开始-->
+      {include file='member_temp/user/menu'}
+      <!--侧边导航栏结束-->
+<div class="main_right">
+        <div class="tit">
+            <h3>基本资料</h3>
+        </div>
+        <div class="main_cont">
+            <form>
+                <table>
+                    <tbody>
+                        <tr>
+                        <td>钱包余额：</td>
+                        <td style="color:red;">￥{$member.money}元</td>
+                    </tr>
+                    <tr>
+                        <td>总消费：</td>
+                        <td>￥{$member.total}元</td>
+                    </tr>
+                    <tr>
+                        <td>充值金额：￥</td>
+                        <td><input type="text" name="moneys" id="money" class="input" value="10" placeholder="请输入充值金额，单位:元"></td>
+                    </tr>
+                    <tr>
+                        <td>充值方式：</td>
+                        <td>
+                            <a href="javascript:;" onclick="submit('qqpay')" title="QQ支付"><img src="__HOMEST__static/icon/qq.svg" alt="" width="35px"></a>
+                            <a href="javascript:;" onclick="submit('wxpay')" title="微信支付"><img src="__HOMEST__static/icon/wx.svg" alt="" width="35px"></a>
+                            <a href="javascript:;" onclick="submit('alipay')" title="支付宝支付"><img src="__HOMEST__static/icon/zfb.svg" width="35px"></a>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </form>
+				</div>
+    </div>
+</div>
+
+     
+
+
+<!--低部-->
+{include file='member_temp/user/footer'}
+<!--低部end-->
+
+
+  <script>
+    function submit(obj){
+        var money = $("#money").val();
+        if(obj == "qqpay"){
+            window.open("/wallet/moneypay?paytype=qqpay&moneys=" + money);
+        }else if(obj == "wxpay"){
+            window.open("/wallet/moneypay?paytype=wxpay&moneys=" + money);
+        }else if(obj == "alipay"){
+            window.open("/wallet/moneypay?paytype=alipay&moneys=" + money);
+        }
+    }
+  </script>
+</body></html>

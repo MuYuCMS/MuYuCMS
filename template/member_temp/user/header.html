@@ -1,0 +1,38 @@
+
+<body>
+		<div class="container_box">
+			<div class="yzm_member_container head">
+			  <div class="right" style="width:100px"><a href="/"><span class="Hui-iconfont">&#xe625;</span> 返回首页</a></div>
+			  {if ($Think.session.Member)} 
+			  欢迎你： {$member.account}  ，<a href="javascript:void(0);" id="account">退出登录</a>
+			  {else/}
+			  <div class="right" style="width:100px"><a href="index.php/index/login.html"><span class="Hui-iconfont">&#xe607;</span>登录/注册</a></div>
+			  欢迎你： 游客
+			  {/if}
+			</div>
+		</div>
+		<div class="nav">
+		   <div class="yzm_member_container">
+		     {if ($Think.session.Member)}     
+		     <a href="{:url('User/index')}" class="set">会员中心</a>
+		     {/if}
+		     <a href="{:url('User/tg')}" class="set">在线投稿</a>
+		     {if ($Think.session.Member)} 
+		     <a href="{urlsu uid='$member.id'}" class="set" target="_blank">个人主页</a>
+		     {/if}
+		   </div>
+		</div>
+		
+		
+		<script>
+$('#account').click(function(){
+		  var account = '{$Think.session.Member.account}';
+				 $.post("{:url('index/User/loginout')}",{account:account},function(data){
+					layer.msg(data.msg,{icon:1,time:2000},function(){
+						if(data.url != ""){
+							location.href = data.url;
+						}
+					});					
+				 });
+	  });
+</script>

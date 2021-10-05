@@ -1,0 +1,230 @@
+{include file='public/meta'}
+<title>管理员管理 - 管理员列表 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<div style="padding-bottom: 10px;">
+					<a class="layui-btn layui-btn-danger layuiadmin-btn-admin" onclick="delAll()">彻底删除</a>
+					<a class="layui-btn layuiadmin-btn-admin" onclick="restoreAll()">批量还原</a>
+				</div>
+
+            <div class="layui-table-body layui-table-main">
+                <table class="layui-table" id="LAY-user-front-submit">
+					<thead>
+						<tr>
+							<th class=" layui-table-col-special">
+							    <div class="layui-table-cell laytable-cell-checkbox">
+							        <input type="checkbox" id="checkAll" onclick="isCheck()">
+							    </div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>ID</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>用户名</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>邮箱</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>手机号码</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>角色</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>创建时间</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>状态</span></div>
+							</th>
+							<th>
+								<div class="layui-table-cell" align="center"><span>操作</span></div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					    {foreach $admin as $val}
+						<tr align="center">
+							<td class="layui-table-col-special">
+								<input type="checkbox" name="fav" value="{$val.id}">
+							</td>
+							<td>{$val.id}</td>
+							<td>{$val.name}</td>
+							<td>{$val.email}</td>
+							<td>{$val.phone}</td>
+							{if condition="!empty($val['rolesname'])"}
+							<td>
+							{foreach $val['rolesname'] as $va}
+								{$va.name}
+							{/foreach}
+							</td>
+							{else /}
+							<td>无</td>
+							{/if}
+							<td>{:date("Y-m-d",$val.create_time)}</td>
+							<td><div class="layui-table-cell">
+                                      <a class="layui-btn-xs layui-btn layui-btn-danger">已删除</a>
+                                </div>
+                            </td>
+                            
+							<td align="center" data-off="true" class="layui-table-col-special">
+								<div class="layui-table-cell">
+								<a class="layui-btn layui-btn-normal layui-btn-xs" onclick="restore('{$val.id}')"><i class="layui-icon layui-icon-face-smile-b"></i>还原</a>
+								<a class="del layui-btn layui-btn-danger layui-btn-xs" onclick="del('{$val.id}')"><i class="layui-icon layui-icon-delete"></i>删除</a>
+								</div>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+            </div>
+                <div class="layui-box layui-laypage layui-laypage-molv">{$admin|raw}</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- 低部区域 -->
+	{include file='public/footer'}
+	<script>
+		layui.config({
+			base: '__ADMINST__layuiadmin/' //静态资源所在路径
+				,
+			version: new Date().getTime()
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'table']);
+		
+		    // 全选 页面调用
+            function isCheck(){
+                var IsCheck= document.getElementById("checkAll");
+                if(IsCheck.checked==false){
+                    var groupC= document.getElementsByName("fav");
+                    for(var i=0;i<groupC.length;i++){
+                        groupC[i].checked=false;
+                    }
+                }
+                if (IsCheck.checked==true) {
+                    var groupC= document.getElementsByName("fav");
+                    for(var i=0;i<groupC.length;i++){
+                        groupC[i].checked=true;
+                    }
+                }
+            }
+    
+        //删除操作
+        function del(id){
+            	layer.msg('确认彻底删除？', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Admin/recycle')}", {id: id}, function(data) {
+					    if(data.code === 1){
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+						    });
+					    }else{
+					        layer.msg(data.msg, {time: 2000});
+					    }
+					})
+				}
+			});
+        }
+        
+
+        //批量删除
+        function delAll(){
+            var id=$("tbody input:checkbox");
+    		var ids=[];
+    		for(i=0;i<id.length;i++){
+    			if($(id[i]).is(":checked")){
+    				ids += $(id[i]).val()+',';
+    			}
+    		}
+    		var delid = ids;
+    		if(delid == ""){
+    			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+    		}else{
+    		    layer.msg('确认批量彻底删除？', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Admin/recycle')}", {id: delid}, function(data) {
+					    if(data.code === 1){
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+						    });
+					    }else{
+					        layer.msg(data.msg, {time: 2000});
+					    }
+					})
+				}
+			});
+    		}
+        }
+
+                    //还原操作
+                function restore(id){
+            	layer.msg('确认还原吗？', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Admin/restore')}", {id: id}, function(data) {
+					    if(data.code === 1){
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+						    });
+					    }else{
+					        layer.msg(data.msg, {time: 2000});
+					    }
+					})
+				}
+			});
+        }
+        
+        //批量还原
+            function restoreAll(){
+            var id=$("tbody input:checkbox");
+    		var ids=[];
+    		for(i=0;i<id.length;i++){
+    			if($(id[i]).is(":checked")){
+    				ids += $(id[i]).val()+',';
+    			}
+    		}
+    		var delid = ids;
+    		if(delid == ""){
+    			layer.msg('当前未选择任何信息!',{icon:2,time:2000});
+    		}else{
+    		    layer.msg('确认批量还原吗？', {
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					//执行删除
+					$.post("{:url('Admin/restore')}", {id: delid}, function(data) {
+					    if(data.code === 1){
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+						    });
+					    }else{
+					        layer.msg(data.msg, {time: 2000});
+					    }
+					})
+				}
+			});
+    		}
+        }
+
+	</script>
+</body>
+</html>

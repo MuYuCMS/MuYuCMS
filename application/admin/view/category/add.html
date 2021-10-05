@@ -1,0 +1,246 @@
+{include file='public/meta' }
+  <title>栏目添加 - 木鱼内容管理系统</title>
+</head>
+<body>
+ <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 0px 30px 0 0;">   
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基础信息</li>
+        <li>模板配置</li>
+    </ul>
+
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+        
+            <div class="layui-form-item">
+              <label class="layui-form-label">栏目名称：</label>
+              <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="required" placeholder="请输入名称"  class="layui-input">
+              </div>
+            </div>
+    
+        	<div class="layui-form-item">
+              <label class="layui-form-label">背景图：</label>
+               <div class="layui-input-block">
+                  <button type="button"  class="layui-btn" id="test1">本地上传</button>
+                  <input class="layui-upload-file" type="file" accept="images" name="file">
+                  <div class="layui-input-inline" style="float:left;width:45%;">
+                    <input class="layui-input" type="text" accept="images" id="upico"  name="titlepic">
+                  </div>
+                  <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="ico1">
+                  </div>
+              </div>
+            </div>
+        
+            <div class="layui-form-item">
+              <label class="layui-form-label">栏目所属：</label>
+              <div class="layui-input-block">
+				<select class="select" name="pid" lay-filter="catepid" id="catepids">
+					 
+				</select>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">所属模型：</label>
+              <div class="layui-input-block">
+                <select class="select" name="modid" id="modelid">
+        			<option value="0">选择模型</option>
+        		{foreach $mod as $vv}
+        			<option value="{$vv.id}">{$vv.name}</option>
+        		{/foreach}
+        		</select>
+              </div>
+            </div>
+        
+            <div class="layui-form-item">
+              <label class="layui-form-label">是否投稿：</label>
+                <div class="layui-input-block">
+                <input type="checkbox" id="issue" checked="" value="1" name="issue" lay-filter="statusof" lay-skin="switch" lay-text="是|否" title="是否投稿">
+                </div>
+            </div>
+            
+                <div class="layui-form-item">
+              <label class="layui-form-label">栏目ICO：</label>
+              <div class="layui-input-block">
+                <input type="text" name="icon" placeholder="如：icon-shouye"  class="layui-input">
+              </div>
+            </div>
+    
+            <div class="layui-form-item">
+              <label class="layui-form-label">栏目描述：</label>
+              <div class="layui-input-block">
+                <input type="text" name="comment" placeholder="请输入栏目描述内容"  class="layui-input">
+              </div>
+            </div>
+        </div>
+
+        <div class="layui-tab-item">
+        	<div class="layui-form-item">
+              <label class="layui-form-label">链接属性：</label>
+              <div class="layui-input-block">
+                <select class="select" name="links" id="select" lay-filter="sel">
+        			<option value="0" selected>内部链接</option>
+        	        <option value="1">外部链接</option>
+        		</select>
+              </div>
+            </div>
+    
+            <div class="layui-form-item">
+              <label class="layui-form-label">栏目地址：</label>
+              <div class="layui-input-block">
+                <input type="text" name="href" id="href" value="内部链接" lay-verify="required" placeholder="栏目外部链接地址(例如:muyucms.com)"  class="layui-input" disabled>
+              </div>
+            </div>
+        	
+            <div class="layui-form-item">
+              <label class="layui-form-label">栏目属性：</label>
+              <div class="layui-input-block">
+                <select class="select" name="type" id="">
+        			<option value="0" selected>列表</option>
+                    <option value="99">首页</option>
+        		</select>
+              </div>
+            </div>
+    
+              <div class="layui-form-item">
+                <label class="layui-form-label">列表模板:</label>
+                <div class="layui-input-block" style="width:43%;">
+                  <select name="listtemp" lay-verify="required">
+                    <option value=""></option>
+                    {foreach $temp as $va}
+                    <option value="{$va}">{$va}</option>
+                    {/foreach}
+                  </select>
+                  <div class="layui-form-mid layui-word-aux">用作模型下栏目列表模板*<span style="color:red">当前已启用的模板文件</span></div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">内容模板:</label>
+                <div class="layui-input-block" style="width:43%;">
+                  <select name="conttemp" lay-verify="required">
+                    <option value=""></option>
+                    {foreach $temp as $va}
+                    <option value="{$va}">{$va}</option>
+                    {/foreach}
+                  </select>
+                  <div class="layui-form-mid layui-word-aux">用作模型下栏目内容模板*<span style="color:red">当前已启用的模板文件</span></div>
+                </div>
+              </div>
+    
+        </div>
+
+    </div>
+</div>
+
+    <div class="layui-form-item layui-hide">
+      <button type="button" lay-submit lay-filter="muyu-ajax-submit" id="muyu-ajax-submit">提交</button>
+    </div>
+
+</div>
+<style type="text/css" media="all">
+/*上传头像样式开始*/
+.layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
+/*上传头像样式结束*/
+</style>
+  {include file='public/footer' }
+  {load href="__ADMINST__layuiadmin/style/font/dtreefont.css"}
+  {load href="__ADMINST__layuiadmin/style/dtree.css"}
+  <script>
+layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+	,version: new Date().getTime()
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'upload','element','dtree'], function(){
+    var $ = layui.$
+   ,element = layui.element
+   ,dtree = layui.dtree
+    ,form = layui.form ;
+    
+    //外部链接下拉事件
+    form.on('select(sel)', function (data) {
+        var zt = data.value;
+        //console.log(zt);
+        if(zt == 1){
+             $("#href").attr("disabled",false);
+             $("#href").attr("value","");
+         }else{
+             $("#href").attr("disabled",true);
+             $("#href").attr("value","内部链接");
+         }
+    });
+	
+  //是否投稿
+  form.on('switch(statusof)', function(data){
+    var value = this.checked ? '1' : '0';
+    $("#issue").val(value);
+  });
+    
+    form.on('select(catepid)', function(data){
+    if(data.value != 0){
+        $("#modelid").attr("disabled","disabled");
+        form.render('select');
+    }else{
+        $("#modelid").removeAttr("disabled");
+        form.render('select');
+    }
+    });
+  })
+  
+  //图片上传
+  layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+    ,data:{upurl:'/public/upload/menubg'}
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code == 1){
+        $("#upico").val(res.photo);
+		$("#ico1").attr("src",res.photo);
+        return layer.msg('上传成功');
+      }else{
+		return layer.msg('上传失败');
+	  }
+      
+    }
+    ,error: function(){
+        
+    }
+  });
+  });
+  
+  var selectbox=document.getElementById("catepids");
+   
+  //生成树下拉菜单
+  var j="|-";//前缀符号，用于显示父子关系，这里可以使用其它符号
+  var option="<option value='0'>顶级栏目</option>";
+  function creatSelectTree(d,c){
+	  if(c == 1){
+		  option = "";
+	  }
+   for(var i=0;i<d.length;i++){
+   if(d[i].children.length){
+    option+="<option value='"+d[i].id+"'>"+j+d[i].title+"</option>";
+	j+="-";
+    option+=creatSelectTree(d[i].children,1);
+	j=j.slice(0,j.length-1);
+    }else{
+    option+="<option value='"+d[i].id+"'>"+j+d[i].title+"</option>";
+    }
+    }
+   return option;
+   }
+  selectbox.innerHTML=creatSelectTree({$menunew|raw},0);
+  
+  </script>
+</body>
+</html>

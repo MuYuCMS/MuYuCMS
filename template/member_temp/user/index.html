@@ -1,0 +1,433 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+	  <title>会员中心 - {siteseo name='title'}</title>
+	  <meta name="keywords" content="{siteseo name='keyword'}" />
+      <meta name="description" content="{siteseo name='descrip'}" />
+	  <link href="__USERST__static/css/member_index.css" rel="stylesheet" type="text/css">
+	  <link href="__USERST__static/layui/css/layui.css" rel="stylesheet" type="text/css">
+	  <link href="__USERST__static/icon/iconfont.css" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="__USERST__static/layer/theme/default/layer.css?v=3.1.1" id="layuicss-layer">
+      <script type="text/javascript" src="__USERST__static/layer/layer.js"></script>
+      <script type="text/javascript" src="__USERST__static/layui/layui.js"></script>
+      <script type="text/javascript" src="__USERST__static/js/jquery-1.8.2.min.js"></script>
+  </head>
+<!--头部-->
+{include file='member_temp/user/header'}
+<!--头部end-->
+<div class="yzm_member_container main">
+    <!--侧边导航栏开始-->
+      {include file='member_temp/user/menu'}
+      <!--侧边导航栏结束-->
+<div class="main_right">
+        <div class="tit">
+            <h3>基本资料</h3>
+        </div>
+        <div class="main_cont">
+			<div class="yzm-member-center">
+				<div class="yzm-member-left">
+					<a class="up" style="cursor:pointer;"><img style="cursor:pointer;" id="imgs" src="{$member.photo}"></a>
+				</div>
+				<div class="yzm-member-right">
+					<div class="yzm-row">
+						<label>会员名：</label> {$member.account} 
+						<a href="{:url('User/updateMeans')}" class="yzm-member-edit"><span class="Hui-iconfont">&#xe60c;</span>修改资料</a>
+					</div>
+					<div class="yzm-row">
+						<label>昵　称：</label> {$member.name} 
+					</div>
+					<div class="yzm-row">
+					    <label>会员介绍：</label> {$member.intro}    					 </div>
+				    <div class="yzm-row">
+					    <label>钱包余额：</label> ￥{$member.money}元    <span><a style="color:#2196f3;" href="{:url('Wallet/myMoney')}">立即充值</a></span>    					 </div>
+					<div class="yzm-row">
+					    <label>绑定邮箱：</label> {$member.email}    					 
+					    {if empty($member.email)}
+					    <span><a href="javascript:;" onclick="smsBind('邮箱绑定','#tabEmail')" title="邮箱绑定"><i class="layui-icon layui-icon-vercode" style="color: #f89f85;"></i> 立即绑定</a></span>
+					    {else/}
+					    <span><a href="javascript:;" onclick="smsBind('邮箱解除绑定','#removeEmail')" title="解除绑定"><i class="layui-icon layui-icon-vercode" style="color: #f89f85;"></i> 解除绑定</a></span>
+					    {/if}
+					    </div>
+					 <div class="yzm-row">
+					    <label>绑定手机：</label> {$member.phone}    					 
+					    {if empty($member.phone)}
+					    <span><a href="javascript:;" onclick="smsBind('手机绑定','#tabPhone')" title="手机绑定"><i class="layui-icon layui-icon-cellphone" style="color: #a56ce1;"></i> 立即绑定</a></span>
+					    {else/}
+					    <span><a href="javascript:;" onclick="smsBind('手机解除绑定','#removePhone')" title="解除绑定"><i class="layui-icon layui-icon-cellphone" style="color: #a56ce1;"></i> 解除绑定</a></span>
+					    {/if}
+					    </div>   
+					<div class="yzm-row">
+						<label>注册时间：</label> {:date("Y-m-d H:i:s",$member.create_time)}					</div>
+					<div class="yzm-row">
+						<label>登录次数：</label> {$member.count} 次
+					</div>
+					<div class="yzm-row">
+						<label>上次登录：</label> {:date("Y-m-d H:i:s",$member.outtime)} [ IP地址： {$member.outip} ] 
+					</div>
+					<div class="yzm-row">
+					    <label>登录绑定：</label>
+					    {if empty($member.qq_openid)}
+					    <span><a href="{:url('Oauth/login',['type'=>'qq'])}" title="QQ绑定"><i class="layui-icon layui-icon-login-qq" style="color: #1E9FFF;"></i> 立即绑定</a></span>
+					    {else /}
+					    <span><a href="javascript:;" onclick="removeOauth('qq')" title="解除绑定"><i class="layui-icon layui-icon-login-qq" style="color: #1E9FFF;"></i> 解除绑定</a></span>
+					    {/if}
+					    &nbsp;
+					    {if empty($member.weixin_openid)}
+					    <span><a href="{:url('Oauth/login',['type'=>'weixin'])}" title="微信绑定"><i class="layui-icon layui-icon-login-wechat" style="color: #4cc860;"></i> 立即绑定</a></span>
+					    {else /}
+					    <span><a href="javascript:;" onclick="removeOauth('weixin')" title="解除绑定"><i class="layui-icon layui-icon-login-wechat" style="color: #4cc860;"></i> 解除绑定</a></span>
+					    {/if}
+					    &nbsp;
+					    {if empty($member.sina_openid)}
+					    <span><a href="{:url('Oauth/login',['type'=>'sina'])}" title="微博绑定"><i class="layui-icon layui-icon-login-weibo" style="color: #fad73e;"></i> 立即绑定</a></span>
+					    {else /}
+					    <span><a href="javascript:;" onclick="removeOauth('sina')" title="解除绑定"><i class="layui-icon layui-icon-login-weibo" style="color: #fad73e;"></i> 解除绑定</a></span>
+					    {/if}
+
+					</div>
+				</div>
+			</div>
+			<div class="yzm-member-center">
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-balance"><span class="Hui-iconfont">&#xe647;</span></div>
+					<cite>我的评论</cite>
+					<p>{$comment_sum} 条</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-point"><span class="Hui-iconfont">&#xe692;</span></div>
+					<cite>我的留言</cite>
+					<p>{$feedback_sum} 条</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-grade"><span class="Hui-iconfont">&#xe687;</span></div>
+					<cite>投稿总数</cite>
+					<p>{$article_sum} 次</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-experience"><span class="Hui-iconfont">&#xe680;</span></div>
+					<cite>我的关注</cite>
+					<p>{$attention_sum} 个</p>
+				</div>
+				<div class="yzm-item">
+					<div class="yzm-item-console yzm-fans"><span class="Hui-iconfont">&#xe6ce;</span></div>
+					<cite>我的粉丝</cite>
+					<p>{$fans_sum} 个</p>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+        <!--邮箱绑定-->
+        <div class="main_cont" style="display:none;" id="tabEmail">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>邮箱：</td>
+                        <td><input type="text" name="email" id="email" value="" placeholder="请输入邮箱" class="input"><span class="red">*</span></td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" class="input" name="email_code" id="email_code" placeholder="邮箱验证码">
+            					 <a href="javascript:;" onclick="send_code('email')"><span id="send_code">发送验证码</span><span id="send_show" style="display:none;">重新发送(60s)</span></a></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="button" class="submit" onclick="submit('email')" value="点击绑定"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        
+        <!--邮箱解除-->
+        <div class="main_cont" style="display:none;" id="removeEmail">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>邮箱：</td>
+                        <td><input type="text" name="email" id="email" value="{$member.email}" placeholder="请输入邮箱" class="input" disabled="true"></td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" class="input" name="email_remove" id="email_remove" placeholder="邮箱验证码">
+            					 <a href="javascript:;" onclick="send_code('emailRemove')"><span id="sendcondeEmailRemove">发送验证码</span><span id="sendShowEmailRemove" style="display:none;">重新发送(60s)</span></a></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="button" class="submit" onclick="removeOauth('email')" value="解除绑定"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--手机绑定-->
+        <div class="main_cont" style="display:none;" id="tabPhone">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>手机：</td>
+                        <td><input type="text" name="phone" id="phone" value="" placeholder="请输入手机号码" class="input"><span class="red">*</span></td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" class="input" name="phone_code" id="phone_code" placeholder="验证码">
+            					 <a href="javascript:;" onclick="send_code('phone')"><span id="send_codes">发送验证码</span><span id="send_shows" style="display:none;">重新发送(60s)</span></a></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="button"  class="submit" onclick="submit('phone')" value="点击绑定"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        
+        <!--手机解除绑定-->
+        <div class="main_cont" style="display:none;" id="removePhone">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>手机：</td>
+                        <td><input type="text" name="phone" id="phone" value="{$member.phone}" placeholder="请输入手机号码" class="input" disabled="true"></td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" class="input" name="phone_remove" id="phone_remove" placeholder="验证码">
+            					 <a href="javascript:;" onclick="send_code('phoneRemove')"><span id="sendCodePhoneRemove">发送验证码</span><span id="sendShowPhoneRemove" style="display:none;">重新发送(60s)</span></a></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="button"  class="submit" onclick="removeOauth('phone')" value="解除绑定"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+
+
+<!--低部-->
+{include file='member_temp/user/footer'}
+<!--低部end-->
+
+
+  <script>
+	  /*
+	   *本地图片上传的操作
+	   */
+	layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行上传图片，并获取图片信息
+	  var uploadInst = upload.render({
+	    elem: '.up' //绑定元素
+	    ,url: "{:url('User/upload')}" //上传接口
+	    ,done: function(res){
+	      //上传完毕回调
+		  // console.log(res);
+		  if(res.code == 1){
+			  //$("#icon").val(res.photo);
+			  $("#imgs").attr("src",res.photo);
+			  layer.msg(res.msg,{time:2000});
+		  }else{
+			  layer.msg(res.msg,{time:2000});
+		  }
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+	
+	
+	//解除登录绑定
+	function removeOauth(type)
+	{
+	    if(type == "email"){
+	        var data = {type:type,code:$("#email_remove").val()}
+	    }else if(type == "phone"){
+	        var data = {type: type,code:$("#phone_remove").val()}
+	    }else{
+	        var data = {type:type}
+	    }
+	    layer.msg("确认要解除吗?",{
+				time: 5000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确认', '取消'],
+				yes: function() {
+					$.post("{:url('User/removeOauth')}", data, function(data) {
+					    if(data.code === 1){
+					        layer.msg(data.msg, {time: 2000}, function() {
+							if (data.url) location.href = data.url;
+						    });
+					    }else{
+					        layer.msg(data.msg, {time: 2000});
+					    }
+					})
+				}
+	    });
+	}
+	
+	//邮箱手机绑定弹窗
+	function smsBind(title,id)
+	{
+	  layer.open({
+	  title:title,
+	  area: ['520px', '250px'],
+	  scrollbar: false,//屏蔽滚动条
+	  resize: false,//禁止拉伸
+      type: 1,
+      content: $(id) //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+    });
+	}
+	
+	
+	
+		var time = 0;
+		var res = null;
+		//邮箱绑定发送验证码倒计时
+		function setmytime(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $("#send_show").text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $("#send_show").text("重新发送(" + time + "s)");
+	        res = setTimeout("setmytime()", 1000);
+		}
+		//手机绑定发送验证码倒计时
+		function setmytimes(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $("#send_shows").text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $("#send_shows").text("重新发送(" + time + "s)");
+	        res = setTimeout("setmytimes()", 1000);
+		}
+		//邮箱解除绑定发送验证码倒计时
+		function setRemoveEmail(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $("#sendShowEmailRemove").text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $("#sendShowEmailRemove").text("重新发送(" + time + "s)");
+	        res = setTimeout("setRemoveEmail()", 1000);
+		}
+		
+		//手机解除绑定发送验证码倒计时
+		function setRemovePhone(){
+			clearTimeout(res);
+	        time--; 
+	        if (time <= 0) {
+	            $("#sendShowPhoneRemove").text("发送验证码");
+	            clearTimeout(res);
+	            time = 0;
+	            return;
+	        }
+	        $("#sendShowPhoneRemove").text("重新发送(" + time + "s)");
+	        res = setTimeout("setRemovePhone()", 1000);
+		}
+		
+		//验证码发送
+		function send_code(type) {
+		    if(type == 'email'){
+		        var url = "{:url('User/sendCodeEmail')}";
+		        var data = {email:$("#email").val()};
+		        var id = "#email";
+		        var cssID1 = "#send_code";
+		        var cssID2 = "#send_show";
+		        var fun = "setmytime()";
+		    }else if(type == 'phone'){
+		        var url = "{:url('User/sendCodePhone')}";
+		        var data = {phone:$("#phone").val()};
+		        var id = "#phone";
+		        var cssID1 = "#send_codes";
+		        var cssID2 = "#send_shows";
+		        var fun = "setmytimes()"
+		    }else if(type == "emailRemove"){
+		        var url = "{:url('User/emailRemove')}";
+		        var data = "";
+		        var cssID1 = "#sendcondeEmailRemove";
+		        var cssID2 = "#sendShowEmailRemove";
+		        var fun = "setRemoveEmail()";
+		    }else if(type == "phoneRemove"){
+		        var url = "{:url('User/phoneRemove')}";
+		        var data = "";
+		        var cssID1 = "#sendCodePhoneRemove";
+		        var cssID2 = "#sendShowPhoneRemove";
+		        var fun = "setRemovePhone()";
+		    }
+			if(time == 0){
+				layer.msg('发送中……', { icon: 16, shade: 0.21,shadeClose:true,time:2000 },function(){
+    				$.ajax({   
+    					type: "post",   
+    					url: url,   
+    					dataType: "json",
+    					async: false,	
+    					data: data,		
+    					success: function(msg){  
+    						if(msg.code == 1){
+    							$(cssID1).css('display','none'); 
+    							$(cssID2).css('display','block'); 
+    							time = 60;
+    							res = setTimeout(fun, 1000);	
+    							layer.msg(msg.msg, {icon:1,time: 3000});		  
+    						}else{
+    							layer.msg(msg.msg, {icon:2,time: 2000});
+    							$(id).focus();
+    						}				 
+    					} 
+    				});
+				});
+			}else{
+				layer.msg('请 ' + time + ' 秒后再发送！', {icon:2,time: 2000});
+			}
+		}
+		
+	//绑定提交
+	function submit(type){
+	    if(type == 'email'){
+	        var data = {type:'email',code:$("#email_code").val()}
+	        var id = "#phone_code"
+	        var cssID1 = "#send_code";
+	        var cssID2 = "#send_show";	        
+	    }else if(type == 'phone'){
+	        var data = {type:'phone',code:$("#phone_code").val()}
+	        var id = "#email_code"
+	        var cssID1 = "#send_codes";
+	        var cssID2 = "#send_shows";	        
+	    }
+		    $.ajax({   
+				type: "post",   
+				url: "{:url('User/smsBind')}",   
+				dataType: "json",
+				async: false,	
+				data: data,		
+				success: function(msg){  
+					if(msg.code == 1){
+						$(cssID1).css('display','none'); 
+						$(cssID2).css('display','block'); 
+						time = 60;
+						res = setTimeout("setmytime()", 1000);	
+						layer.msg(msg.msg, {icon:1,time: 3000},function(){
+						    location.href = msg.url;
+						});		  
+					}else{
+						layer.msg(msg.msg, {icon:2,time: 2000});
+						$(id).focus();
+					}				 
+				} 
+			});
+	}
+  </script>
+</body></html>

@@ -1,0 +1,233 @@
+{include file='public/meta' }
+	<title>自定义管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+    <style>
+        .cmdlist-container {
+            border-color: #c0baba;
+        }
+    </style>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">管理自定义页面</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-fluid layadmin-cmdlist-fluid">
+                                <div class="layui-row layui-col-space30">
+                                <div style="padding: 10px; background-color: #FAFAFA;">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md13">
+    <div class="layui-card">
+        <div class="layui-card-header muyu-text">操作台&nbsp; &nbsp; &nbsp;<span class="muyu-tips-right">Tips:删除单页前请做好备份,避免数据无法找回</span></div>
+        <div class="layui-card-body" style="display:inline-block;">
+        <span style="display:inline-block;">操作：</span>
+        <div class="layui-btn-container" style="display:inline-block;">
+		  <a class="layui-btn layui-btn-xs" onclick="addform()" href="javascript:;">新增单页</a>
+		  <a class="layui-btn layui-btn-danger layui-btn-xs" onclick="alldel()" href="javascript:;">删除选中</a>
+		</div>
+        </div>
+        </div>
+    </div>
+    </div>  
+</div>
+
+                <div class="layui-table-body layui-table-main">
+					<table class="layui-table" id="LAY-user-front-submit">
+						<thead>
+							<tr>
+								<th class=" layui-table-col-special">
+									<div class="layui-table-cell laytable-cell-checkbox">
+										<input type="checkbox" id="checkAll" onclick="isCheck()">
+									</div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>id</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>文件名</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>描述</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>单页路径</span></div>
+								</th>								
+								<th>
+									<div class="layui-table-cell" align="center"><span>创建者</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>发布时间</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>更新时间</span></div>
+								</th>
+								<th>
+									<div class="layui-table-cell" align="center"><span>操作</span></div>
+								</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{foreach $cutpath as $cut}
+							<tr align="center">
+								<td class="layui-table-col-special">
+									<input type="checkbox" name="fav" value="{$cut.id}">
+								</td>
+								<td>{$cut.id}</td>
+								<td>{$cut.fielname}</td>
+								<td>{$cut.finame}</td>
+								<td>{$cut.path}</td>
+								<td>{$cut.admid}</td>
+								<td>{$cut.create_time|date='Y:m:d H:i:s'}</td>
+								<td>{$cut.update_time|date='Y:m:d H:i:s'}</td>
+								<td align="center" class="layui-table-col-special">
+									<div class="layui-table-cell">
+										
+										<a class="layui-btn layui-bg-cyan layui-btn-xs"
+										onclick="formedit('{$cut.id}')" href="javascript:;"
+											><i
+												class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
+										<a class="layui-btn layui-btn-xs layui-bg-red"
+											onclick="formdel('{$cut.id}')"
+											href="javascript:;"><i class="layui-icon layui-icon-delete"></i>删除</a>
+									</div>
+								</td>
+							</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				</div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+{include file='public/footer' }
+
+<!--请在下方写此页面业务相关的脚本-->
+<style>
+    .cmdlist-container{position: relative;}
+    .cmdlist-container .tpqy{
+		        background: url(/public/static/admin/temp/ph.png) no-repeat center center;
+                background-size: 100% 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 2;
+                display: block;
+                width: 70px;
+                height: 70px;
+		}
+	
+</style>
+
+<script type="text/javascript">
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form','element'],function(){
+      var $ = layui.$
+    ,element = layui.element//Tab的切换功能，切换事件监听等，需要依赖element模块
+    ,form = layui.form ;
+    
+    //状态监听
+  });
+    function addform(){
+        layer.open({
+			type: 2,
+			title: "新增单页",
+			maxmin: true,
+			content: "{:url('admin/template/cutformadd')}",
+			area: ['50%', '70%']
+		});
+    }
+	//模板删除
+	function formdel(id){
+        var Data = {formid:id};
+	    layer.msg("确认要删除吗？",{
+	        time:5000,
+	        shade:0.3,
+	        btn:['删除','取消'],
+	        yes:function(){
+	            matajax(Data);
+	        }
+	    });
+	}
+/*
+*批量删除
+*
+**/
+    function alldel(){
+    var aid = $("tbody input:checkbox");
+			var ids = [];
+			ids = allcheck(ids, aid);
+			if (ids == "") {
+				layer.msg('当前未选择任何信息!', {
+					icon: 2,
+					time: 2000
+				});
+			} else {
+				ids = ids.substring(0, ids.length - 1);
+				var Data = {
+					all: ids
+				};
+				layer.msg('是否删除?', {
+					time: 3000, //5s后自动关闭
+					shade: 0.3,
+					btn: ['确定', '取消'],
+					yes: function() {
+						matajax(Data);
+					}
+				});
+
+			}
+}
+        function matajax(Data) {
+			$.ajax({
+				type: 'POST',
+				data: Data,
+				url: "{:url('admin/Template/cutformedel')}",
+				dataType: "json",
+				beforeSend: function() {
+					index = layer.load();
+				},
+				success: function(data) {
+					if (data.code == 1) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							location.reload();
+						});
+					} else {
+						layer.msg(data.msg, {
+							time: 2000
+						});
+					}
+				},
+				complete: function() {
+					layer.close(index);
+				}
+			});
+		}
+	function formedit(id){
+	    layer.open({
+			type: 2,
+			title: "编辑单页",
+			maxmin: true,
+			content: "{:url('admin/template/cutformedit')}"+"?formid="+id,
+			area: ['50%', '70%']
+		});
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+{include file='public/meta'}
+  <title>字段编辑 - 字段管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<style>
+    .input-width{
+        width:50%;
+        float:left;
+        margin-right: 10px;
+    }
+</style>
+<form class="form form-horizontal" id="modelfield-form">
+  <div class="layui-form" lay-filter="fieldedit-form-role" id="fieldedit-edit-form" style="padding: 20px 30px 0 0;">
+    <input name="id" type="hidden" value="{$list.id}">
+    <input name="modid" type="hidden" value="{$list.modid}">
+    <input name="ismuyu" type="hidden" value="{$list.ismuyu}">
+    <div class="layui-form-item">
+    <label class="layui-form-label">字段名称:</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" value="{$list.title}" lay-verify="required" placeholder="请输入字段名称" autocomplete="off" class="input-width layui-input">
+      <div class="layui-form-mid layui-word-aux">如：标题，邮箱等</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">字段标识:</label>
+    <div class="layui-input-block">
+      <input type="text" name="field" value="{$list.field}" lay-verify="required|tabname" placeholder="请输入字段标识" autocomplete="off" class="input-width layui-input" {eq name="$list.ismuyu" value="1"}disabled=""{/eq}>
+      <div class="layui-form-mid layui-word-aux"><span style="color:red;">纯小写英文</span>例如:title,email</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-inline">  
+    <label class="layui-form-label">字段类型:</label>
+    <div class="layui-input-inline" style="width:63%;">
+      <select name="type" lay-verify="required">
+        <option value=""></option>
+        {foreach $sqlfied as $v}
+        <option value="{$v.value}" {eq name="$list.type" value="$v.value"}selected{/eq}>{$v.name}</option>
+        {/foreach}
+      </select>
+      
+  </div>
+  </div>
+  <div class="layui-inline">
+    <label class="layui-form-label">长度:</label>
+    <div class="layui-input-inline">
+    <input type="text" name="leng" value="{$list.leng}" lay-verify="checknum" autocomplete="off" style="width:30%;" class="input-width layui-input">  
+    </div>
+    </div>
+</div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">存放表:</label>
+    <div class="layui-input-block">
+      <input type="radio" name="chart" value="1" title="主表" {eq name="$list.chart" value="1"}checked{/eq} disabled>
+      <input type="radio" name="chart" value="2" title="副表" {eq name="$list.chart" value="2"}checked{/eq} disabled>
+      <div class="layui-form-mid layui-word-aux"><span>(选择后不可再修改)</span></div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+      <div class="layui-inline"> 
+    <label class="layui-form-label">字段排序:</label>
+    <div class="layui-input-inline" style="width:50px;">
+      <input type="number" name="orders" value="{$list.orders}" lay-verify="required"  autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux"><span>(值越小越靠前)</span></div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">表单显示:</label>
+    <div class="layui-input-block" style="width:43%;">
+      <select name="forms" lay-filter="inputt" lay-verify="required">
+        <option value=""></option>
+        {foreach $formfied as $vs}
+        <option value="{$vs.value}" {eq name="$list.forms" value="$vs.value"}selected{/eq}>{$vs.name}</option>
+        {/foreach}
+      </select>
+      <div class="layui-form-mid layui-word-aux"><span>根据实际使用选择</span></div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">初始值&nbsp;:<br/><span id="tipss" style="display:none;">(“下拉/单选/复选”格式用:值||名;多个一次用‘||’递增)</span></label>
+    <div class="layui-input-block">
+    <textarea name="defaults" placeholder="下拉/单选/复选默认值例如:值||名称||值2||名称2 即可 复选框示例:值||ON名|OFF名||值2||ON名2|OFF名2" class="layui-textarea">{$list.defaults}</textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">字段配置:</label>
+    <div class="layui-input-block">
+    <input type="checkbox" lay-filter="fied" id="adst" name="adst" value="{$list.adst}" title="录入" {eq name="$list.adst" value="1"}checked{/eq}>
+    <input type="checkbox" lay-filter="fied1" id="hmst" name="hmst" value="{$list.hmst}" title="投稿" {eq name="$list.hmst" value="1"}checked{/eq}>
+    <input type="checkbox" lay-filter="fied2" id="required" name="required" value="{$list.required}" title="必填" {eq name="$list.required" value="1"}checked{/eq}>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="model-subt" type="button" id="btn">确认保存</button>
+    </div>
+  </div>
+  </div>
+  </form>
+{include file='public/footer'}
+<script>
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    
+    function IsInArray(arr,val){ 
+　　var testStr=','+arr.join(",")+",";
+　　return testStr.indexOf(","+val+",")!=-1; 
+    }
+    form.verify({
+		    tabname: function (value) {
+		    	var parent=/^[a-z]+$/; 
+		    	if(!parent.test(value)) 
+                {
+                    return "只能输入小写英文字母"; 
+                } 
+		    },
+		    checknum:function(value){
+		        if(/^[\u4e00-\u9fa5]/.test(value)){
+		            return "不可包含中文";
+		        }else if(/^[a-zA-Z]/.test(value)){
+		            return "不可包含字母";
+		        }
+		    }
+		});
+  form.on('checkbox(fied)', function(data){
+    var value = this.checked ? '1' : '2';
+    $("#adst").val(value);
+  });
+  form.on('checkbox(fied1)', function(data){
+    var value = this.checked ? '1' : '2';
+    $("#hmst").val(value);
+  });
+  form.on('checkbox(fied2)', function(data){
+    var value = this.checked ? '1' : '2';
+    $("#required").val(value);
+  });
+  form.on('select(inputt)', function(data){
+    var arr = new Array(['select','radio','checkbox']); 
+    if(IsInArray(arr,data.value) == true){
+        document.getElementById("tipss").style.display = "";
+    }else{
+        document.getElementById("tipss").style.display = "none";
+    }
+  });
+    form.on('submit(model-subt)', function(data){
+    var Data = data.field;
+    Data['adst'] = $("#adst").val();
+    Data['hmst'] = $("#hmst").val();
+    Data['required'] = $("#required").val();
+    $.ajax({
+       type:'POST',
+       data:Data,
+	   url:"{:url('admin/Modelfield/edit')}",
+	   dataType :"json",
+	   beforeSend: function() {
+			    index = layer.load();
+            },
+        success:function(data){      
+			if(data.code == 1){
+			layer.msg(data.msg,{time:2000},function(){
+			var index = parent.layer.getFrameIndex(window.name);    
+            parent.layer.close(index);
+            parent.location.reload();
+			});
+			}else{
+			layer.msg(data.msg,{time:2000}); 
+			}
+		},
+		complete:function(){
+			layer.close(index);
+        }
+    });
+  });
+  
+  })
+ </script>
+</body>
+</html>

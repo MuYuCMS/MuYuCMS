@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>控制台 - 木鱼内容管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  {load href="__ADMINST__layuiadmin/layui/css/layui.css"}
+  {load href="__ADMINST__layuiadmin/style/admin.css"}
+  <style type="text/css" media="all">
+      .layui-text a:not(.layui-btn):hover {
+        text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md8">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">快捷方式</div>
+              <div class="layui-card-body">
+                
+                <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                  <div carousel-item="">
+                    <ul class="layui-row layui-col-space10 layui-this">
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Matter/index')}">
+                          <i class="layui-icon layui-icon-read"></i>
+                          <cite>内容列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Matter/mataudit')}">
+                          <i class="layui-icon layui-icon-list"></i>
+                          <cite>内容审核</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Template/index')}">
+                          <i class="layui-icon layui-icon-template-1"></i>
+                          <cite>模板列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a href="{:url('admin/Template/tempEdit')}" target="_blank">
+                          <i class="layui-icon layui-icon-code-circle"></i>
+                          <cite>开发中心</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Comment/index')}">
+                          <i class="layui-icon layui-icon-reply-fill"></i>
+                          <cite>评论列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Comment/audit')}">
+                          <i class="layui-icon layui-icon-survey"></i>
+                          <cite>评论审核</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Member/index')}">
+                          <i class="layui-icon layui-icon-group"></i>
+                          <cite>会员管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/System/index')}">
+                          <i class="layui-icon layui-icon-set"></i>
+                          <cite>网站设置</cite>
+                        </a>
+                      </li>
+                    </ul>
+                    <ul class="layui-row layui-col-space10">
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Roles/roleList')}">
+                          <i class="layui-icon layui-icon-username"></i>
+                          <cite>角色管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Admin/adminList')}">
+                          <i class="layui-icon layui-icon-user"></i>
+                          <cite>管理员列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Plug/addonslist')}">
+                          <i class="layui-icon layui-icon-app"></i>
+                          <cite>插件列表</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Plug/linkindex')}">
+                          <i class="layui-icon layui-icon-link"></i>
+                          <cite>友情链接</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Plug/addindex')}">
+                          <i class="layui-icon layui-icon-carousel"></i>
+                          <cite>广告管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Model/index')}">
+                          <i class="layui-icon layui-icon-table"></i>
+                          <cite>系统模型</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Log/index')}">
+                          <i class="layui-icon layui-icon-log"></i>
+                          <cite>系统日志</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a lay-href="{:url('admin/Member/buyLog')}">
+                          <i class="layui-icon layui-icon-rmb"></i>
+                          <cite>购买记录</cite>
+                        </a>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                <div class="layui-carousel-ind"><ul><li class="layui-this"></li><li></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">数据汇总</div>
+              <div class="layui-card-body">
+
+                <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                  <div carousel-item="">
+                    <ul class="layui-row layui-col-space10 layui-this">
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/mataudit')}" lay-text="待审文章" class="layadmin-backlog-body">
+                          <h3>待审文章</h3>
+                          {if $checkmatter gt 99}
+                          <p><cite>99+ 篇</cite></p>
+                          {else/}
+                          <p><cite>{$checkmatter} 篇</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Comment/audit')}" lay-text="待审评论" class="layadmin-backlog-body">
+                          <h3>待审评论</h3>
+                          {if $checkcomment gt 999}
+                          <p><cite>999+ 条</cite></p>
+                          {else/}
+                          <p><cite>{$checkcomment} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Member/payLog')}" lay-text="今日充值" class="layadmin-backlog-body">
+                          <h3>今日充值</h3>
+                          {if $bigdata.pay_money gt 100000}
+                          <p><cite>10万+ 元</cite></p>
+                          {else/}
+                          <p><cite>{$bigdata.pay_money} 元</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Member/index')}" lay-text="新增会员" class="layadmin-backlog-body">
+                          <h3>新增会员</h3>
+                          {if $bigdata.member_add gt 999}
+                          <p><cite>999+ 个</cite></p>
+                          {else/}
+                          <p><cite>{$bigdata.member_add} 个</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                    </ul>
+                    <ul class="layui-row layui-col-space10">
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/index')}" lay-text="今日发文" class="layadmin-backlog-body">
+                          <h3>今日发文</h3>
+                          {if $bigdata.article_add gt 99}
+                          <p><cite style="color: #FF5722;">99+ 篇</cite></p>
+                          {else/}
+                          <p><cite style="color: #FF5722;">{$bigdata.article_add} 篇</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Feedback/index')}" lay-text="未读留言" class="layadmin-backlog-body">
+                          <h3>未读留言</h3>
+                          {if $unreadfeedback gt 999}
+                          <p><cite style="color: #FF5722;">999+ 条</cite></p>
+                          {else/}
+                          <p><cite style="color: #FF5722;">{$unreadfeedback} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Member/buyLog')}" lay-text="今日消费" class="layadmin-backlog-body">
+                          <h3>今日消费</h3>
+                          {if $bigdata.buy_money gt 100000}
+                          <p><cite style="color: #FF5722;">10万+ 元</cite></p>
+                          {else/}
+                          <p><cite style="color: #FF5722;">{$bigdata.buy_money} 元</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/index')}" lay-text="今日浏览量" class="layadmin-backlog-body">
+                          <h3>今日浏览量</h3>
+                          {if $bigdata.article_browse gt 100000}
+                          <p><cite style="color: #FF5722;">10万+ 次</cite></p>
+                          {else/}
+                          <p><cite style="color: #FF5722;">{$bigdata.article_browse} 次</cite></p>
+                          {/if}
+                        </a>
+                      </li>                      
+                    </ul>
+
+                    <ul class="layui-row layui-col-space10">
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/index')}" lay-text="文章总数" class="layadmin-backlog-body">
+                          <h3>文章总数</h3>
+                          {if $articlesum gt 100000}
+                          <p><cite style="color: #01AAED;">10万+ 篇</cite></p>
+                          {else/}
+                          <p><cite style="color: #01AAED;">{$articlesum} 篇</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Feedback/index')}" lay-text="留言总数" class="layadmin-backlog-body">
+                          <h3>留言总数</h3>
+                          {if $feedbacksum gt 100000}
+                          <p><cite style="color: #01AAED;">10万+ 条</cite></p>
+                          {else/}
+                          <p><cite style="color: #01AAED;">{$feedbacksum} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Comment/index')}" lay-text="评论总数" class="layadmin-backlog-body">
+                          <h3>评论总数</h3>
+                          {if $commentsum gt 100000}
+                          <p><cite style="color: #01AAED;">10万+ 条</cite></p>
+                          {else/}
+                          <p><cite style="color: #01AAED;">{$commentsum} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Member/payLog')}" lay-text="收入总数" class="layadmin-backlog-body">
+                          <h3>收入总数</h3>
+                          {if $moneysum gt 100000}
+                          <p><cite style="color: #01AAED;">10万+ 元</cite></p>
+                          {else/}
+                          <p><cite style="color: #01AAED;">{$moneysum} 元</cite></p>
+                          {/if}
+                        </a>
+                      </li>                      
+                    </ul>  
+
+                    <ul class="layui-row layui-col-space10">
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Member/index')}" lay-text="会员总数" class="layadmin-backlog-body">
+                          <h3>会员总数</h3>
+                          {if $membersum gt 100000}
+                          <p><cite style="color: #F78400;">10万+ 个</cite></p>
+                          {else/}
+                          <p><cite style="color: #F78400;">{$membersum} 个</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Admin/adminList')}" lay-text="管理员总数" class="layadmin-backlog-body">
+                          <h3>管理员总数</h3>
+                          {if $adminsum gt 100000}
+                          <p><cite style="color: #F78400;">10万+ 个</cite></p>
+                          {else/}
+                          <p><cite style="color: #F78400;">{$adminsum} 个</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Roles/roleList')}" lay-text="角色总数" class="layadmin-backlog-body">
+                          <h3>角色总数</h3>
+                          {if $rolesum gt 100000}
+                          <p><cite style="color: #F78400;">10万+ 个</cite></p>
+                          {else/}
+                          <p><cite style="color: #F78400;">{$rolesum} 个</cite></p>
+                          {/if}
+                        </a>
+                      </li>    
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/index')}" lay-text="总浏览量" class="layadmin-backlog-body">
+                          <h3>总浏览量</h3>
+                          {if $articlebrowse gt 10000000}
+                          <p><cite style="color: #F78400;">1000万+ 次</cite></p>
+                          {else/}
+                          <p><cite style="color: #F78400;">{$articlebrowse} 次</cite></p>
+                          {/if}
+                        </a>
+                      </li>                       
+                    </ul> 
+                    
+                    <ul class="layui-row layui-col-space10">   
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Matter/index')}" lay-text="总点赞量" class="layadmin-backlog-body">
+                          <h3>总点赞量</h3>
+                          {if $articlelike gt 100000}
+                          <p><cite style="color: #7A4D7B;">10万+ 次</cite></p>
+                          {else/}
+                          <p><cite style="color: #7A4D7B;">{$articlelike} 次</cite></p>
+                          {/if}
+                        </a>
+                      </li> 
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Plug/linkindex')}" lay-text="友情链接" class="layadmin-backlog-body">
+                          <h3>友情链接</h3>
+                          {if $blogroll gt 99}
+                          <p><cite style="color: #7A4D7B;">99+ 条</cite></p>
+                          {else/}
+                          <p><cite style="color: #7A4D7B;">{$blogroll} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>
+                      <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Plug/addindex')}" lay-text="广告总数" class="layadmin-backlog-body">
+                          <h3>广告总数</h3>
+                          {if $advertising gt 99}
+                          <p><cite style="color: #7A4D7B;">99+ 条</cite></p>
+                          {else/}
+                          <p><cite style="color: #7A4D7B;">{$advertising} 条</cite></p>
+                          {/if}
+                        </a>
+                      </li>    
+                        <li class="layui-col-xs6">
+                        <a lay-href="{:url('admin/Index/bigdata')}" lay-text="数据中心" class="layadmin-backlog-body">
+                          <h3>数据中心</h3>
+                          <p><cite style="color: #7A4D7B;">更多+</cite></p>
+                        </a>
+                      </li> 
+                    </ul>                      
+                    
+                  </div>
+                <div class="layui-carousel-ind"><ul><li class="layui-this"></li><li></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md12">
+            <div class="layui-card">
+          <div class="layui-card-header">最近更新</div>
+          <div class="layui-card-body">
+            <dl class="layuiadmin-card-status">
+                {if (!empty($matter))}
+                {foreach $matter as $val}
+              <dd>
+                <div class="layui-status-img" style="background-color: #00968800;"><a target="_blank" href="/matcont_{$val.id}">
+                    {if !empty($val.titlepic)}
+                    <img src="{$val.titlepic}" style="width:100%;height:100%"/>
+                    {else}
+                    <img src="/public/images/tempic.png" style="width:100%;height:100%" alt="系统默认图片" />
+                    {/if}
+                </a></div>
+                <div>
+                  <p><a target="_blank" href="/matcont_{$val.id}">{$val.title}</a></p>
+                  <span>{$val.create_time|date='Y-m-d H:i:s'}</span>
+                </div>
+              </dd>
+              {/foreach}
+              {/if}
+            </dl>  
+          </div>
+        </div>
+            
+          </div>
+
+
+
+<div class="layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header">官方信息</div>
+          <div class="layui-card-body layui-text">
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>官方主页</td>
+                  <td><a href="http://muyucms.com/" target="_blank">http://muyucms.com/</a></td>
+                </tr>
+                <tr>
+                  <td>交流社区</td>
+                  <td><a href="http://www.muyucms.com/bbs.html" target="_blank">http://www.muyucms.com/bbs.html</a>
+                 </td>
+                </tr>
+                <tr>
+                  <td>使用手册</td>
+                  <td><a href="http://www.muyucms.com/instruction.html" target="_blank">http://www.muyucms.com/instruction.html</a></td>
+                </tr>
+                <tr>
+                  <td>开发手册</td>
+                  <td><a href="http://www.muyucms.com/develop.html" target="_blank">http://www.muyucms.com/develop.html</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header">开发团队</div>
+          <div class="layui-card-body layui-text">
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>版权所有</td>
+                  <td>乐小轩开发团队</td>
+                </tr>
+                <tr>
+                  <td>开发团队</td>
+                  <td>乐K，小航，杨逸轩</td>
+                </tr>
+                <tr>
+                  <td>特别感谢</td>
+                  <td>ThinkPHP，layui，Jquery</td>
+                </tr>
+                <tr>
+                  <td>团队介绍</td>
+                  <td>
+                    <a href="http://muyucms.com/about.html" target="_blank">点击查看</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        
+        
+        
+        
+        
+
+        
+      </div>
+        </div>
+      </div>
+      
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">版本信息</div>
+          <div class="layui-card-body layui-text">
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>当前版本</td>
+                  <td> v{$system.version}<span style="color: red;padding-left: 15px;">[{$accre.accre_name}]</span><a lay-href="{:url('admin/System/update')}">({$accre.accre_sta})</a></td>
+                </tr>
+                <tr>
+                  <td>基于框架</td>
+                  <td>ThinkPHP5.1 && layuiAdmin</td>
+                </tr>
+                <tr>
+                  <td>主要特色</td>
+                  <td>零门槛 / 易扩展 / 响应式 / 开源 / 免费</td>
+                </tr>
+                <tr>
+                  <td>获取渠道</td>
+                  <td style="padding-bottom: 0;">
+                    <div class="layui-btn-container">
+                      <a href="http://muyucms.com/" target="_blank" class="layui-btn layui-btn-danger">官方网站</a>
+                      <a href="https://gitee.com/le-xiaoxuan/MuYucms" target="_blank" class="layui-btn">码云/Gitee</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+
+
+<div class="layui-card">
+          <div class="layui-card-header">我的状态</div>
+          <div class="layui-card-body layadmin-takerates">
+            <table class="layui-table">
+              <colgroup>
+                <col width="100">
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>登录者</td>
+                  <td>{$admin.name}</td>
+                </tr>
+                <tr>
+                  <td>所属角色</td>
+                  <td>{$role.name}</td>
+                </tr>
+                <tr>
+                  <td style="width: 100px;">上次登录IP地址</td>
+                  <td>{$admin.outip}</td>
+                </tr>
+                <tr>
+                  <td>上次登录时间</td>
+                  <td>{:date("Y-m-d H:i:s",$admin.outtime)}</td>
+                </tr>
+                <tr>
+                  <td>登录次总数</td>
+                  <td>{$admin.count}次</td>
+                </tr>                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="layui-card">
+          <div class="layui-card-header">产品动态</div>
+          <div class="layui-card-body">
+            <div class="layui-carousel layadmin-carousel layadmin-news" data-autoplay="true" data-anim="fade" lay-filter="news" lay-anim="fade" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+              <div carousel-item="">
+                <div class="layui-this"><a href="{$ad.url_1}" target="_blank" class="layui-bg-red">{$ad.text1}</a></div>
+                <div class=""><a href="{$ad.url_2}" target="_blank" class="layui-bg-green">{$ad.text2}</a></div> 
+                <div class=""><a href="{$ad.url_3}" target="_blank" class="layui-bg-blue">{$ad.text3}</a></div>
+                <div class=""><a href="{$ad.url_4}" target="_blank" class="layui-bg-cyan">{$ad.text4}</a></div>
+                <div class=""><a href="{$ad.url_5}" target="_blank" class="layui-bg-orange">{$ad.text5}</a></div> 
+              </div>
+            <div class="layui-carousel-ind"><ul><li class=""></li><li class="layui-this"></li><li class=""></li></ul></div><button class="layui-icon layui-carousel-arrow" lay-type="sub"></button><button class="layui-icon layui-carousel-arrow" lay-type="add"></button></div>
+          </div>
+        </div>
+
+        <div class="layui-card">
+          <div class="layui-card-header">
+            团队心语
+            <i class="layui-icon layui-icon-tips" lay-tips="开发不易，一定要支持哦！" lay-offset="5"></i>
+          </div>
+          <div class="layui-card-body layui-text layadmin-text">
+            <p>MuYuCMS内容管理系统从创立至今始终坚持免费开源，始终坚持倾听社区心声，始终坚持高质量快速迭代。我们将继续秉承这些原则，改变世界，从一点点开始。</p>
+            <p>MuYuCMS内容管理系统是乐小轩团队的旗舰产品，探索各种场景问题解决方案从未停止，相信将来有您的支持，MmuYuCMS内容管理系统的生态会越来越好。我们也期待您与我们同行，一起为生态而努力。</p>
+            <p>子曰：君子不用防，小人防不住。我们杜绝一切抄袭行为，开发不易，请尊重我们！</p>
+            <p>—— 乐小轩开发团队（<a href="http://muyucms.com/" target="_blank">muyucms.com</a>）</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+<footer style="text-align:center;padding: 15px;">
+	<p>Copyright ©2020 - {:date('Y')} MuYuCMS内容管理系统 All Rights Reserved.</p>
+</footer>
+
+{load href="__ADMINST__layuiadmin/layui/layui.js"}
+
+  <script>
+  layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+    ,version: new Date().getTime()
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'console']);
+  </script>
+</body>
+</html>

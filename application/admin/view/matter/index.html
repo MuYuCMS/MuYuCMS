@@ -1,0 +1,399 @@
+{include file='public/meta'}
+<title>内容列表 - 内容管理 - 木鱼内容管理系统</title>
+</head>
+<body>
+	<style>
+		.layui-nav .layui-nav-item a:hover,
+		.layui-nav .layui-this a {
+			color: #000000;
+		}
+
+		.layui-nav .layui-nav-item a {
+			color: #000000;
+			color: rgb(0, 0, 0, 0.9);
+		}
+
+		.layui-nav {
+			padding: 0 0;
+		}
+
+		.layui-nav .layui-nav-more {
+			border-top-color: #535353;
+		}
+
+		.layui-nav .layui-nav-mored {
+			border-color: transparent transparent #535353;
+		}
+
+		.layadmin-tips .layui-text {
+			width: 10%;
+		}
+
+		.layadmin-tips .layui-icon[face] {
+			font-size: 100px;
+			
+		}
+		.custom-tree-item-clicked {
+		   color: #FC9003
+		}
+	</style>
+	<div class="layui-bg-gray" style="padding: 30px;">
+	  <div class="layui-row layui-col-space15">
+	    <div class="layui-col-md2">
+	      <div class="layui-card">
+	        <div class="layui-card-header">栏目选择</div>
+	        <div class="layui-card-body">
+	        <div id="chilcate">
+				
+			</div>  
+	        </div>
+	      </div>
+	    </div>
+	    <div class="layui-col-md10">
+	      <div class="layui-card">
+	        <div class="layui-card-header">内容管理<span style="padding-left: 20px;">当前管理栏目:<span style="color: red;" id="thiscate">{$cateid.title}</span></span></div>
+	        <div class="layui-card-body">
+	        {if ($status["status"] == 1)}
+	        	<div style="padding: 10px; background-color: #FAFAFA;">
+	        		<div class="layui-row layui-col-space15">
+	        			<div class="layui-col-md13">
+	        				<div class="layui-card">
+	        					<div class="layui-card-header muyu-text">共有数据：<span
+	        							style="color:red;">{$list->count('id')}</span> 条</div>
+	        					<div class="layui-card-body" style="display:inline-block;;width:100%;">
+	        						<div class="layui-btn-container" style="display:inline-block">
+	        							<a class="layui-btn layui-btn-xs layui-btn-normal" onclick="addedit('添加文章','{:url('admin/Matter/add',['id'=>$cateid.id,'modid'=>$cateid.modid])}')"
+	        								href="javascript:;">添加文章</a>
+	        							<a class="layui-btn layui-btn-xs layui-btn-danger" onclick="delcheck()"
+	        								href="javascript:;">删除选中</a>
+	        							<!--百度推送钩子-->
+	        							{:hook('bdpushHook')}
+	        						</div>
+	        						<div class="layui-form layui-card-header layuiadmin-card-header-auto"
+	        							style="float:right;padding-top: 1px;padding-bottom: 1px;">
+	        							<div class="layui-form-item">
+	        								<div class="layui-inline">
+	        									<label class="layui-form-label">内容查找</label>
+	        									<div class="layui-input-inline">
+	        										<input type="text" name="res" id="keywords" placeholder="请输入关键词"
+	        											autocomplete="off" class="layui-input">
+	        									</div>
+	        									<div class="layui-inline">
+	        										<input type="text" placeholder="开始时间" class="layui-input"
+	        											id="time1">
+	        									</div>
+	        									<div class="layui-inline">
+	        										<input type="text" placeholder="结束时间" class="layui-input"
+	        											id="time2">
+	        									</div>
+	        
+	        									<input type="hidden" name="field" id="field"
+	        										value="title|author|ftitle|editor|abstract">
+	        									<input type="hidden" name="sostatus" id="sostatus" value="0,1,2">
+	        									<input type="hidden" name="modall" id="modall" value="true">
+	        									<div class="layui-inline">
+	        										<button class="layui-btn layui-btn-primary layui-btn-sm"
+	        											type="submit" onclick="so()">
+	        											<i
+	        												class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+	        										</button>
+	        									</div>
+	        								</div>
+	        							</div>
+	        						</div>
+	        					</div>
+	        				</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	<div class="layui-table-body layui-table-main">
+	        		<table class="layui-table" id="LAY-user-front-submit">
+	        			<thead>
+	        				<tr>
+	        					<th class=" layui-table-col-special">
+	        						<div class="layui-table-cell laytable-cell-checkbox">
+	        							<input type="checkbox" id="checkAll" onclick="isCheck()">
+	        						</div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>id</span></div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>文章标题</span></div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>是否付费</span></div>
+	        					</th>								
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>发布者</span></div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>发布时间</span></div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>状态</span></div>
+	        					</th>
+	        					<th>
+	        						<div class="layui-table-cell" align="center"><span>操作</span></div>
+	        					</th>
+	        				</tr>
+	        			</thead>
+	        
+	        			<tbody>
+	        				{foreach $list as $val}
+	        				<tr align="center">
+	        					<td class="layui-table-col-special">
+	        						<input type="checkbox" name="fav" value="{$val.id},{$val.mid},{$cateid.modid}">
+	        					</td>
+	        					<td>{$val.id}</td>
+	        					<td>{$val.title}</td>
+	        					{if $val.price eq 1}
+	        					<td style="color:green">免费</td>
+	        					{elseif $val.price eq 2}
+	        					<td style="color:red">付费</td>
+	        					{/if}
+	        					<td>{$val.author}</td>
+	        					<td>{$val.create_time|date='Y/m/d'}</td>
+	        					<td>
+	        						<div class="layui-table-cell">
+	        							<a
+	        								class="layui-btn-xs layui-btn layui-btn-{if ($val.status == '0') }btn{elseif $val.status == '1' }normal{elseif $val.status == '2' }danger{/if}"><i
+	        									class="layui-icon layui-icon-{if ($val.status == '0') }ok{elseif $val.status == '1' }edit{elseif $val.status == '2' }close{/if}"></i>
+	        								{if ($val.status == '0') }
+	        								已发布
+	        								{elseif $val.status == '1' }
+	        								草稿
+	        								{elseif $val.status == '2' }
+	        								已下架
+	        								{/if}
+	        							</a>
+	        							<a class="layui-btn layui-btn-primary {if ($val.top == '1')}layui-bg-red{/if} layui-btn-xs"
+	        								onClick="matterst('{$val.id}','{$cateid.modid}','setTop')">顶</a>
+	        							<a class="layui-btn layui-btn-primary {if ($val.ppts == '1')}layui-bg-blue{/if} layui-btn-xs"
+	        								onClick="matterst('{$val.id}','{$cateid.modid}','setPpts')">幻</a>
+	        						</div>
+	        					</td>
+	        					<td align="center" class="layui-table-col-special">
+	        						<div class="layui-table-cell">
+	        							{if ($val.status != '1')}
+	        							<a class="layui-btn layui-btn-xs"
+	        								onclick="matterst('{$val.id}','{$cateid.modid}','matstatus')"
+	        								href="javascript:;">
+	        								<i class="layui-icon layui-icon-{if ($val.status == '0') }logout{elseif $val.status == '1' }edit{elseif $val.status == '2' }ok{/if}"></i>
+	        								{if ($val.status == '0') }
+	        								下架
+	        								{elseif $val.status == '2' }
+	        								发布
+	        								{/if}</a>
+	        							{/if}
+	        							<a class="layui-btn layui-bg-cyan layui-btn-xs"
+	        							onclick="addedit('编辑内容','{:url('admin/Matter/edit',['lmid'=>$cateid.id,'modid'=>$cateid.modid,'aid'=>$val.id])}')" href="javascript:;"
+	        								><i
+	        									class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
+	        							<a class="layui-btn layui-btn-xs layui-bg-red"
+	        								onclick="materdel('{$val.id}','{$val.mid}','{$cateid.modid}')"
+	        								href="javascript:;"><i class="layui-icon layui-icon-delete"></i>删除</a>
+	        						</div>
+	        					</td>
+	        				</tr>
+	        				{/foreach}
+	        			</tbody>
+	        		</table>
+	        	</div>
+	        	<div class="layui-box layui-laypage layui-laypage-molv">{$list|raw}</div>
+	        </div>
+	        {else/}
+	        		<div class="layui-fluid">
+	                <div class="layadmin-tips">
+	                <i class="layui-icon" face>&#xe69c;</i>
+	                <div class="layui-text" style="font-size: 20px;">
+	                        {$status["msg"]}
+	                </div>
+	            
+	          </div>
+	        </div>
+	        {/if}
+	        </div>
+	      </div>
+	    </div>
+	  </div>  
+	<!-- 低部区域 -->
+	{include file='public/footer'}
+	<script>
+		layui.config({
+			base: '__ADMINST__layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['form', 'element', 'laydate','tree'], function() {
+			var $ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				laydate = layui.laydate,
+				element = layui.element;
+		
+			laydate.render({
+				elem: '#time1' //指定元素
+			});
+			laydate.render({
+				elem: '#time2' //指定元素
+			});
+			var categoryid = {$cateid['id']};
+			tree.render({
+			    elem: '#chilcate'
+			    ,data: {$category|raw}
+				,isJump: true
+				,spread:true
+			    ,onlyIconControl: true //是否仅允许节点左侧图标控制展开收缩
+				,click: function(obj){
+				    if (obj.data.id == categoryid) {
+				        $("#thiscate").append(obj.data.title);
+				    }
+				}
+			  });
+			
+		});
+		
+		function addedit(title, url) {
+			layer.open({
+				type: 2,
+				title: title,
+				maxmin: true,
+				content: url,
+				area: ['100%', '100%']
+			});
+		}
+
+		function materdel(id, mid, modid) {
+			var Data = {
+				id: id,
+				mid: mid,
+				mod: modid
+			};
+			layer.msg('是否删除?', {
+				time: 3000, //5s后自动关闭
+				shade: 0.3,
+				btn: ['确定', '取消'],
+				yes: function() {
+					matajax(Data, "materdel");
+				}
+			});
+		}
+
+		function delcheck() {
+			var aid = $("tbody input:checkbox");
+			var ids = [];
+			ids = allcheck(ids, aid);
+			if (ids == "") {
+				layer.msg('当前未选择任何信息!', {
+					icon: 2,
+					time: 2000
+				});
+			} else {
+				ids = ids.substring(0, ids.length - 1);
+				var Data = {
+					all: ids
+				};
+				layer.msg('是否删除?', {
+					time: 3000, //5s后自动关闭
+					shade: 0.3,
+					btn: ['确定', '取消'],
+					yes: function() {
+						matajax(Data, "materdel");
+					}
+				});
+
+			}
+		}
+
+		function matterst(id, modid, url) {
+			var Data = {
+				id: id,
+				modid: modid
+			};
+			matajax(Data, url);
+		}
+
+		function matajax(Data, url) {
+			$.ajax({
+				type: 'POST',
+				data: Data,
+				url: "{:url('admin/Matter/" + url + "')}",
+				dataType: "json",
+				beforeSend: function() {
+					index = layer.load();
+				},
+				success: function(data) {
+					if (data.code == 1) {
+						layer.msg(data.msg, {
+							time: 2000
+						}, function() {
+							location.reload();
+						});
+					} else {
+						layer.msg(data.msg, {
+							time: 2000
+						});
+					}
+				},
+				complete: function() {
+					layer.close(index);
+				}
+			});
+		}
+
+		function so() {
+			var res = $("#keywords").val();
+			var Data = {
+				res: res
+			};
+			Data['modall'] = $("#modall").val();
+			Data['status'] = $("#sostatus").val();
+			Data['field'] = $("#field").val();
+			if ($("#time1").val()) {
+				if ($("#time2").val()) {
+					Data['time'] = $("#time1").val() + "," + $("#time2").val();
+				}
+			}
+			if ($("#keywords").val() == "") {
+				layer.msg('请输入搜索内容', {
+					time: 2000
+				});
+			} else {
+				$.ajax({
+					type: 'POST',
+					data: Data,
+					url: "{:url('admin/Base/allsearch')}",
+					dataType: "json",
+					beforeSend: function() {
+						index = layer.load();
+					},
+					success: function(data) {
+						if (data.code == 1) {
+							$.post("{:url('admin/Matter/solist')}", {
+								list: data.list
+							}, function(da) {
+								layer.open({
+									type: 1,
+									title: "内容搜索",
+									content: da,
+									area: ['90%', '90%']
+								});
+							});
+							layer.msg(data.msg, {
+								time: 2000
+							});
+						} else {
+							layer.msg(data.msg, {
+								time: 2000
+							});
+						}
+					},
+					complete: function() {
+						layer.close(index);
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>

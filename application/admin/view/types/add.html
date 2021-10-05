@@ -1,0 +1,111 @@
+{include file='public/meta' }
+  <title>分类添加 - 木鱼内容管理系统</title>
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">分类名称：</label>
+      <div class="layui-input-block">
+        <input type="text" name="title" lay-verify="required" placeholder="请输入名称"  class="layui-input">
+      </div>
+    </div>
+    
+	<div class="layui-form-item">
+      <label class="layui-form-label">背景图：</label>
+       <div class="layui-input-block">
+          <button type="button"  class="layui-btn" id="test1">上传图片</button>
+          <input class="layui-upload-file" type="file" accept="images" name="file">
+          <div class="layui-input-inline" style="float:left;width:45%;">
+          <input class="layui-input" type="text" accept="images" id="upico"  name="titlepic">
+          </div>
+          <div class="layui-upload-list">
+            <img class="layui-upload-img" id="ico1">
+          </div>
+      </div>
+    </div>
+	
+	<div class="layui-form-item">
+      <label class="layui-form-label">分类所属：</label>
+      <div class="layui-input-block">
+        <select class="select" name="pid" id="catepids">
+			
+		</select>
+      </div>
+    </div>
+	
+    <div class="layui-form-item layui-hide">
+      <button type="button" lay-submit lay-filter="muyu-ajax-submit" id="muyu-ajax-submit">提交</button>
+    </div>
+  </div>
+<style type="text/css" media="all">
+/*上传头像样式开始*/
+.layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
+/*上传头像样式结束*/
+</style>
+  {include file='public/footer' }
+  <script>
+layui.config({
+    base: '__ADMINST__layuiadmin/' //静态资源所在路径
+	,version: new Date().getTime()
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'upload'], function(){
+    var $ = layui.$
+    ,form = layui.form ;
+  })
+	
+	var selectbox=document.getElementById("catepids");
+	 
+	//生成树下拉菜单
+	var j="|-";//前缀符号，用于显示父子关系，这里可以使用其它符号
+	var option="<option value='0'>独立分类</option>";
+	function creatSelectTree(d,c){
+		  if(c == 1){
+			  option = "";
+		  }
+	 for(var i=0;i<d.length;i++){
+	 if(d[i].children.length){
+	  option+="<option value='"+d[i].id+"'>"+j+d[i].title+"</option>";
+		j+="-";
+	  option+=creatSelectTree(d[i].children,1);
+		j=j.slice(0,j.length-1);
+	  }else{
+	  option+="<option value='"+d[i].id+"'>"+j+d[i].title+"</option>";
+	  }
+	  }
+	 return option;
+	 }
+	selectbox.innerHTML=creatSelectTree({$menunew|raw},0);
+  //图片上传
+  layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: "{:url('Base/imgupload')}" //改成您自己的上传接口
+    ,data:{upurl:'/public/upload/menubg'}
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code == 1){
+         $('#ico1').attr('src', res.photo); 
+		 $("#upico").val(res.photo);
+        return layer.msg('上传成功');
+      }else{
+		return layer.msg('上传失败');
+	  }
+      
+    }
+    ,error: function(){
+        
+    }
+  });
+  });
+  </script>
+</body>
+</html>
