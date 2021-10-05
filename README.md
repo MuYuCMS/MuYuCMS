@@ -15,7 +15,7 @@ MuYuCMS基于Thinkphp开发的一套轻量级开源内容管理系统,专注为�
 - 支持系统：Windows/Linux/Mac
 - WEB服务器：Apache/Nginx/ISS
 - PHP版本：php >= 5.6 (推荐php5.6)
-- 数据库：MySQL >= 5.6 (推荐MySQL5.6)
+- 数据库：MySQL = 5.6 (推荐MySQL5.6)
 
 ## [安装教程]
 - 将代码下载到网站的根目录
