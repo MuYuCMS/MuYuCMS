@@ -1,13 +1,13 @@
 # MuYuCMS
 
 [![MuYuCMS](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.muyucms.com/artlist_1.html)
-[![MuYuCMS](https://img.shields.io/badge/MuYuCMS-1.0-brightgreen.svg)](http://www.muyucms.com/artlist_1.html)
+[![MuYuCMS](https://img.shields.io/badge/MuYuCMS-2.2-brightgreen.svg)](http://www.muyucms.com/artlist_1.html)
 
 ## [介绍]
 MuYuCMS基于Thinkphp开发的一套轻量级开源内容管理系统,专注为公司企业、个人站长提供快速建站提供解决方案。
 
-- 官网地址：http://muyucms.com/
-- 社区地址：http://muyucms.com/artlist_1.html
+- 官网地址：https://muyucms.com/
+- 社区地址：https://muyucms.com/matlist_2.html
 - 作者邮箱：admin@muyucms.com
 - QQ群：522624927
 
