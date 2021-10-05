@@ -14,7 +14,7 @@
 			<form class="layui-form" action="" method="get">
 				<input type="hidden" name="step" value="1">
 				<div class="layui-form-item" style="color: #4E5465;">
-				<h2>在线安装 - MuYuCMS-后台管理系统<span class="rigspan">V2.0</span></h2>	
+				<h2>在线安装 - MuYuCMS-后台管理系统<span class="rigspan">V2.2</span></h2>
 				</div>
 				<hr style="background: #06a3e2a1;">
 				<div class="insmain mys">

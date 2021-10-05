@@ -129,7 +129,7 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
 	    }
 	    return $result;
 	}
-	/*
+	/* 
 	*递归遍历目录，作自定义文件选择目录
 	*/
 	function myscandir($pathName){
@@ -249,7 +249,6 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
     $str = str_replace("}","",$str);
     $str = str_replace("-1","",$str);
     $str = str_replace("1","",$str);
-    $str = str_replace(".","",$str);
     $str = str_replace("response","",$str);
     $str = str_replace("write","",$str);
     $str = str_replace("|","",$str);
@@ -325,15 +324,19 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
 	*@return : $tab 返回结果数组
 	*
 	*/
-    function muyname($mid){
+    function muyname($mid,$father="true"){
             $ids = Db::name("category")->where("id",$mid)->field("pid,modid")->find();
             $lmid = $mid;
-    		$tab = ['ftabname'=>'','mid'=>$lmid,'tablename'=>''];
+    		$tab = ['ftabname'=>'','mid'=>$mid,'tablename'=>''];
     		if(!empty($ids)){
             $lmid = muynamedigui($lmid);
             $tab = Db::name("model")->field("tablename")->find($ids['modid']);
     		$tab['ftabname'] = $tab['tablename'].'_data';
+    		if($father == "true"){
     		$tab['mid'] = $lmid;
+    		}else{
+    		$tab['mid'] = $mid;    
+    		}
     		}
             return $tab;
         }
@@ -375,7 +378,7 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
            if($live == 0){
            foreach($data as $v){
            if($v['pid'] == $pid){//匹配子数组			 
-               $v['children'] = alldigui($data,$v['id']);//递归
+               $v['children'] = alldigui($data,$v['id'],$live);//递归
                $list[] = $v;//处理好的数据存入新数组
                }
            }
@@ -736,13 +739,15 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
         $where[] = ['status','=',1];
         $where[] = ['type','=',0];
         $live = 0;
-        if(!empty($id)  && is_numeric($id)){
-        $sonid = $id;    
-        $son = Db::name("category")->where("pid",$sonid)->field("id")->select()->toArray();
+        if(!empty($id) && is_numeric($id)){
+        $sonid = $id;
+        $son = foreachpid($sonid);
         if(!empty($son)){
-            foreach($son as $v){
-                $sonid .= "," . $v['id'];
-            }
+            $res = array();
+            $father = Db::name("category")->find($sonid);
+            $father['children'] = $son;
+            $res[] = $father;
+            return $res;
         }else{
             $one = Db::name("category")->field("pid")->find($sonid);
 			if(!empty($one)){
@@ -762,7 +767,20 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
         }
         $res = Db::name("category")->where($where)->orderRaw($order)->limit($limt)->select()->toArray();
 		$res = alldigui($res,0,$live);
+// 		dump($res);
         return $res;
+    }
+    
+    function foreachpid($id){
+        $array = array();
+        $a = Db::name("category")->where("pid",$id)->select();
+        if(!empty($a)){
+            foreach($a as $as){
+            $as['children'] = foreachpid($as["id"]);
+            $array[] = $as;
+            }
+        }
+        return $array;
     }
     
     /*
@@ -936,3 +954,44 @@ function sendEmail($email,$emailpaswsd,$smtp,$sll,$emname,$title,$content,$toema
          if($suffix) return $slice.$suffix;  
          return $slice;
     }
+    /**
+    *filepg 远程file_get_contents方法
+    * $url 远程地址
+    * $form  请求方式
+    * $array  携带参数
+    * *
+    **/
+    function filepg($url,$form,$array){
+        if(!empty($url) && !empty($form) && !empty($array)){
+        $postUrl = $url;
+		$curlPost = $array;
+		$postdatas = http_build_query($curlPost);//处理请求数据,生成一个经过 URL-encode 的请求字符串
+		$options = array(
+		    'http' => array(
+		      'method' => $form,//请求方式POST
+		      'header' => 'Content-type:application/x-www-form-urlencoded',
+		      'content' => $postdatas,
+		      'timeout' => 5 // 超时时间（单位:s）
+		    )
+		);
+		$context = stream_context_create($options);//创建并返回文本数据流
+		$result = file_get_contents($postUrl, false, $context);//将文本数据流读入字符串
+		$da = json_decode($result,true);
+		return $da;
+        }
+        return jsonmsg(0,'参数错误!');
+    }
+    /**
+    *严格控制上传文件可上传路径
+    * url被检测路径
+    * 单独定义函数是为了方便index和admin模块使用 减少不必要的代码
+    * *
+    **/
+    function upcheckurl($url){
+	    $checkurl = array("/public/upload/userimages","/public/upload/files","/public/upload/ggpic","/public/upload/images","/public/upload/linkpic","/public/upload/menubg");
+	    if(in_array($url,$checkurl)){
+	        return $url;
+	    }else{
+	        return "false";
+	    }
+	}

@@ -583,6 +583,7 @@ class User extends Base
 		//给资讯赋值标志位，这里的资讯为非管理员发布
 		$data['isadmin'] = 0;
 		$data['price']  = 1;
+		$data['editor'] = delete_XSS($data['editor']);
 		$cateisu = Db::name("category")->field("issue")->find($data["mid"]);
 		$tabnname = Db::name("model")->field("status,issue,tablename,type")->find($data["modid"]);
 		unset($data["modid"]);
@@ -731,6 +732,7 @@ class User extends Base
 		    }
 		}
 		$table = $data["modname"];
+		$data['editor'] = delete_XSS($data['editor']);
 		unset($data["modname"]);
 		//判断投稿开关是否打开
 		if($tg_close['tg_close']==0){

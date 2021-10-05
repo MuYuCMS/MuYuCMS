@@ -174,17 +174,17 @@
   </div>
   </form>
 {include file='public/footer'}
-{load href="__ADMINST__ueditor/ueditor.config.js"}
-	{load href="__ADMINST__ueditor/ueditor.all.js"}
+{load href="__ADMINST__ckeditor/ckeditor.js"}
 {load href="__ADMINST__jquery-tagEditor-master/jquery.tag-editor.js"}
 {load href="__ADMINST__jquery-tagEditor-master/jquery.caret.min.js"}
 {load href="__ADMINST__jquery-tagEditor-master/jquery-ui.min.js"}
 <script type="text/javascript" charset="utf-8">
-		var ue = UE.getEditor('editorcont');
-		ue.ready(function() {
-           ue.setHeight(400);
-        });
-</script>
+	var ckeditors = CKEDITOR.replace( 'editorcont' ,{
+    language: 'zh-cn',
+    height : 500,
+    skin:'moono-lisa'
+});
+	</script>
 <script>
   layui.config({
     base: '__ADMINST__layuiadmin/' //静态资源所在路径
@@ -326,6 +326,7 @@
 	return Data;
     }
     function ajaxmatter(Data){
+        Data['editor'] = ckeditors.document.getBody().getHtml();
         $.ajax({
       type:'POST',
       data:Data,

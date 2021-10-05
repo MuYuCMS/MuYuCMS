@@ -153,6 +153,6 @@ return [
     'exception_handle'       => '',
     
     'temp_path'              => './template',
-    'version'                => '2.1',
+    'version'                => '2.2',
 
 ];

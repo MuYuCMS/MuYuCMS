@@ -22,14 +22,8 @@ class Base extends Controller
         $usename = Member::where('id',$useid)->find();
         }
         $daycont = Db::name('bigdata')->whereTime('create_time','today')->find();
-		//栏目变量，方便前端layui渲染导航，默认查所有正常状态下栏目
-		$categorys = Db::name('category')->where(["status"=>1,"type"=>0])->select()->toArray();
-		$categorys = json_encode(alldigui($categorys),JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-		//评论变量，方便前端从js,jQuery渲染评论列表,默认查所有正常状态下评论
-		$comments = Db::name("comment")->where("status",1)->select()->toArray();
-		$comments = alldigui($comments);
 		
-        $this->assign(["tgmenu"=>$tgmenu,'member'=>$usename,"categorys"=>$categorys,"allconts"=>$daycont,"comments"=>$comments]);
+        $this->assign(["tgmenu"=>$tgmenu,'member'=>$usename,"allconts"=>$daycont]);
         //判断大数据今日的数据是否更新插入
         $bigData = Db::name('bigdata')->whereTime('create_time','today')->find();
          if($bigData == NULL){
@@ -136,7 +130,11 @@ class Base extends Controller
 	public function imgupload(Request $request)
 	{
 		$file = request()->file('file');
-		$res = allup($file,request()->param('upurl'),'image',request()->param('id'));
+		$url = upcheckurl(request()->param('upurl'));
+		if($url == "false"){
+		    return jsonmsg(0,"存储地址非法");
+		}
+		$res = allup($file,$url,'image',request()->param('id'));
 		return $res;
 	}
 	
@@ -144,7 +142,11 @@ class Base extends Controller
 	public function fileuplod(Request $request){
 	   //接收上传的文件
 		$file = request()->file('file');
-		$res = allup($file,request()->param('upurl'),'file',request()->param('id'));
+		$url = upcheckurl(request()->param('upurl'));
+		if($url == "false"){
+		    return jsonmsg(0,"存储地址非法");
+		}
+		$res = allup($file,$url,'file',request()->param('id'));
 		return $res; 
 	}  
 	  

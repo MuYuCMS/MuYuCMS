@@ -9,7 +9,7 @@ class Muy extends Taglib
 	protected $tags = [
 	    // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
 	    'siteseo'        => ['attr' => 'name','close'=>0],//网站相关tdk信息调用
-	    'matter'         => ['attr' => 'tab,limit,operate,order,sql','level'=>3,'close'=>1],//文章的相关调用
+	    'matter'         => ['attr' => 'key,tab,limit,operate,order,sql,father','level'=>3,'close'=>1],//文章的相关调用
 	    'hnav'           => ['attr' => 'all,hid,order,limit,class','level'=>3,'close'=>1],//导航调用	
 	    'myad'           => ['attr' => 'id,name','close'=>0],//网站广告的调用
 	    'links'          => ['attr' => 'order,limit','close'=>1],//友情链接 
@@ -43,10 +43,12 @@ class Muy extends Taglib
 	*文章的相关调用
 	*tab 栏目id 表名
 	*limit 调用指定数量
+	*father true查子孙数据 false只查自身 默认查子孙
 	*operate 操作类型 (0栏目最新 1栏目推荐)[tab=栏目id] (2表最新 3表推荐)[tab=表名,无需表前缀]
-	4 查询所有表信息  注意:limit="页码,显示数量" 或 limit="数量" ; 默认开启分页
+	4 查询所有表信息  注意:limit="页码,显示数量" 或 limit="数量" ; 默认关闭分页
 	*order 排序
 	*pag 分页
+	*key 特殊项 可为空
 	*/
 		public function tagMatter($tag,$content)
 	{
@@ -55,6 +57,8 @@ class Muy extends Taglib
 	    $muyuop = isset($tag['operate']) ? $tag['operate'] : '0';
 	    $order = empty($tag['order']) ? 'create_time desc' : $tag['order'];
 	    $pag = isset($tag['pag']) ? $tag['pag'] : 'false';
+	    $father = isset($tag['father']) ? $tag['father'] : 'true';
+	    $keyis = isset($tag['key']) ? $tag['key'] : '';
 	    $sql = empty($tag['sql']) ? '' :  '->'.$tag['sql'];//附加条件 例如:whereTime('create_time', 'week')本周的内容
 	    $whereCe = "select()";
 	    $limits = "->limit('".$limit."')";
@@ -79,17 +83,23 @@ class Muy extends Taglib
 	    }elseif($muyuop == 3){
 	        $echo = '$_LIST';
 	    }
+	    if($muyuop == '2' || $muyuop == '3' || $muyuop == '4'){
+	        $father ="true";
+	    }
+	    if(!empty($keyis)){
+	        $echo = '$_'.$keyis;
+	    }
 	    $lmwer = "";//定义一个空变量
 	        $parse = '<?php ';
 	        if($muyuop == '0' || $muyuop == '1'){//根据操作类型处理数据
 			if("$" == substr($tab, 0, 1)){//如果是变量
 				$tab = $this->autoBuildVar($tab);//解析
 				$parse .= '$_TAB = '.$tab.';';
-				$parse .= 'if(is_numeric($_TAB)){ $_TABS = muyname($_TAB); $_TAB = $_TABS["tablename"]; $_MID = $_TABS["mid"]; $_FTB = $_TABS["ftabname"]; };';//判断变量是数字 获取需要的值
+				$parse .= 'if(is_numeric($_TAB)){ $_TABS = muyname($_TAB,'.$father.'); $_TAB = $_TABS["tablename"]; $_MID = $_TABS["mid"]; $_FTB = $_TABS["ftabname"]; };';//判断变量是数字 获取需要的值
 				$lmwer = '->where("a.mid","in","$_MID")';//增加查询条件 查询顶级栏目以及子栏目数据
 			}else{
 				$parse .= '$_TAB = "'.$tab.'";';
-				$parse .= 'if(is_numeric($_TAB)){ $_TABS = muyname($_TAB); $_TAB = $_TABS["tablename"]; $_MID = $_TABS["mid"]; $_FTB = $_TABS["ftabname"]; };';
+				$parse .= 'if(is_numeric($_TAB)){ $_TABS = muyname($_TAB,'.$father.'); $_TAB = $_TABS["tablename"]; $_MID = $_TABS["mid"]; $_FTB = $_TABS["ftabname"]; };';
 				$lmwer = '->where("a.mid","in",$_MID)';
 			} 
 	        }elseif($muyuop == '2' || $muyuop == '3'){
@@ -117,7 +127,6 @@ class Muy extends Taglib
 	        $parse .= ''.$echo.' = array();';
 			$parse .= 'endif;';
 	        }
-			
 	        $parse .= '$_NUM = 0;';
 	        $parse .= 'foreach('.$echo.' as $mat):';
 	        $parse .= '$_PRICE = ["1"=>"免费","2"=>"付费"];';

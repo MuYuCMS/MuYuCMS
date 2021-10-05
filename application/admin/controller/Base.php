@@ -16,6 +16,18 @@ class Base extends Controller
     protected function initialize()
     {
 		$accres = Db::name('accre')->find('muyu');
+		//授权状态更新
+		if($accres["accre_sta"] != 1 && !empty($accres["accre"])){
+		    $array['ip'] = $_SERVER['SERVER_NAME'];
+		    $array['host'] = gethostbyname($_SERVER['SERVER_NAME']);;
+		    $array['isaccre'] = $accres["accre"];
+		    $da = filepg("http://api.muyucms.com/installsetinfo/updateaccre",'POST',$array);
+		    if(!empty($da)){
+		        $updata = ["accre_id"=>"muyu","accre"=>$accres["accre"],"status"=>$da['accre'],"accre_sta"=>$da['accstat'],"accre_time"=>$da['outtime'],"accre_name"=>$da['accname']];
+		        $accres = $updata;
+		        Db::name('accre')->update($updata);
+		    }
+		}
 		$accstatus = ['1'=>"未授权","2"=>"期限授权","3"=>"永久授权"];
 		$accres["accre_sta"] = $accstatus[$accres["accre_sta"]];
 		$this -> view -> assign(['accre'=>$accres]);
@@ -118,7 +130,11 @@ class Base extends Controller
 	public function imgupload(Request $request)
 	{
 		$file = request()->file('file');
-		$res = allup($file,request()->param('upurl'),'image',request()->param('id'));
+		$url = upcheckurl(request()->param('upurl'));
+		if($url == "false"){
+		    return jsonmsg(0,"存储地址非法");
+		}
+		$res = allup($file,$url,'image',request()->param('id'));
 		return $res;
 	}
 	
@@ -126,9 +142,14 @@ class Base extends Controller
 	public function fileuplod(Request $request){
 	   //接收上传的文件
 		$file = request()->file('file');
-		$res = allup($file,request()->param('upurl'),'file',request()->param('id'));
+		$url = upcheckurl(request()->param('upurl'));
+		if($url == "false"){
+		    return jsonmsg(0,"存储地址非法");
+		}
+		$res = allup($file,$url,'file',request()->param('id'));
 		return $res; 
 	}
+	
 	 //搜索事件
 	 /*
 	 * modall  true所有模型表 false单表

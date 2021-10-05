@@ -72,11 +72,11 @@
 							</td>
 							<td>{$val.id}</td>
 							<td>{$val.title}</td>
-							{if $val.price eq 1}
-	        					<td style="color:green">免费</td>
-	        					{elseif $val.price eq 2}
-	        					<td style="color:red">付费</td>
-	        					{/if}							
+							{if $val.price eq 0}
+							<td style="color:green">免费</td>
+							{elseif $val.price eq 1}
+							<td style="color:red">付费</td>
+							{/if}							
 							<td>{$val.author}</td>
 							<td>{$val.create_time|date='Y:m:d'}</td>
 							<td><div class="layui-table-cell">
@@ -103,7 +103,7 @@
                                       发布
                                       {/if}</a>
                                       {/if}
-								    <a class="layui-btn layui-bg-cyan layui-btn-xs" onclick="addedit('编辑内容','{:url('admin/Matter/edit',['lmid'=>$val.mid,'modid'=>$val.tabname,'aid'=>$val.id])}')" href="javascript:;"><i class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
+								    <a class="layui-btn layui-bg-cyan layui-btn-xs" onclick="addedit('编辑内容','{:url('admin/Matter/edit',['lmid'=>$val.mid,'modid'=>$val.modid,'aid'=>$val.id])}')" href="javascript:;"><i class="layui-icon layui-icon-edit" style="color: #00dbf3;"></i>编辑</a>
 								    <a class="layui-btn layui-btn-xs layui-bg-red" onclick="materdel('{$val.id}','{$val.mid}','{$val.modid}')" href="javascript:;"><i class="layui-icon layui-icon-delete"></i>删除</a>
 								</div>
 							</td>

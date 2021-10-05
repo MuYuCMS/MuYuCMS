@@ -36,16 +36,15 @@
             <div class="layui-form-item">
               <label class="layui-form-label">栏目所属：</label>
               <div class="layui-input-block">
-				<select class="select" name="pid" id="catepids">
+				<select class="select" name="pid" lay-filter="catepid" id="catepids">
 					 
 				</select>
               </div>
             </div>
-    
             <div class="layui-form-item">
               <label class="layui-form-label">所属模型：</label>
               <div class="layui-input-block">
-                <select class="select" name="modid" id="">
+                <select class="select" name="modid" id="modelid">
         			<option value="0">选择模型</option>
         		{foreach $mod as $vv}
         			<option value="{$vv.id}">{$vv.name}</option>
@@ -177,10 +176,18 @@ layui.config({
     var value = this.checked ? '1' : '0';
     $("#issue").val(value);
   });
-
+    
+    form.on('select(catepid)', function(data){
+    if(data.value != 0){
+        $("#modelid").attr("disabled","disabled");
+        form.render('select');
+    }else{
+        $("#modelid").removeAttr("disabled");
+        form.render('select');
+    }
+    });
   })
-
-
+  
   //图片上传
   layui.use('upload', function(){
   var $ = layui.jquery

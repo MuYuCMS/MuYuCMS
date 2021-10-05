@@ -41,6 +41,7 @@ return [
         'idnex/matters/comlikes',
         'idnex/matters/artcoun',
         'idnex/search/index',
+        'index/requestinfo/matter',
         'index/palymat/alipaynotify',//产品购买支付宝支付异步通知地址
         'index/palymat/epaynotify',//产品购买易支付异步通知地址
         'index/wallet/alipaynotify',//会员中心充值支付宝支付异步通知地址

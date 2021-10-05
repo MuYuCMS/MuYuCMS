@@ -116,10 +116,13 @@ class Category extends Base
 		    $data['href'] = "index/index/index";
 		}
 		}
+		if($data["pid"] != 0){
+		    $newpid = Db::name("category")->field("modid")->find($data["pid"]);
+		    $data["modid"] = $newpid["modid"];
+		}
 		if(!isset($data["modid"]) || empty($data["modid"]) || $data["modid"] == 0){
 		    return jsonmsg(0,"请检查栏目所属模型项");
 		}
-		//$res = CategoryModel::insert($data);
 		$admin = new CategoryModel;
  		// 过滤post数组中的非数据表字段数据
  		$res = $admin->allowField(true)->save($data);
@@ -160,6 +163,13 @@ class Category extends Base
     		        $data['href'] = "index/index/index";
     		}
 		}
+		$where = [];
+		$yinfo = Db::name("category")->find($data['id']);
+		if($yinfo['modid'] != $data['modid']){
+		    $son = muynamedigui($data['id']);
+		    Db::name("category")->where("id in ($son)")->update(["modid"=>$data['modid']]);
+		}
+		
 		$res =CategoryModel::update($data);
 		if($res){
 		    $this->logs("栏目 [ID: ".$data['title'].'] 修改成功!');
