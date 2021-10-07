@@ -740,7 +740,7 @@ CREATE TABLE `#__system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='网站配置表';
 
-INSERT INTO `#__system` VALUES (1,'创建成功!欢迎使用MuYuCMS','轻量级开源CMS!','木鱼,MuYuCMS,cms,开源cms,免费开源cms,轻量级cms,cms系统,cms下载,企业cms,内容管理系统,cms建站系统','木鱼CMS基于Thinkphp开发的一套轻量级开源内容管理系统,专注为公司企业、个人站长提供快速建站提供解决方案。2',0,0,0,0,0,0,0,5,1,5,'很好|垃圾|色情|AV|看片|','京ICP备00000000号221','Copyright 2020 木鱼内容管理系统 All Rights Reserved','&lt;script&gt;\r\nvar _hmt = _hmt || [];\r\n(function() {\r\n  var hm = document.createElement(&quot;script&quot;);\r\n  hm.src = &quot;https://hm.baidu.com/hm.js?ea62eb580986c26501fbbb418bbce03f&quot;;\r\n  var s = document.getElementsByTagName(&quot;script&quot;)[0]; \r\n  s.parentNode.insertBefore(hm, s);\r\n})();\r\n&lt;/script&gt;','','/public/upload/images/logo.png','/public/upload/menubg/609f2b46860d9.jpg',123456789,'admin@muyucms.com','muyu_duoguyu','user',2.1);
+INSERT INTO `#__system` VALUES (1,'创建成功!欢迎使用MuYuCMS','轻量级开源CMS!','木鱼,MuYuCMS,cms,开源cms,免费开源cms,轻量级cms,cms系统,cms下载,企业cms,内容管理系统,cms建站系统','木鱼CMS基于Thinkphp开发的一套轻量级开源内容管理系统,专注为公司企业、个人站长提供快速建站提供解决方案。2',0,0,0,0,0,0,0,5,1,5,'很好|垃圾|色情|AV|看片|','京ICP备00000000号221','Copyright 2020 木鱼内容管理系统 All Rights Reserved','&lt;script&gt;\r\nvar _hmt = _hmt || [];\r\n(function() {\r\n  var hm = document.createElement(&quot;script&quot;);\r\n  hm.src = &quot;https://hm.baidu.com/hm.js?ea62eb580986c26501fbbb418bbce03f&quot;;\r\n  var s = document.getElementsByTagName(&quot;script&quot;)[0]; \r\n  s.parentNode.insertBefore(hm, s);\r\n})();\r\n&lt;/script&gt;','','/public/upload/images/logo.png','/public/upload/menubg/609f2b46860d9.jpg',123456789,'admin@muyucms.com','muyu_duoguyu','user',2.2);
 
 CREATE TABLE `#__system_upset` (
   `id` int(11) NOT NULL COMMENT '标识',
