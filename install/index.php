@@ -103,7 +103,7 @@ function step2(&$install_error,&$install_recover){
     if(strlen($admin) > 15 || preg_match("/^$|^c:\\con\\con$|　|[,\"\s\t\<\>&]|^游客|^Guest/is", $admin)) {
         $install_error .= '非法用户名，用户名长度不应当超过 15 个英文字符，且不能包含特殊字符，一般是中文，字母或者数字';
     }
-    if ($install_error != '') reutrn;
+    if ($install_error != '') reutrn; 
         $mysqli = @ new mysqli($db_host, $db_user, $db_pwd, '', $db_port);
         if($mysqli->connect_error) {
             $install_error = '数据库连接失败';return;
