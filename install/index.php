@@ -109,7 +109,7 @@ function step2(&$install_error,&$install_recover){
             $install_error = '数据库连接失败';return;
         }
 
-    if($mysqli->get_server_info() == '5.6') {
+    if($mysqli->get_server_info() >= '5.6' && $mysqli->get_server_info() < '5.7') {
         $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET ".DBCHARSET);
     } else {
         $install_error = '数据库必须为MySQL5.6版本';return;
