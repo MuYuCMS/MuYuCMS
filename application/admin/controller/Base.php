@@ -23,7 +23,7 @@ class Base extends Controller
 		    $array['isaccre'] = $accres["accre"];
 		    $da = filepg("http://api.muyucms.com/installsetinfo/updateaccre",'POST',$array);
 		    if(!empty($da)){
-		        $updata = ["accre_id"=>"muyu","accre"=>$accres["accre"],"status"=>$da['accre'],"accre_sta"=>$da['accstat'],"accre_time"=>$da['outtime'],"accre_name"=>$da['accname']];
+		        $updata = ["accre_id"=>"muyu","accre"=>$accres["accre"],"accre_sta"=>$da['accstat'],"accre_time"=>$da['outtime'],"accre_name"=>$da['accname']];
 		        $accres = $updata;
 		        Db::name('accre')->update($updata);
 		    }
